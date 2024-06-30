@@ -4,7 +4,17 @@
 #include <map>
 #include <algorithm>
 
+// ============================================
+// Module Name: main.cpp
+// ============================================
+
+// Version History:
+// Rev. 1 - 2024/06/29 - Neel Sadafule
+
+// ============================================
 // Data structures
+// ---------------------------------------------
+
 struct ChangeItem {
     std::string description;
     std::string changeID;
@@ -29,6 +39,8 @@ std::vector<Product> products;
 std::vector<User> users;
 std::map<std::string, std::string> changeRequests;
 
+// Function Declarations
+// ============================================
 void displayMainMenu();
 void handleProductMaintenance();
 void handleChangeRequestMaintenance();
@@ -43,11 +55,18 @@ void generateReport1();
 void generateReport2();
 void displayHelp();
 
+// Main Function
+// ============================================
 int main() {
     displayMainMenu();
     return 0;
 }
 
+// Function Implementations
+// ============================================
+// Function: displayMainMenu
+// Description: Displays the main menu and handles user input.
+// ---------------------------------------------
 void displayMainMenu() {
     int choice;
     do {
@@ -71,6 +90,9 @@ void displayMainMenu() {
     } while (choice != 0);
 }
 
+// Function: handleProductMaintenance
+// Description: Handles product maintenance options.
+// ---------------------------------------------
 void handleProductMaintenance() {
     int choice;
     do {
@@ -90,6 +112,9 @@ void handleProductMaintenance() {
     } while (choice != 0);
 }
 
+// Function: handleChangeRequestMaintenance
+// Description: Handles change request maintenance options.
+// ---------------------------------------------
 void handleChangeRequestMaintenance() {
     int choice;
     do {
@@ -107,6 +132,9 @@ void handleChangeRequestMaintenance() {
     } while (choice != 0);
 }
 
+// Function: handleChangeItemMaintenance
+// Description: Handles change item maintenance options.
+// ---------------------------------------------
 void handleChangeItemMaintenance() {
     int choice;
     do {
@@ -126,6 +154,9 @@ void handleChangeItemMaintenance() {
     } while (choice != 0);
 }
 
+// Function: handleReportGeneration
+// Description: Handles report generation options.
+// ---------------------------------------------
 void handleReportGeneration() {
     int choice;
     do {
@@ -145,6 +176,9 @@ void handleReportGeneration() {
     } while (choice != 0);
 }
 
+// Function: createProduct
+// Description: Creates a new product after checking for uniqueness.
+// ---------------------------------------------
 void createProduct() {
     Product newProduct;
     std::cout << "Enter the Product Name (max 30 char): ";
@@ -163,6 +197,9 @@ void createProduct() {
     std::cout << "Product " << newProduct.name << " added successfully.\n";
 }
 
+// Function: createRelease
+// Description: Creates a new release for an existing product.
+// ---------------------------------------------
 void createRelease() {
     std::string productName;
     std::cout << "Enter the Product Name (max 30 char, must pre-exist): ";
@@ -177,7 +214,7 @@ void createRelease() {
     }
 
     std::string releaseID, releaseDate;
-    std::cout << "Enter the Release ID (max 30 char following your organizations format): ";
+    std::cout << "Enter the Release ID (max 30 char following your organization's format): ";
     std::getline(std::cin, releaseID);
     std::cout << "Enter the Release Date (YYYY-MM-DD): ";
     std::getline(std::cin, releaseDate);
@@ -185,6 +222,9 @@ void createRelease() {
     std::cout << "Release " << releaseID << " for Product " << productName << " added successfully.\n";
 }
 
+// Function: createChangeRequest
+// Description: Creates a new change request, creating a new user profile if necessary.
+// ---------------------------------------------
 void createChangeRequest() {
     std::string profileName;
     std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
@@ -232,6 +272,9 @@ void createChangeRequest() {
     std::cout << "Change Request ID is " << changeID << ". The Change Request was successfully added.\n";
 }
 
+// Function: queryChangeItem
+// Description: Queries a change item and displays its details.
+// ---------------------------------------------
 void queryChangeItem() {
     std::string productName;
     std::cout << "Select a product (must pre-exist): ";
@@ -263,6 +306,9 @@ void queryChangeItem() {
     std::cout << "Product: " << productName << "\nDescription: " << item.description << "\nChange ID: " << item.changeID << "\nState: " << item.state << "\nAnticipated Release ID: " << item.anticipatedReleaseID << "\n";
 }
 
+// Function: updateChangeItem
+// Description: Updates a change item.
+// ---------------------------------------------
 void updateChangeItem() {
     std::string productName;
     std::cout << "Select a product (must pre-exist): ";
@@ -334,6 +380,9 @@ void updateChangeItem() {
     std::cout << "Change Item updated successfully.\n";
 }
 
+// Function: generateReport1
+// Description: Generates a report listing all change items for a product that are not done or cancelled.
+// ---------------------------------------------
 void generateReport1() {
     std::string productName;
     std::cout << "Enter the product name to generate Report #1: ";
@@ -354,6 +403,9 @@ void generateReport1() {
     }
 }
 
+// Function: generateReport2
+// Description: Generates a report listing customers/staff who need to be informed when a particular change has been implemented.
+// ---------------------------------------------
 void generateReport2() {
     std::string changeID;
     std::cout << "Enter the Change ID to generate Report #2: ";
@@ -366,6 +418,9 @@ void generateReport2() {
     }
 }
 
+// Function: displayHelp
+// Description: Displays help information.
+// ---------------------------------------------
 void displayHelp() {
     std::cout << "Help: This system is designed to manage and track issues, such as bugs and feature requests, within a software development environment.\n";
     std::cout << "At any point, type 'Help' to receive guidance on the available options and how to use them.\n";

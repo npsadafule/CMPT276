@@ -2,10 +2,10 @@
 CXX = g++
 
 # Define the target executable name
-TARGET = IssueTrackingSystem
+TARGET = main
 
 # Define the source files
-SRC = IssueTrackingSystem.cpp
+SRC = main.cpp
 
 # Define the object files
 OBJ = $(SRC:.cpp=.o)
