@@ -1,23 +1,30 @@
 # Define the compiler
 CXX = g++
 
-# Define the target executable name
-TARGET = main
+# Define the target executable names
+MAIN_TARGET = main
+TEST_TARGET = unitTest
 
 # Define the source files
-SRC = main.cpp
+MAIN_SRC = main.cpp
+TEST_SRC = unitTestMain.cpp
 
 # Define the object files
-OBJ = $(SRC:.cpp=.o)
+MAIN_OBJ = $(MAIN_SRC:.cpp=.o)
+TEST_OBJ = $(TEST_SRC:.cpp=.o)
 
 # Define compiler flags
 CXXFLAGS = -Wall -std=c++17
 
 # Default target
-all: $(TARGET)
+all: $(MAIN_TARGET) $(TEST_TARGET)
 
-# Rule to build the target executable
-$(TARGET): $(OBJ)
+# Rule to build the main target executable
+$(MAIN_TARGET): $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+# Rule to build the test target executable
+$(TEST_TARGET): $(TEST_OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Rule to build object files
@@ -26,8 +33,12 @@ $(TARGET): $(OBJ)
 
 # Rule to clean the build directory
 clean:
-	rm -f $(OBJ) $(TARGET)
+	rm -f $(MAIN_OBJ) $(TEST_OBJ) $(MAIN_TARGET) $(TEST_TARGET)
 
-# Rule to run the program
-run: $(TARGET)
-	./$(TARGET)
+# Rule to run the main program
+run_main: $(MAIN_TARGET)
+	./$(MAIN_TARGET)
+
+# Rule to run the test program
+run_test: $(TEST_TARGET)
+	./$(TEST_TARGET)
