@@ -3,37 +3,21 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include "Product.h"
+#include "ChangeRequest.h"
+#include "Report.h"
+#include "User.h"
 
 // ============================================
 // Module Name: main.cpp
 // ============================================
 
 // Version History:
-// Rev. 1 - 2024/06/29 - Neel Sadafule
+// Rev. 1 - 2024/07/01 - Neel Sadafule
 
 // ============================================
 // Data structures
 // ---------------------------------------------
-
-struct ChangeItem {
-    std::string description;
-    std::string changeID;
-    std::string state;
-    std::string anticipatedReleaseID;
-};
-
-struct Product {
-    std::string name;
-    std::map<std::string, ChangeItem> changeItems;
-};
-
-struct User {
-    std::string name;
-    std::string phoneNumber;
-    std::string email;
-    std::string role; // "Customer" or "Employee"
-    std::string department;
-};
 
 std::vector<Product> products;
 std::vector<User> users;
@@ -46,13 +30,6 @@ void handleProductMaintenance();
 void handleChangeRequestMaintenance();
 void handleChangeItemMaintenance();
 void handleReportGeneration();
-void createProduct();
-void createRelease();
-void createChangeRequest();
-void queryChangeItem();
-void updateChangeItem();
-void generateReport1();
-void generateReport2();
 void displayHelp();
 
 // Main Function
@@ -104,7 +81,14 @@ void handleProductMaintenance() {
         std::cin >> choice;
 
         switch (choice) {
-            case 1: createProduct(); break;
+            case 1: {
+                std::string productName;
+                std::cout << "Enter the Product Name (max 30 char): ";
+                std::cin.ignore();
+                std::getline(std::cin, productName);
+                createProduct(productName);
+                break;
+            }
             case 2: createRelease(); break;
             case 0: break;
             default: std::cout << "Invalid choice. Please try again.\n";
@@ -125,7 +109,43 @@ void handleChangeRequestMaintenance() {
         std::cin >> choice;
 
         switch (choice) {
-            case 1: createChangeRequest(); break;
+            case 1: {
+                std::string profileName, productName, changeID, description, anticipatedReleaseID;
+                std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
+                std::cin.ignore();
+                std::getline(std::cin, profileName);
+
+                if (profileName == "new") {
+                    User newUser;
+                    std::cout << "Enter the Customer Name (max 30 char): ";
+                    std::getline(std::cin, newUser.name);
+                    std::cout << "Enter the phone number of the customer (max 30 char in the format (DDD)DDD-DDDD): ";
+                    std::getline(std::cin, newUser.phoneNumber);
+                    std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
+                    std::getline(std::cin, newUser.email);
+                    std::cout << "Are you a Customer or an Employee? (C/E): ";
+                    std::getline(std::cin, newUser.role);
+                    if (newUser.role == "E") {
+                        std::cout << "Enter the name of the employee’s department (max 30 char): ";
+                        std::getline(std::cin, newUser.department);
+                    }
+                    users.push_back(newUser);
+                    profileName = newUser.name;
+                }
+
+                std::cout << "Select a product (must pre-exist): ";
+                std::getline(std::cin, productName);
+
+                std::cout << "Enter the Change ID (6 digit number): ";
+                std::getline(std::cin, changeID);
+                std::cout << "Enter the description for the product (max 150 char): ";
+                std::getline(std::cin, description);
+                std::cout << "Enter the Anticipated Release ID for the product (max 8 char): ";
+                std::getline(std::cin, anticipatedReleaseID);
+
+                createChangeRequest(profileName, productName, changeID, description, anticipatedReleaseID);
+                break;
+            }
             case 0: break;
             default: std::cout << "Invalid choice. Please try again.\n";
         }
@@ -146,8 +166,28 @@ void handleChangeItemMaintenance() {
         std::cin >> choice;
 
         switch (choice) {
-            case 1: queryChangeItem(); break;
-            case 2: updateChangeItem(); break;
+            case 1: {
+                std::string productName, changeID;
+                std::cout << "Select a product (must pre-exist): ";
+                std::cin.ignore();
+                std::getline(std::cin, productName);
+                std::cout << "Enter the Change ID: ";
+                std::getline(std::cin, changeID);
+                queryChangeItem(productName, changeID);
+                break;
+            }
+            case 2: {
+                std::string productName, changeID, newState;
+                std::cout << "Select a product (must pre-exist): ";
+                std::cin.ignore();
+                std::getline(std::cin, productName);
+                std::cout << "Enter the Change ID: ";
+                std::getline(std::cin, changeID);
+                std::cout << "Enter the new state: ";
+                std::getline(std::cin, newState);
+                updateChangeItem(productName, changeID, newState);
+                break;
+            }
             case 0: break;
             default: std::cout << "Invalid choice. Please try again.\n";
         }
@@ -168,254 +208,26 @@ void handleReportGeneration() {
         std::cin >> choice;
 
         switch (choice) {
-            case 1: generateReport1(); break;
-            case 2: generateReport2(); break;
+            case 1: {
+                std::string productName;
+                std::cout << "Enter the product name to generate Report #1: ";
+                std::cin.ignore();
+                std::getline(std::cin, productName);
+                generateReport1(productName);
+                break;
+            }
+            case 2: {
+                std::string changeID;
+                std::cout << "Enter the Change ID to generate Report #2: ";
+                std::cin.ignore();
+                std::getline(std::cin, changeID);
+                generateReport2(changeID);
+                break;
+            }
             case 0: break;
             default: std::cout << "Invalid choice. Please try again.\n";
         }
     } while (choice != 0);
-}
-
-// Function: createProduct
-// Description: Creates a new product after checking for uniqueness.
-// ---------------------------------------------
-void createProduct() {
-    Product newProduct;
-    std::cout << "Enter the Product Name (max 30 char): ";
-    std::cin.ignore();
-    std::getline(std::cin, newProduct.name);
-
-    // Check for uniqueness
-    for (const auto& product : products) {
-        if (product.name == newProduct.name) {
-            std::cout << "Product name already exists. Please try again.\n";
-            return;
-        }
-    }
-
-    products.push_back(newProduct);
-    std::cout << "Product " << newProduct.name << " added successfully.\n";
-}
-
-// Function: createRelease
-// Description: Creates a new release for an existing product.
-// ---------------------------------------------
-void createRelease() {
-    std::string productName;
-    std::cout << "Enter the Product Name (max 30 char, must pre-exist): ";
-    std::cin.ignore();
-    std::getline(std::cin, productName);
-
-    // Check if product exists
-    auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
-    if (it == products.end()) {
-        std::cout << "Product does not exist. Please try again.\n";
-        return;
-    }
-
-    std::string releaseID, releaseDate;
-    std::cout << "Enter the Release ID (max 30 char following your organization's format): ";
-    std::getline(std::cin, releaseID);
-    std::cout << "Enter the Release Date (YYYY-MM-DD): ";
-    std::getline(std::cin, releaseDate);
-
-    std::cout << "Release " << releaseID << " for Product " << productName << " added successfully.\n";
-}
-
-// Function: createChangeRequest
-// Description: Creates a new change request, creating a new user profile if necessary.
-// ---------------------------------------------
-void createChangeRequest() {
-    std::string profileName;
-    std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
-    std::cin.ignore();
-    std::getline(std::cin, profileName);
-
-    if (profileName == "new") {
-        User newUser;
-        std::cout << "Enter the Customer Name (max 30 char): ";
-        std::getline(std::cin, newUser.name);
-        std::cout << "Enter the phone number of the customer (max 30 char in the format (DDD)DDD-DDDD): ";
-        std::getline(std::cin, newUser.phoneNumber);
-        std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
-        std::getline(std::cin, newUser.email);
-        std::cout << "Are you a Customer or an Employee? (C/E): ";
-        std::getline(std::cin, newUser.role);
-        if (newUser.role == "E") {
-            std::cout << "Enter the name of the employee’s department (max 30 char): ";
-            std::getline(std::cin, newUser.department);
-        }
-        users.push_back(newUser);
-        profileName = newUser.name;
-    }
-
-    std::string productName;
-    std::cout << "Select a product (must pre-exist): ";
-    std::getline(std::cin, productName);
-
-    auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
-    if (it == products.end()) {
-        std::cout << "Product does not exist. Please try again.\n";
-        return;
-    }
-
-    std::string changeID, description, anticipatedReleaseID;
-    std::cout << "Enter the Change ID (6 digit number): ";
-    std::getline(std::cin, changeID);
-    std::cout << "Enter the description for the product (max 150 char): ";
-    std::getline(std::cin, description);
-    std::cout << "Enter the Anticipated Release ID for the product (max 8 char): ";
-    std::getline(std::cin, anticipatedReleaseID);
-
-    ChangeItem newItem = { description, changeID, "Reported", anticipatedReleaseID };
-    it->changeItems[changeID] = newItem;
-    std::cout << "Change Request ID is " << changeID << ". The Change Request was successfully added.\n";
-}
-
-// Function: queryChangeItem
-// Description: Queries a change item and displays its details.
-// ---------------------------------------------
-void queryChangeItem() {
-    std::string productName;
-    std::cout << "Select a product (must pre-exist): ";
-    std::cin.ignore();
-    std::getline(std::cin, productName);
-
-    auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
-    if (it == products.end()) {
-        std::cout << "Product does not exist. Please try again.\n";
-        return;
-    }
-
-    std::cout << "Select a Change Item of " << productName << "\n";
-    for (const auto& [id, item] : it->changeItems) {
-        std::cout << "ID: " << id << ", Description: " << item.description << ", State: " << item.state << ", Anticipated Release ID: " << item.anticipatedReleaseID << "\n";
-    }
-
-    std::string changeID;
-    std::cout << "Enter the Change ID: ";
-    std::getline(std::cin, changeID);
-
-    auto itemIt = it->changeItems.find(changeID);
-    if (itemIt == it->changeItems.end()) {
-        std::cout << "Change Item does not exist. Please try again.\n";
-        return;
-    }
-
-    const ChangeItem& item = itemIt->second;
-    std::cout << "Product: " << productName << "\nDescription: " << item.description << "\nChange ID: " << item.changeID << "\nState: " << item.state << "\nAnticipated Release ID: " << item.anticipatedReleaseID << "\n";
-}
-
-// Function: updateChangeItem
-// Description: Updates a change item.
-// ---------------------------------------------
-void updateChangeItem() {
-    std::string productName;
-    std::cout << "Select a product (must pre-exist): ";
-    std::cin.ignore();
-    std::getline(std::cin, productName);
-
-    auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
-    if (it == products.end()) {
-        std::cout << "Product does not exist. Please try again.\n";
-        return;
-    }
-
-    std::cout << "Select a Change Item of " << productName << "\n";
-    for (const auto& [id, item] : it->changeItems) {
-        std::cout << "ID: " << id << ", Description: " << item.description << ", State: " << item.state << ", Anticipated Release ID: " << item.anticipatedReleaseID << "\n";
-    }
-
-    std::string changeID;
-    std::cout << "Enter the Change ID: ";
-    std::getline(std::cin, changeID);
-
-    auto itemIt = it->changeItems.find(changeID);
-    if (itemIt == it->changeItems.end()) {
-        std::cout << "Change Item does not exist. Please try again.\n";
-        return;
-    }
-
-    ChangeItem& item = itemIt->second;
-    int updateChoice;
-    do {
-        std::cout << "Select what update to make to Change Item " << changeID << " of " << productName << ":\n";
-        std::cout << "1) Update Description\n";
-        std::cout << "2) Update State\n";
-        std::cout << "3) Update Anticipated Release ID\n";
-        std::cout << "0) Exit\n";
-        std::cout << "Choose an option [0-3] and press ENTER: ";
-        std::cin >> updateChoice;
-        std::cin.ignore();
-
-        switch (updateChoice) {
-            case 1:
-                std::cout << "Current description: " << item.description << "\nEnter a new description (max 150 char): ";
-                std::getline(std::cin, item.description);
-                break;
-            case 2:
-                std::cout << "Current State: " << item.state << "\nSelect the new state:\n";
-                std::cout << "1) Reported\n2) Assessed\n3) InProgress\n4) Done\n5) Cancelled\n";
-                int stateChoice;
-                std::cin >> stateChoice;
-                std::cin.ignore();
-                switch (stateChoice) {
-                    case 1: item.state = "Reported"; break;
-                    case 2: item.state = "Assessed"; break;
-                    case 3: item.state = "InProgress"; break;
-                    case 4: item.state = "Done"; break;
-                    case 5: item.state = "Cancelled"; break;
-                    default: std::cout << "Invalid choice. No change made.\n";
-                }
-                break;
-            case 3:
-                std::cout << "Current Anticipated Release ID: " << item.anticipatedReleaseID << "\nEnter a new Anticipated Release ID (max 8 char): ";
-                std::getline(std::cin, item.anticipatedReleaseID);
-                break;
-            case 0: break;
-            default: std::cout << "Invalid choice. Please try again.\n";
-        }
-    } while (updateChoice != 0);
-
-    std::cout << "Change Item updated successfully.\n";
-}
-
-// Function: generateReport1
-// Description: Generates a report listing all change items for a product that are not done or cancelled.
-// ---------------------------------------------
-void generateReport1() {
-    std::string productName;
-    std::cout << "Enter the product name to generate Report #1: ";
-    std::cin.ignore();
-    std::getline(std::cin, productName);
-
-    auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
-    if (it == products.end()) {
-        std::cout << "Product does not exist. Please try again.\n";
-        return;
-    }
-
-    std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
-    for (const auto& [id, item] : it->changeItems) {
-        if (item.state != "Done" && item.state != "Cancelled") {
-            std::cout << "ID: " << id << ", Description: " << item.description << ", State: " << item.state << ", Anticipated Release ID: " << item.anticipatedReleaseID << "\n";
-        }
-    }
-}
-
-// Function: generateReport2
-// Description: Generates a report listing customers/staff who need to be informed when a particular change has been implemented.
-// ---------------------------------------------
-void generateReport2() {
-    std::string changeID;
-    std::cout << "Enter the Change ID to generate Report #2: ";
-    std::cin.ignore();
-    std::getline(std::cin, changeID);
-
-    std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
-    for (const auto& user : users) {
-        std::cout << "Name: " << user.name << ", Email: " << user.email << "\n";
-    }
 }
 
 // Function: displayHelp

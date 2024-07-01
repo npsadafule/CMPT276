@@ -6,8 +6,8 @@ MAIN_TARGET = main
 TEST_TARGET = unitTest
 
 # Define the source files
-MAIN_SRC = main.cpp
-TEST_SRC = unitTestMain.cpp
+MAIN_SRC = main.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp
+TEST_SRC = unitTestMain.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp
 
 # Define the object files
 MAIN_OBJ = $(MAIN_SRC:.cpp=.o)
