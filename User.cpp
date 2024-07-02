@@ -1,14 +1,14 @@
-#include "User.h"
-#include <vector>
-
 // ============================================
 // Module Name: User.cpp
 // ============================================
-
 // Version History:
-// Rev. 1 - 2024/06/29 - Neel Sadafule
+// Rev. 1 - 2024/07/01 - Neel Sadafule
+// ============================================
 
-// Global variable definitions
+#include "User.h"
+#include <vector>
+
+// Global variable definition
 extern std::vector<User> users;
 
-// Implement any necessary functions for user management if needed
+// No function implementations needed as per current requirements

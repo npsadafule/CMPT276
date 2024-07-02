@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: Product.h
+// ============================================
+// Version History:
+// Rev. 1 - 2024/07/01 - Neel Sadafule
+// ============================================
+
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
@@ -5,41 +12,36 @@
 #include <map>
 
 // ============================================
-// Module Name: Product.h
-// ============================================
-
-// Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
-
-// ============================================
 // Data structures
-// ---------------------------------------------
-
+// ============================================
 struct ChangeItem {
-    std::string description;        // Description of the change item
-    std::string changeID;           // Unique identifier for the change item
-    std::string state;              // Current state of the change item
-    std::string anticipatedReleaseID; // Anticipated release ID for the change item
+    std::string description;
+    std::string changeID;
+    std::string state;
+    std::string anticipatedReleaseID;
 };
 
 struct Product {
-    std::string name;                       // Name of the product
-    std::map<std::string, ChangeItem> changeItems; // Map of change items associated with the product
+    std::string name;
+    std::map<std::string, ChangeItem> changeItems;
 };
 
+// ============================================
 // Function Declarations
 // ============================================
 
-/**
- * @brief Creates a new product.
- * 
- * @param name Name of the product to be created.
- */
+// ---------------------------------------------
+// Function: createProduct
+// Description: Creates a new product and adds it to the global product list.
+// Parameters:
+// - name: The name of the product (in).
+// ---------------------------------------------
 void createProduct(const std::string& name);
 
-/**
- * @brief Creates a new release for an existing product.
- */
+// ---------------------------------------------
+// Function: createRelease
+// Description: Creates a new release for an existing product.
+// ---------------------------------------------
 void createRelease();
 
 #endif // PRODUCT_H

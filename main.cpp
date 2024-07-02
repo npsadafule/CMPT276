@@ -1,239 +1,82 @@
+// ============================================
+// Module Name: main.cpp
+// ============================================
+// Version History:
+// Rev. 1 - 2024/07/01 - Neel Sadafule
+// ============================================
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <map>
-#include <algorithm>
 #include "Product.h"
 #include "ChangeRequest.h"
 #include "Report.h"
 #include "User.h"
+#include "StartupShutdown.h"
+#include "UserInterface.h"
 
-// ============================================
-// Module Name: main.cpp
-// ============================================
-
-// Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
-
-// ============================================
-// Data structures
-// ---------------------------------------------
-
+// Global variables
 std::vector<Product> products;
 std::vector<User> users;
 std::map<std::string, std::string> changeRequests;
 
-// Function Declarations
-// ============================================
-void displayMainMenu();
-void handleProductMaintenance();
-void handleChangeRequestMaintenance();
-void handleChangeItemMaintenance();
-void handleReportGeneration();
-void displayHelp();
-
 // Main Function
 // ============================================
+// Function: main
+// Description: Entry point of the application.
+// ---------------------------------------------
 int main() {
-    displayMainMenu();
+    start();
+    startMainMenu();
+    shutdown();
     return 0;
 }
 
-// Function Implementations
-// ============================================
-// Function: displayMainMenu
-// Description: Displays the main menu and handles user input.
+
+
+/* 
+Coding Conventions:
+
+1. Module and File Organization:
+    - Each .cpp file starts with a comment stating the file's name and a revision history.
+    - Use bold dividers for major sections: // ============================================
+
+2. Function and Parameter Commenting:
+    - Each function must have a comment describing its purpose, parameters, and any exceptions it might throw.
+    - Use a thin horizontal dividing line before function prototypes in header files.
+
+3. Naming Conventions:
+    - Class names: CamelCase with the first letter capitalized.
+    - Function names: camelCase with the first letter lowercase.
+    - Constants: UPPER_CASE.
+    - Variables: camelCase.
+
+4. Indentation and Spacing:
+    - Use 4 spaces for indentation.
+    - Opening braces `{` go on the same line as the function name or control statement.
+    - Place a space after commas and around operators.
+
+5. Version History:
+    - The revision history should be in chronological order, with the latest changes at the top.
+
+Example Function Comment:
+
 // ---------------------------------------------
-void displayMainMenu() {
-    int choice;
-    do {
-        std::cout << "\n====== Main Menu ======\n";
-        std::cout << "1) Product Maintenance\n";
-        std::cout << "2) Change Request Maintenance\n";
-        std::cout << "3) Change Item Maintenance\n";
-        std::cout << "4) Report Generation\n";
-        std::cout << "0) Exit\n";
-        std::cout << "Enter the number you want [0-4]: ";
-        std::cin >> choice;
-
-        switch (choice) {
-            case 1: handleProductMaintenance(); break;
-            case 2: handleChangeRequestMaintenance(); break;
-            case 3: handleChangeItemMaintenance(); break;
-            case 4: handleReportGeneration(); break;
-            case 0: std::cout << "Thank you for using the Issue Tracking System.\n"; break;
-            default: std::cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 0);
-}
-
-// Function: handleProductMaintenance
-// Description: Handles product maintenance options.
+// Function: exampleFunction
+// Description: This function serves as an example.
+// Parameters:
+// - param1: Description of param1 (in).
+// - param2: Description of param2 (out).
+// Returns: Description of the return value.
+// Throws: Description of any exceptions thrown.
 // ---------------------------------------------
-void handleProductMaintenance() {
-    int choice;
-    do {
-        std::cout << "\n====== Product Maintenance ======\n";
-        std::cout << "1) Create a Product\n";
-        std::cout << "2) Create a Release of a Product\n";
-        std::cout << "0) Return to Main Menu\n";
-        std::cout << "Choose an option [0-2] and press ENTER: ";
-        std::cin >> choice;
 
-        switch (choice) {
-            case 1: {
-                std::string productName;
-                std::cout << "Enter the Product Name (max 30 char): ";
-                std::cin.ignore();
-                std::getline(std::cin, productName);
-                createProduct(productName);
-                break;
-            }
-            case 2: createRelease(); break;
-            case 0: break;
-            default: std::cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 0);
-}
+6. Error Handling:
+    - Always check the return values of functions and handle errors appropriately.
+    - Use exceptions where appropriate, but not for control flow.
 
-// Function: handleChangeRequestMaintenance
-// Description: Handles change request maintenance options.
-// ---------------------------------------------
-void handleChangeRequestMaintenance() {
-    int choice;
-    do {
-        std::cout << "\n====== Change Request Maintenance ======\n";
-        std::cout << "1) Add a new change request\n";
-        std::cout << "0) Go back to Main Menu\n";
-        std::cout << "Choose an option [0-1] and press ENTER: ";
-        std::cin >> choice;
-
-        switch (choice) {
-            case 1: {
-                std::string profileName, productName, changeID, description, anticipatedReleaseID;
-                std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
-                std::cin.ignore();
-                std::getline(std::cin, profileName);
-
-                if (profileName == "new") {
-                    User newUser;
-                    std::cout << "Enter the Customer Name (max 30 char): ";
-                    std::getline(std::cin, newUser.name);
-                    std::cout << "Enter the phone number of the customer (max 30 char in the format (DDD)DDD-DDDD): ";
-                    std::getline(std::cin, newUser.phoneNumber);
-                    std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
-                    std::getline(std::cin, newUser.email);
-                    std::cout << "Are you a Customer or an Employee? (C/E): ";
-                    std::getline(std::cin, newUser.role);
-                    if (newUser.role == "E") {
-                        std::cout << "Enter the name of the employee’s department (max 30 char): ";
-                        std::getline(std::cin, newUser.department);
-                    }
-                    users.push_back(newUser);
-                    profileName = newUser.name;
-                }
-
-                std::cout << "Select a product (must pre-exist): ";
-                std::getline(std::cin, productName);
-
-                std::cout << "Enter the Change ID (6 digit number): ";
-                std::getline(std::cin, changeID);
-                std::cout << "Enter the description for the product (max 150 char): ";
-                std::getline(std::cin, description);
-                std::cout << "Enter the Anticipated Release ID for the product (max 8 char): ";
-                std::getline(std::cin, anticipatedReleaseID);
-
-                createChangeRequest(profileName, productName, changeID, description, anticipatedReleaseID);
-                break;
-            }
-            case 0: break;
-            default: std::cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 0);
-}
-
-// Function: handleChangeItemMaintenance
-// Description: Handles change item maintenance options.
-// ---------------------------------------------
-void handleChangeItemMaintenance() {
-    int choice;
-    do {
-        std::cout << "\n====== Change Item Maintenance ======\n";
-        std::cout << "1) Query Change Item to Screen\n";
-        std::cout << "2) Update/Assess Change Item\n";
-        std::cout << "0) Return to Main Menu\n";
-        std::cout << "Choose an option [0-2] and press ENTER: ";
-        std::cin >> choice;
-
-        switch (choice) {
-            case 1: {
-                std::string productName, changeID;
-                std::cout << "Select a product (must pre-exist): ";
-                std::cin.ignore();
-                std::getline(std::cin, productName);
-                std::cout << "Enter the Change ID: ";
-                std::getline(std::cin, changeID);
-                queryChangeItem(productName, changeID);
-                break;
-            }
-            case 2: {
-                std::string productName, changeID, newState;
-                std::cout << "Select a product (must pre-exist): ";
-                std::cin.ignore();
-                std::getline(std::cin, productName);
-                std::cout << "Enter the Change ID: ";
-                std::getline(std::cin, changeID);
-                std::cout << "Enter the new state: ";
-                std::getline(std::cin, newState);
-                updateChangeItem(productName, changeID, newState);
-                break;
-            }
-            case 0: break;
-            default: std::cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 0);
-}
-
-// Function: handleReportGeneration
-// Description: Handles report generation options.
-// ---------------------------------------------
-void handleReportGeneration() {
-    int choice;
-    do {
-        std::cout << "\n====== Report Generation ======\n";
-        std::cout << "1) Generate Report #1\n";
-        std::cout << "2) Generate Report #2\n";
-        std::cout << "0) Return to Main Menu\n";
-        std::cout << "Choose an option [0-2] and press ENTER: ";
-        std::cin >> choice;
-
-        switch (choice) {
-            case 1: {
-                std::string productName;
-                std::cout << "Enter the product name to generate Report #1: ";
-                std::cin.ignore();
-                std::getline(std::cin, productName);
-                generateReport1(productName);
-                break;
-            }
-            case 2: {
-                std::string changeID;
-                std::cout << "Enter the Change ID to generate Report #2: ";
-                std::cin.ignore();
-                std::getline(std::cin, changeID);
-                generateReport2(changeID);
-                break;
-            }
-            case 0: break;
-            default: std::cout << "Invalid choice. Please try again.\n";
-        }
-    } while (choice != 0);
-}
-
-// Function: displayHelp
-// Description: Displays help information.
-// ---------------------------------------------
-void displayHelp() {
-    std::cout << "Help: This system is designed to manage and track issues, such as bugs and feature requests, within a software development environment.\n";
-    std::cout << "At any point, type 'Help' to receive guidance on the available options and how to use them.\n";
-}
+7. Miscellaneous:
+    - Do not leave commented-out code blocks in the final submission.
+    - Keep lines under 80 characters where possible.
+*/

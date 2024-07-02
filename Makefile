@@ -1,30 +1,30 @@
 # Define the compiler
 CXX = g++
 
-# Define the target executable names
-MAIN_TARGET = main
-TEST_TARGET = unitTest
-
-# Define the source files
-MAIN_SRC = main.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp
-TEST_SRC = unitTestMain.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp
-
-# Define the object files
-MAIN_OBJ = $(MAIN_SRC:.cpp=.o)
-TEST_OBJ = $(TEST_SRC:.cpp=.o)
-
-# Define compiler flags
+# Define the compiler flags
 CXXFLAGS = -Wall -std=c++17
 
-# Default target
-all: $(MAIN_TARGET) $(TEST_TARGET)
+# Define the target executables
+TARGET_MAIN = main
+TARGET_TEST = unitTest
 
-# Rule to build the main target executable
-$(MAIN_TARGET): $(MAIN_OBJ)
+# Define the source files
+SRC_MAIN = main.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp
+SRC_TEST = unitTestMain.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp
+
+# Define the object files
+OBJ_MAIN = $(SRC_MAIN:.cpp=.o)
+OBJ_TEST = $(SRC_TEST:.cpp=.o)
+
+# Default target
+all: $(TARGET_MAIN) $(TARGET_TEST)
+
+# Rule to build the main executable
+$(TARGET_MAIN): $(OBJ_MAIN)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-# Rule to build the test target executable
-$(TEST_TARGET): $(TEST_OBJ)
+# Rule to build the test executable
+$(TARGET_TEST): $(OBJ_TEST)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Rule to build object files
@@ -33,12 +33,12 @@ $(TEST_TARGET): $(TEST_OBJ)
 
 # Rule to clean the build directory
 clean:
-	rm -f $(MAIN_OBJ) $(TEST_OBJ) $(MAIN_TARGET) $(TEST_TARGET)
+	rm -f $(OBJ_MAIN) $(OBJ_TEST) $(TARGET_MAIN) $(TARGET_TEST)
 
 # Rule to run the main program
-run_main: $(MAIN_TARGET)
-	./$(MAIN_TARGET)
+run: $(TARGET_MAIN)
+	./$(TARGET_MAIN)
 
 # Rule to run the test program
-run_test: $(TEST_TARGET)
-	./$(TEST_TARGET)
+run_test: $(TARGET_TEST)
+	./$(TARGET_TEST)
