@@ -33,7 +33,7 @@ $(TARGET_TEST): $(OBJ_TEST)
 
 # Rule to clean the build directory
 clean:
-	rm -f $(OBJ_MAIN) $(OBJ_TEST) $(TARGET_MAIN) $(TARGET_TEST)
+	rm -f $(OBJ_MAIN) $(OBJ_TEST) $(TARGET_MAIN) $(TARGET_TEST) 
 
 # Rule to run the main program
 run: $(TARGET_MAIN)
