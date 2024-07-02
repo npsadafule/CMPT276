@@ -13,7 +13,7 @@
 // ============================================
 
 // Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
+// Rev. 1 - 2024/07/01 - Group 7
 
 // ============================================
 // Data structures
@@ -23,9 +23,12 @@ std::vector<Product> products;
 std::vector<User> users;
 std::map<std::string, std::string> changeRequests;
 
+
 // Function Declarations
 // ============================================
-void displayMainMenu();
+void StartUP();
+void ShutDown();
+void MainMenu();
 void handleProductMaintenance();
 void handleChangeRequestMaintenance();
 void handleChangeItemMaintenance();
@@ -35,16 +38,38 @@ void displayHelp();
 // Main Function
 // ============================================
 int main() {
-    displayMainMenu();
+    StartUP();
+    MainMenu();  // Main application loop
+    ShutDown();
     return 0;
 }
 
 // Function Implementations
 // ============================================
-// Function: displayMainMenu
+// Function: StartIp
 // Description: Displays the main menu and handles user input.
 // ---------------------------------------------
-void displayMainMenu() {
+void StartUP(){
+    std::cout << "Initializing UI...\n";
+    //plus initialise the files
+}
+
+// Function Implementations
+// ============================================
+// Function: ShutDown
+// Description: Displays the main menu and handles user input.
+// ---------------------------------------------
+void ShutDown(){
+    std::cout << "Closing...\n";
+    //plus Closing the files
+}
+
+// Function Implementations
+// ============================================
+// Function: MainMenu
+// Description: Displays the main menu and handles user input.
+// ---------------------------------------------
+void MainMenu() {
     int choice;
     do {
         std::cout << "\n====== Main Menu ======\n";
