@@ -1,10 +1,3 @@
-// ============================================
-// Module Name: Product.h
-// ============================================
-// Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
-// ============================================
-
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
@@ -24,25 +17,18 @@ struct ChangeItem {
 struct Product {
     std::string name;
     std::map<std::string, ChangeItem> changeItems;
-    std::map<std::string, std::string> releases; // Added releases map
+    std::map<std::string, std::string> releases;
 };
 
 // ============================================
 // Function Declarations
 // ============================================
-
-// ---------------------------------------------------------
-// Function: createProduct
-void createProduct(
-    const std::string& name    // in
-);
-
-// ---------------------------------------------------------
-// Function: createRelease
-void createRelease(
-    const std::string& productName,    // in
-    const std::string& releaseID,      // in
-    const std::string& releaseDate     // in
-);
+void openProductFile();
+void closeProductFile();
+void writeProduct(const Product& product);
+void seekToBeginningOfProductFile();
+bool getNextProduct(Product& product);
+void createProduct(const std::string& name);
+void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate);
 
 #endif // PRODUCT_H

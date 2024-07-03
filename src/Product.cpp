@@ -1,60 +1,81 @@
-// ============================================
-// Module Name: Product.cpp
-// ============================================
-// Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
-// ============================================
-
 #include "Product.h"
 #include <iostream>
-#include <algorithm>
-#include <vector>
+#include <fstream>
 
-// Global variable definition
-extern std::vector<Product> products;
+// File handling functions
+std::fstream productFile;
 
 // ============================================
 // Function Implementations
 // ============================================
 
 // ---------------------------------------------------------
-// Function: createProduct
-void createProduct(
-    const std::string& name    // in
-) {
-    // Description:
-    // Creates a new product and adds it to the global product list. It checks if a product with the
-    // same name already exists and displays an error message if it does.
-    Product newProduct;
-    newProduct.name = name;
-
-    for (const auto& product : products) {
-        if (product.name == newProduct.name) {
-            std::cerr << "Product name already exists. Please try again.\n";
-            return;
-        }
+// Function: openProductFile
+void openProductFile() {
+    productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary);
+    if (!productFile.is_open()) {
+        std::cerr << "Failed to open products.dat file.\n";
     }
+}
 
-    products.push_back(newProduct);
-    std::cout << "Product " << newProduct.name << " added successfully.\n";
+// ---------------------------------------------------------
+// Function: closeProductFile
+void closeProductFile() {
+    if (productFile.is_open()) {
+        productFile.close();
+    }
+}
+
+// ---------------------------------------------------------
+// Function: writeProduct
+void writeProduct(const Product& product) {
+    if (!productFile.is_open()) return;
+    productFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
+}
+
+// ---------------------------------------------------------
+// Function: seekToBeginningOfProductFile
+void seekToBeginningOfProductFile() {
+    if (!productFile.is_open()) return;
+    productFile.clear();
+    productFile.seekg(0, std::ios::beg);
+}
+
+// ---------------------------------------------------------
+// Function: getNextProduct
+bool getNextProduct(Product& product) {
+    if (!productFile.is_open()) return false;
+    productFile.read(reinterpret_cast<char*>(&product), sizeof(Product));
+    return !productFile.fail();
+}
+
+// ---------------------------------------------------------
+// Function: createProduct
+void createProduct(const std::string& name) {
+    Product product = {name};
+    openProductFile();
+    seekToBeginningOfProductFile();
+    writeProduct(product);
+    closeProductFile();
+    std::cout << "Product " << name << " added successfully.\n";
 }
 
 // ---------------------------------------------------------
 // Function: createRelease
-void createRelease(
-    const std::string& productName,    // in
-    const std::string& releaseID,      // in
-    const std::string& releaseDate     // in
-) {
-    // Description:
-    // Creates a new release for an existing product. It checks if the product exists and adds the
-    // release to the product's list of releases. If the product does not exist, it displays an error message.
-    auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
-    if (it == products.end()) {
-        std::cerr << "Product does not exist. Please try again.\n";
-        return;
+void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate) {
+    Product product;
+    std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
+    openProductFile();
+    seekToBeginningOfProductFile();
+    while (getNextProduct(product)) {
+        if (product.name == productName) {
+            product.releases[releaseID] = releaseDate;
+        }
+        tempFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
     }
-
-    it->releases[releaseID] = releaseDate;
+    closeProductFile();
+    tempFile.close();
+    remove("products.dat");
+    rename("temp.dat", "products.dat");
     std::cout << "Release " << releaseID << " for Product " << productName << " added successfully.\n";
 }

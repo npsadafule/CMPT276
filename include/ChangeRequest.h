@@ -1,42 +1,30 @@
-// ============================================
-// Module Name: ChangeRequest.h
-// ============================================
-// Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
-// ============================================
-
 #ifndef CHANGEREQUEST_H
 #define CHANGEREQUEST_H
 
 #include <string>
 
 // ============================================
+// Data structures
+// ============================================
+struct ChangeRequest {
+    std::string profileName;
+    std::string productName;
+    std::string changeID;
+    std::string description;
+    std::string state;
+    std::string anticipatedReleaseID;
+};
+
+// ============================================
 // Function Declarations
 // ============================================
-
-// ---------------------------------------------------------
-// Function: createChangeRequest
-void createChangeRequest(
-    const std::string& profileName,        // in
-    const std::string& productName,        // in
-    const std::string& changeID,           // in
-    const std::string& description,        // in
-    const std::string& anticipatedReleaseID // in
-);
-
-// ---------------------------------------------------------
-// Function: queryChangeItem
-void queryChangeItem(
-    const std::string& productName,    // in
-    const std::string& changeID        // in
-);
-
-// ---------------------------------------------------------
-// Function: updateChangeItem
-void updateChangeItem(
-    const std::string& productName,    // in
-    const std::string& changeID,       // in
-    const std::string& newState        // in
-);
+void openChangeRequestFile();
+void closeChangeRequestFile();
+void writeChangeRequest(const ChangeRequest& changeRequest);
+void seekToBeginningOfChangeRequestFile();
+bool getNextChangeRequest(ChangeRequest& changeRequest);
+void createChangeRequest(const std::string& profileName, const std::string& productName, const std::string& changeID, const std::string& description, const std::string& anticipatedReleaseID);
+void queryChangeRequest(const std::string& productName, const std::string& changeID);
+void updateChangeRequest(const std::string& productName, const std::string& changeID, const std::string& newState);
 
 #endif // CHANGEREQUEST_H

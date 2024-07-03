@@ -1,9 +1,3 @@
-// ============================================
-// Module Name: UserInterface.cpp
-// Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
-// ============================================
-
 #include "UserInterface.h"
 #include "Product.h"
 #include "ChangeRequest.h"
@@ -21,7 +15,7 @@
 // Global variables
 extern std::vector<Product> products;
 extern std::vector<User> users;
-extern std::map<std::string, std::string> changeRequests;
+extern std::map<std::string, ChangeRequest> changeRequests;
 
 // Constants for data lengths
 const int PRODUCT_NAME_LENGTH = 30;
@@ -45,8 +39,6 @@ void start();
 // ---------------------------------------------------------
 // Function: activateUI
 void activateUI() {
-    // Description:
-    // Activates the user interface by displaying the main menu and handling user choices.
     int choice;
     do {
         system("clear");
@@ -109,8 +101,6 @@ void activateUI() {
 // ---------------------------------------------------------
 // Function: shutdown
 void shutdown() {
-    // Description:
-    // Shuts down the system by writing the current state of the system to an output file.
     std::ofstream outputFile("output.txt", std::ios::binary);
     if (!outputFile.is_open()) {
         std::cerr << "Error opening output file.\n";

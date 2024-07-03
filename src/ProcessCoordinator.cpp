@@ -1,10 +1,3 @@
-// ============================================
-// Module Name: ProcessCoordinator.cpp
-// ============================================
-// Version History:
-// Rev. 1 - 2024/07/01 - Group 7
-// ============================================
-
 #include "ProcessCoordinator.h"
 #include "Product.h"
 #include "ChangeRequest.h"
@@ -12,25 +5,13 @@
 #include "User.h"
 #include "UserInterface.h"
 #include <iostream>
-#include <vector>
-#include <map>
-
-// Global variables
-extern std::vector<Product> products;
-extern std::vector<User> users;
-extern std::map<std::string, std::string> changeRequests;
 
 // Function Implementations
 // ============================================
 
 // ---------------------------------------------------------
 // Function: handleProductMaintenance
-void handleProductMaintenance(
-    int choice    // in
-) {
-    // Description:
-    // Handles product maintenance options based on the user's menu choice. It allows the user to
-    // create a new product or a release for an existing product.
+void handleProductMaintenance(int choice) {
     char X;
     switch (choice) {
         case 1: {
@@ -87,12 +68,8 @@ void handleProductMaintenance(
 
 // ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
-void handleChangeRequestMaintenance(
-    int choice    // in
-) {
-    // Description:
-    // Handles change request maintenance options based on the user's menu choice. It allows the user to
-    // add a new change request.
+void handleChangeRequestMaintenance(int choice) {
+    std::vector<User> users; // Declare the 'users' variable
     switch (choice) {
         case 1: {
             std::string profileName, productName, changeID, description, anticipatedReleaseID;
@@ -141,12 +118,7 @@ void handleChangeRequestMaintenance(
 
 // ---------------------------------------------------------
 // Function: handleChangeItemMaintenance
-void handleChangeItemMaintenance(
-    int choice    // in
-) {
-    // Description:
-    // Handles change item maintenance options based on the user's menu choice. It allows the user to
-    // query or update a change item.
+void handleChangeItemMaintenance(int choice) {
     switch (choice) {
         case 1: {
             std::string productName, changeID;
@@ -155,7 +127,7 @@ void handleChangeItemMaintenance(
             std::getline(std::cin, productName);
             std::cout << "Enter the Change ID: ";
             std::getline(std::cin, changeID);
-            queryChangeItem(productName, changeID);
+            queryChangeRequest(productName, changeID);
             break;
         }
         case 2: {
@@ -167,7 +139,7 @@ void handleChangeItemMaintenance(
             std::getline(std::cin, changeID);
             std::cout << "Enter the new state: ";
             std::getline(std::cin, newState);
-            updateChangeItem(productName, changeID, newState);
+            updateChangeRequest(productName, changeID, newState);
             break;
         }
         case 0: 
@@ -180,12 +152,7 @@ void handleChangeItemMaintenance(
 
 // ---------------------------------------------------------
 // Function: handleReportGeneration
-void handleReportGeneration(
-    int choice    // in
-) {
-    // Description:
-    // Handles report generation options based on the user's menu choice. It allows the user to
-    // generate reports based on change items or change requests.
+void handleReportGeneration(int choice) {
     switch (choice) {
         case 1: {
             std::string productName;
@@ -214,8 +181,6 @@ void handleReportGeneration(
 // ---------------------------------------------------------
 // Function: displayHelp
 void displayHelp() {
-    // Description:
-    // Displays help information about the system and how to use it.
     std::cout << "Help: This system is designed to manage and track issues, such as bugs and feature requests, within a software development environment.\n";
     std::cout << "At any point, type 'Help' to receive guidance on the available options and how to use them.\n";
 }
