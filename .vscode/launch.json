@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/riyanroy/Desktop/CMPT 276 A3/Code/CMPT276",
+      "program": "/Users/riyanroy/Desktop/CMPT 276 A3/Code/CMPT276/build/Debug/outDebug"
+    }
+  ]
+}

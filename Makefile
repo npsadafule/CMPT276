@@ -9,8 +9,8 @@ TARGET_MAIN = main
 TARGET_TEST = unitTest
 
 # Define the source files
-SRC_MAIN = main.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp
-SRC_TEST = unitTestMain.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp
+SRC_MAIN = main.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp ProcessCoordinator.cpp
+SRC_TEST = unitTestMain.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp ProcessCoordinator.cpp
 
 # Define the object files
 OBJ_MAIN = $(SRC_MAIN:.cpp=.o)

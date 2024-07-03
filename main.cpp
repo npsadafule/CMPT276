@@ -15,6 +15,7 @@
 #include "User.h"
 #include "StartupShutdown.h"
 #include "UserInterface.h"
+#include "ProcessCoordinator.h"
 
 // Global variables
 std::vector<Product> products;
@@ -28,12 +29,9 @@ std::map<std::string, std::string> changeRequests;
 // ---------------------------------------------
 int main() {
     start();
-    startMainMenu();
-    shutdown();
+    activateUI();
     return 0;
 }
-
-
 
 /* 
 Coding Conventions:

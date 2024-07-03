@@ -1,12 +1,12 @@
 // ============================================
-// Module Name: UserInterface.h
+// Module Name: ProcessCoordinator.h
 // ============================================
 // Version History:
-// Rev. 1 - 2024/07/01 - Neel Sadafule
+// Rev. 1 - 2024/07/01 - Group 7
 // ============================================
 
-#ifndef USERINTERFACE_H
-#define USERINTERFACE_H
+#ifndef PROCESSCOORDINATOR_H
+#define PROCESSCOORDINATOR_H
 
 // ============================================
 // Function Declarations
@@ -16,8 +16,11 @@
 // Function: startMainMenu
 // Description: Starts the main menu loop.
 // ---------------------------------------------
-void start();
-void activateUI();
-void shutdown();
 
-#endif // USERINTERFACE_H
+void handleProductMaintenance(int choice);
+void handleChangeRequestMaintenance(int choice);
+void handleChangeItemMaintenance(int choice);
+void handleReportGeneration(int choice);
+void displayHelp();
+
+#endif
