@@ -31,22 +31,18 @@ struct Product {
 // Function Declarations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: createProduct
-// Description: Creates a new product and adds it to the global product list.
-// Parameters:
-// - name: The name of the product (in).
-// ---------------------------------------------
-void createProduct(const std::string& name);
+void createProduct(
+    const std::string& name    // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: createRelease
-// Description: Creates a new release for an existing product.
-// Parameters:
-// - productName: The name of the product (in).
-// - releaseID: The ID of the release (in).
-// - releaseDate: The release date (in).
-// ---------------------------------------------
-void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate);
+void createRelease(
+    const std::string& productName,    // in
+    const std::string& releaseID,      // in
+    const std::string& releaseDate     // in
+);
 
 #endif // PRODUCT_H

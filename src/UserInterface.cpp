@@ -38,17 +38,15 @@ const int DEPARTMENT_LENGTH = 30;
 // Function Declarations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: start
-// Description: Initializes the system and opens necessary files.
-// ---------------------------------------------
 void start();
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: activateUI
-// Description: Activates the user interface.
-// ---------------------------------------------
 void activateUI() {
+    // Description:
+    // Activates the user interface by displaying the main menu and handling user choices.
     int choice;
     do {
         system("clear");
@@ -108,11 +106,11 @@ void activateUI() {
     } while (choice != 0);
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: shutdown
-// Description: Shuts down the system and closes any open files.
-// ---------------------------------------------
 void shutdown() {
+    // Description:
+    // Shuts down the system by writing the current state of the system to an output file.
     std::ofstream outputFile("output.txt", std::ios::binary);
     if (!outputFile.is_open()) {
         std::cerr << "Error opening output file.\n";

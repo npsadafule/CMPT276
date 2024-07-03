@@ -23,27 +23,28 @@ extern std::map<std::string, std::string> changeRequests;
 // Function Implementations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleProductMaintenance
-// Description: Handles product maintenance options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleProductMaintenance(int choice) {
+void handleProductMaintenance(
+    int choice    // in
+) {
+    // Description:
+    // Handles product maintenance options based on the user's menu choice. It allows the user to
+    // create a new product or a release for an existing product.
+    char X;
     switch (choice) {
-        char X;
         case 1: {
             std::string productName;
             std::cout << "\nEnter the Product Name (max 30 char): \n \n";
             std::cin.ignore();
             std::getline(std::cin, productName);
-            std::cout << "\nAre you sure you want to add the product ProductX (Y/N)? \n \n";
+            std::cout << "\nAre you sure you want to add the product " << productName << " (Y/N)? \n \n";
             std::cin >> X;
-            if(X == 'Y'){
+            if (X == 'Y') {
                 createProduct(productName);
                 std::cout << "\nDo you wish to add another product (Y/N)? \n \n";
                 std::cin >> X;
-                if(X == 'Y'){
+                if (X == 'Y') {
                     handleProductMaintenance(1);
                 } else {
                     break;
@@ -61,13 +62,13 @@ void handleProductMaintenance(int choice) {
             std::getline(std::cin, releaseID);
             std::cout << "\nEnter the Release Date (YYYY-MM-DD): \n \n";
             std::getline(std::cin, releaseDate);
-            std::cout << "\nAre you sure you want to add the release" << releaseID << "for Product " << productName << " (Y/N)? \n \n";
+            std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
             std::cin >> X;
-            if(X == 'Y'){
+            if (X == 'Y') {
                 createRelease(productName, releaseID, releaseDate);
                 std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
                 std::cin >> X;
-                if(X == 'Y'){
+                if (X == 'Y') {
                     handleProductMaintenance(2);
                 } else {
                     break;
@@ -84,13 +85,14 @@ void handleProductMaintenance(int choice) {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
-// Description: Handles change request maintenance options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleChangeRequestMaintenance(int choice) {
+void handleChangeRequestMaintenance(
+    int choice    // in
+) {
+    // Description:
+    // Handles change request maintenance options based on the user's menu choice. It allows the user to
+    // add a new change request.
     switch (choice) {
         case 1: {
             std::string profileName, productName, changeID, description, anticipatedReleaseID;
@@ -137,13 +139,14 @@ void handleChangeRequestMaintenance(int choice) {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleChangeItemMaintenance
-// Description: Handles change item maintenance options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleChangeItemMaintenance(int choice) {
+void handleChangeItemMaintenance(
+    int choice    // in
+) {
+    // Description:
+    // Handles change item maintenance options based on the user's menu choice. It allows the user to
+    // query or update a change item.
     switch (choice) {
         case 1: {
             std::string productName, changeID;
@@ -175,13 +178,14 @@ void handleChangeItemMaintenance(int choice) {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleReportGeneration
-// Description: Handles report generation options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleReportGeneration(int choice) {
+void handleReportGeneration(
+    int choice    // in
+) {
+    // Description:
+    // Handles report generation options based on the user's menu choice. It allows the user to
+    // generate reports based on change items or change requests.
     switch (choice) {
         case 1: {
             std::string productName;
@@ -207,11 +211,11 @@ void handleReportGeneration(int choice) {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: displayHelp
-// Description: Displays help information.
-// ---------------------------------------------
 void displayHelp() {
+    // Description:
+    // Displays help information about the system and how to use it.
     std::cout << "Help: This system is designed to manage and track issues, such as bugs and feature requests, within a software development environment.\n";
     std::cout << "At any point, type 'Help' to receive guidance on the available options and how to use them.\n";
 }

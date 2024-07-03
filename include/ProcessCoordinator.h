@@ -12,42 +12,32 @@
 // Function Declarations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleProductMaintenance
-// Description: Handles product maintenance options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleProductMaintenance(int choice);
+void handleProductMaintenance(
+    int choice    // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
-// Description: Handles change request maintenance options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleChangeRequestMaintenance(int choice);
+void handleChangeRequestMaintenance(
+    int choice    // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleChangeItemMaintenance
-// Description: Handles change item maintenance options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleChangeItemMaintenance(int choice);
+void handleChangeItemMaintenance(
+    int choice    // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: handleReportGeneration
-// Description: Handles report generation options.
-// Parameters:
-// - choice: The menu choice selected by the user (in).
-// ---------------------------------------------
-void handleReportGeneration(int choice);
+void handleReportGeneration(
+    int choice    // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: displayHelp
-// Description: Displays help information.
-// ---------------------------------------------
 void displayHelp();
 
 #endif // PROCESSCOORDINATOR_H

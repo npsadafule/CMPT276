@@ -18,17 +18,19 @@ extern std::vector<Product> products;
 // Function Implementations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: createChangeRequest
-// Description: Creates a new change request for an existing product.
-// Parameters:
-// - profileName: The name of the user profile (in).
-// - productName: The name of the product (in).
-// - changeID: The ID of the change request (in).
-// - description: Description of the change request (in).
-// - anticipatedReleaseID: The anticipated release ID (in).
-// ---------------------------------------------
-void createChangeRequest(const std::string& profileName, const std::string& productName, const std::string& changeID, const std::string& description, const std::string& anticipatedReleaseID) {
+void createChangeRequest(
+    const std::string& profileName,        // in
+    const std::string& productName,        // in
+    const std::string& changeID,           // in
+    const std::string& description,        // in
+    const std::string& anticipatedReleaseID // in
+) {
+    // Description:
+    // Creates a new change request for an existing product. It first checks if the product exists,
+    // then adds the new change request to the product's list of change items. If the product does
+    // not exist, it displays an error message.
     auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
     if (it == products.end()) {
         std::cerr << "Product does not exist. Please try again.\n";
@@ -40,14 +42,15 @@ void createChangeRequest(const std::string& profileName, const std::string& prod
     std::cout << "Change Request ID is " << changeID << ". The Change Request was successfully added.\n";
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: queryChangeItem
-// Description: Queries and displays the details of a change item.
-// Parameters:
-// - productName: The name of the product (in).
-// - changeID: The ID of the change request (in).
-// ---------------------------------------------
-void queryChangeItem(const std::string& productName, const std::string& changeID) {
+void queryChangeItem(
+    const std::string& productName,    // in
+    const std::string& changeID        // in
+) {
+    // Description:
+    // Queries and displays the details of a change item for a specified product. If the product
+    // or the change item does not exist, it displays an error message.
     auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
     if (it == products.end()) {
         std::cerr << "Product does not exist. Please try again.\n";
@@ -64,15 +67,16 @@ void queryChangeItem(const std::string& productName, const std::string& changeID
     std::cout << "Product: " << productName << "\nDescription: " << item.description << "\nChange ID: " << item.changeID << "\nState: " << item.state << "\nAnticipated Release ID: " << item.anticipatedReleaseID << "\n";
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: updateChangeItem
-// Description: Updates the state of a change item.
-// Parameters:
-// - productName: The name of the product (in).
-// - changeID: The ID of the change request (in).
-// - newState: The new state of the change request (in).
-// ---------------------------------------------
-void updateChangeItem(const std::string& productName, const std::string& changeID, const std::string& newState) {
+void updateChangeItem(
+    const std::string& productName,    // in
+    const std::string& changeID,       // in
+    const std::string& newState        // in
+) {
+    // Description:
+    // Updates the state of a change item for a specified product. If the product or the change
+    // item does not exist, it displays an error message.
     auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
     if (it == products.end()) {
         std::cerr << "Product does not exist. Please try again.\n";

@@ -19,13 +19,14 @@ extern std::vector<User> users;
 // Function Implementations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: generateReport1
-// Description: Generates a report listing all change items for a product that are not done or cancelled.
-// Parameters:
-// - productName: The name of the product (in).
-// ---------------------------------------------
-void generateReport1(const std::string& productName) {
+void generateReport1(
+    const std::string& productName    // in
+) {
+    // Description:
+    // Generates a report listing all change items for a product that are not done or cancelled. If the
+    // product does not exist, it displays an error message.
     auto it = std::find_if(products.begin(), products.end(), [&](const Product& p) { return p.name == productName; });
     if (it == products.end()) {
         std::cerr << "Product does not exist. Please try again.\n";
@@ -40,13 +41,14 @@ void generateReport1(const std::string& productName) {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: generateReport2
-// Description: Generates a report listing customers/staff who need to be informed when a particular change has been implemented.
-// Parameters:
-// - changeID: The ID of the change request (in).
-// ---------------------------------------------
-void generateReport2(const std::string& changeID) {
+void generateReport2(
+    const std::string& changeID    // in
+) {
+    // Description:
+    // Generates a report listing customers/staff who need to be informed when a particular change has
+    // been implemented. It displays the list of users who need to be informed.
     std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
     for (const auto& user : users) {
         std::cout << "Name: " << user.name << ", Email: " << user.email << "\n";

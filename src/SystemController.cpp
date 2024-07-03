@@ -23,11 +23,12 @@ std::map<std::string, std::string> changeRequests;
 // Function Implementations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initProduct
-// Description: Initializes the product module.
-// ---------------------------------------------
 void initProduct() {
+    // Description:
+    // Initializes the product module by reading product data from a binary file and populating the
+    // global products vector. If the file cannot be opened, it displays an error message.
     std::ifstream productFile("products.dat", std::ios::binary);
     if (productFile.is_open()) {
         Product product;
@@ -40,11 +41,12 @@ void initProduct() {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initChangeRequest
-// Description: Initializes the change request module.
-// ---------------------------------------------
 void initChangeRequest() {
+    // Description:
+    // Initializes the change request module by reading change request data from a file and populating
+    // the global changeRequests map. If the file cannot be opened, it displays an error message.
     std::ifstream changeRequestFile("changerequests.dat");
     if (changeRequestFile.is_open()) {
         std::string key, value;
@@ -57,20 +59,21 @@ void initChangeRequest() {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initChangeItem
-// Description: Initializes the change item module.
-// ---------------------------------------------
 void initChangeItem() {
-    // Assuming change items are part of products and initialized in initProduct.
+    // Description:
+    // Initializes the change item module. It assumes that change items are part of products and
+    // are initialized in the initProduct function.
     std::cout << "Change items are initialized as part of products.\n";
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initReportGen
-// Description: Initializes the report generation module.
-// ---------------------------------------------
 void initReportGen() {
+    // Description:
+    // Initializes the report generation module by reading user data from a binary file and populating
+    // the global users vector. If the file cannot be opened, it displays an error message.
     std::ifstream userFile("users.dat", std::ios::binary);
     if (userFile.is_open()) {
         User user;
@@ -83,11 +86,12 @@ void initReportGen() {
     }
 }
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: start
-// Description: Initializes the application by reading data from files.
-// ---------------------------------------------
 void start() {
+    // Description:
+    // Initializes the application by calling the initialization functions for products, change requests,
+    // change items, and report generation.
     initProduct();
     initChangeRequest();
     initChangeItem();

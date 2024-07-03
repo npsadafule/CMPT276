@@ -14,20 +14,16 @@
 // Function Declarations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: generateReport1
-// Description: Generates a report listing all change items for a product that are not done or cancelled.
-// Parameters:
-// - productName: The name of the product (in).
-// ---------------------------------------------
-void generateReport1(const std::string& productName);
+void generateReport1(
+    const std::string& productName    // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: generateReport2
-// Description: Generates a report listing customers/staff who need to be informed when a particular change has been implemented.
-// Parameters:
-// - changeID: The ID of the change request (in).
-// ---------------------------------------------
-void generateReport2(const std::string& changeID);
+void generateReport2(
+    const std::string& changeID    // in
+);
 
 #endif // REPORT_H

@@ -14,35 +14,29 @@
 // Function Declarations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: createChangeRequest
-// Description: Creates a new change request for an existing product.
-// Parameters:
-// - profileName: The name of the user profile (in).
-// - productName: The name of the product (in).
-// - changeID: The ID of the change request (in).
-// - description: Description of the change request (in).
-// - anticipatedReleaseID: The anticipated release ID (in).
-// ---------------------------------------------
-void createChangeRequest(const std::string& profileName, const std::string& productName, const std::string& changeID, const std::string& description, const std::string& anticipatedReleaseID);
+void createChangeRequest(
+    const std::string& profileName,        // in
+    const std::string& productName,        // in
+    const std::string& changeID,           // in
+    const std::string& description,        // in
+    const std::string& anticipatedReleaseID // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: queryChangeItem
-// Description: Queries and displays the details of a change item.
-// Parameters:
-// - productName: The name of the product (in).
-// - changeID: The ID of the change request (in).
-// ---------------------------------------------
-void queryChangeItem(const std::string& productName, const std::string& changeID);
+void queryChangeItem(
+    const std::string& productName,    // in
+    const std::string& changeID        // in
+);
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: updateChangeItem
-// Description: Updates the state of a change item.
-// Parameters:
-// - productName: The name of the product (in).
-// - changeID: The ID of the change request (in).
-// - newState: The new state of the change request (in).
-// ---------------------------------------------
-void updateChangeItem(const std::string& productName, const std::string& changeID, const std::string& newState);
+void updateChangeItem(
+    const std::string& productName,    // in
+    const std::string& changeID,       // in
+    const std::string& newState        // in
+);
 
 #endif // CHANGEREQUEST_H

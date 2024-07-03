@@ -22,34 +22,24 @@ extern std::map<std::string, std::string> changeRequests;
 // Function Declarations
 // ============================================
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initProduct
-// Description: Initializes the product module.
-// ---------------------------------------------
 void initProduct();
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initChangeRequest
-// Description: Initializes the change request module.
-// ---------------------------------------------
 void initChangeRequest();
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initChangeItem
-// Description: Initializes the change item module.
-// ---------------------------------------------
 void initChangeItem();
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: initReportGen
-// Description: Initializes the report generation module.
-// ---------------------------------------------
 void initReportGen();
 
-// ---------------------------------------------
+// ---------------------------------------------------------
 // Function: start
-// Description: Initializes the application by reading data from files.
-// ---------------------------------------------
 void start();
 
 #endif // SYSTEMCONTROLLER_H
