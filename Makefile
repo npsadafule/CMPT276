@@ -1,44 +1,59 @@
-# Define the compiler
+# ============================================
+# Module Name: Makefile
+# Version History:
+# Rev. 1 - 2024/07/01 - Neel Sadafule
+# ============================================
+
+# Compiler and flags
 CXX = g++
+CXXFLAGS = -std=c++11 -Wall -Wextra -g
 
-# Define the compiler flags
-CXXFLAGS = -Wall -std=c++17
+# Directories
+SRC_DIR = src
+BUILD_DIR = build
+BIN_DIR = bin
+INCLUDE_DIR = include
 
-# Define the target executables
-TARGET_MAIN = main
-TARGET_TEST = unitTest
+# Source files
+MAIN_SRC_FILES = $(filter-out $(SRC_DIR)/unitTestMain.cpp, $(wildcard $(SRC_DIR)/*.cpp))
+TEST_SRC_FILES = $(filter-out $(SRC_DIR)/main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
 
-# Define the source files
-SRC_MAIN = main.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp ProcessCoordinator.cpp
-SRC_TEST = unitTestMain.cpp Product.cpp ChangeRequest.cpp Report.cpp User.cpp UserInterface.cpp ProcessCoordinator.cpp
+# Object files
+MAIN_OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(MAIN_SRC_FILES))
+TEST_OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_SRC_FILES))
 
-# Define the object files
-OBJ_MAIN = $(SRC_MAIN:.cpp=.o)
-OBJ_TEST = $(SRC_TEST:.cpp=.o)
+# Executables
+MAIN_EXEC = $(BIN_DIR)/ITS
+TEST_EXEC = $(BIN_DIR)/unitTests
 
 # Default target
-all: $(TARGET_MAIN) $(TARGET_TEST)
+all: $(MAIN_EXEC) $(TEST_EXEC)
 
-# Rule to build the main executable
-$(TARGET_MAIN): $(OBJ_MAIN)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+# Link the main executable
+$(MAIN_EXEC): $(MAIN_OBJ_FILES)
+	@mkdir -p $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Rule to build the test executable
-$(TARGET_TEST): $(OBJ_TEST)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+# Link the test executable
+$(TEST_EXEC): $(TEST_OBJ_FILES)
+	@mkdir -p $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Rule to build object files
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# Compile the source files into object files
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
-# Rule to clean the build directory
+# Clean build files
 clean:
-	rm -f $(OBJ_MAIN) $(OBJ_TEST) $(TARGET_MAIN) $(TARGET_TEST) 
+	rm -rf $(BUILD_DIR) $(BIN_DIR)
 
-# Rule to run the main program
-run: $(TARGET_MAIN)
-	./$(TARGET_MAIN)
+# Run the main executable
+run: $(MAIN_EXEC)
+	./$(MAIN_EXEC)
 
-# Rule to run the test program
-run_test: $(TARGET_TEST)
-	./$(TARGET_TEST)
+# Run the unit tests
+test: $(TEST_EXEC)
+	./$(TEST_EXEC)
+
+.PHONY: all clean run test

@@ -24,6 +24,7 @@ struct ChangeItem {
 struct Product {
     std::string name;
     std::map<std::string, ChangeItem> changeItems;
+    std::map<std::string, std::string> releases; // Added releases map
 };
 
 // ============================================
@@ -41,7 +42,11 @@ void createProduct(const std::string& name);
 // ---------------------------------------------
 // Function: createRelease
 // Description: Creates a new release for an existing product.
+// Parameters:
+// - productName: The name of the product (in).
+// - releaseID: The ID of the release (in).
+// - releaseDate: The release date (in).
 // ---------------------------------------------
-void createRelease();
+void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate);
 
 #endif // PRODUCT_H

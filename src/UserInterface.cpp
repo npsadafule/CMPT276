@@ -1,8 +1,7 @@
 // ============================================
 // Module Name: UserInterface.cpp
-// ============================================
 // Version History:
-// Rev. 1 - 2024/07/01 - Group 7
+// Rev. 1 - 2024/07/01 - Neel Sadafule
 // ============================================
 
 #include "UserInterface.h"
@@ -11,6 +10,7 @@
 #include "Report.h"
 #include "User.h"
 #include "ProcessCoordinator.h"
+#include "SystemController.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -37,84 +37,16 @@ const int DEPARTMENT_LENGTH = 30;
 
 // Function Declarations
 // ============================================
-void start();
-void activateUI();
-// void handleProductMaintenance();
-// void handleChangeRequestMaintenance();
-// void handleChangeItemMaintenance();
-// void handleReportGeneration();
-// void displayHelp();
-void shutdown();
-
-// Function Implementations
-// ============================================
 
 // ---------------------------------------------
 // Function: start
 // Description: Initializes the system and opens necessary files.
 // ---------------------------------------------
-void start() {
-    std::ifstream inputFile("dummy_data.bin", std::ios::binary);
-    if (!inputFile.is_open()) {
-        std::cerr << "Error opening input file.\n";
-        exit(1);
-    }
-
-    int numProducts;
-    inputFile.read(reinterpret_cast<char*>(&numProducts), sizeof(numProducts));
-    products.resize(numProducts);
-
-    for (int i = 0; i < numProducts; ++i) {
-        products[i].name.resize(PRODUCT_NAME_LENGTH);
-        inputFile.read(&products[i].name[0], PRODUCT_NAME_LENGTH);
-
-        int numChangeItems;
-        inputFile.read(reinterpret_cast<char*>(&numChangeItems), sizeof(numChangeItems));
-
-        for (int j = 0; j < numChangeItems; ++j) {
-            ChangeItem item;
-            item.description.resize(CHANGE_DESCRIPTION_LENGTH);
-            item.changeID.resize(CHANGE_ID_LENGTH);
-            item.state.resize(STATE_LENGTH);
-            item.anticipatedReleaseID.resize(RELEASE_ID_LENGTH);
-
-            inputFile.read(&item.description[0], CHANGE_DESCRIPTION_LENGTH);
-            inputFile.read(&item.changeID[0], CHANGE_ID_LENGTH);
-            inputFile.read(&item.state[0], STATE_LENGTH);
-            inputFile.read(&item.anticipatedReleaseID[0], RELEASE_ID_LENGTH);
-
-            products[i].changeItems[item.changeID] = item;
-        }
-    }
-
-    int numUsers;
-    inputFile.read(reinterpret_cast<char*>(&numUsers), sizeof(numUsers));
-    users.resize(numUsers);
-
-    for (int i = 0; i < numUsers; ++i) {
-        users[i].name.resize(USER_NAME_LENGTH);
-        users[i].phoneNumber.resize(PHONE_NUMBER_LENGTH);
-        users[i].email.resize(EMAIL_LENGTH);
-        users[i].role.resize(ROLE_LENGTH);
-
-        inputFile.read(&users[i].name[0], USER_NAME_LENGTH);
-        inputFile.read(&users[i].phoneNumber[0], PHONE_NUMBER_LENGTH);
-        inputFile.read(&users[i].email[0], EMAIL_LENGTH);
-        inputFile.read(&users[i].role[0], ROLE_LENGTH);
-
-        if (users[i].role == "Employee") {
-            users[i].department.resize(DEPARTMENT_LENGTH);
-            inputFile.read(&users[i].department[0], DEPARTMENT_LENGTH);
-        }
-    }
-
-    inputFile.close();
-    std::cout << "System initialized with data from dummy_data.bin\n";
-}
+void start();
 
 // ---------------------------------------------
 // Function: activateUI
-// Description: Sets up the User Interface.
+// Description: Activates the user interface.
 // ---------------------------------------------
 void activateUI() {
     int choice;
@@ -166,16 +98,15 @@ void activateUI() {
                 std::cout << "Choose an option [0-2] and press ENTER: ";
                 std::cin >> choice;
                 handleReportGeneration(choice); break;
-            case 0: std::cout << "Thank you for using the Issue Tracking System.\n"; break;
-            default: std::cout << "Invalid choice. Please try again.\n";
+            case 0: 
+                shutdown();
+                std::cout << "Thank you for using the Issue Tracking System.\n"; 
+                break;
+            default: 
+                std::cout << "Invalid choice. Please try again.\n";
         }
     } while (choice != 0);
 }
-
-
-
-
-
 
 // ---------------------------------------------
 // Function: shutdown
