@@ -18,14 +18,18 @@ std::map<std::string, ChangeRequest> changeRequests;
 // ---------------------------------------------------------
 // Function: initProduct
 void initProduct() {
-    std::ifstream productFile("products.dat", std::ios::binary);
-    if (productFile.is_open()) {
+    // Open the file
+	std::ifstream productFile("products.dat", std::ios::binary);
+	if (productFile.is_open()) {
+		// Check if we can open the file
         Product product;
-        while (productFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
+        // Pull products from the file and store it into our vector
+		while (productFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
             products.push_back(product);
         }
         productFile.close();
-    } else {
+    } else {	
+		// If we can't open the file
         std::cerr << "Failed to open products.dat file.\n";
     }
 }
