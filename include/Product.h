@@ -3,17 +3,11 @@
 
 #include <string>
 #include <map>
+#include "ChangeItem.h"
 
 // ============================================
 // Data structures
 // ============================================
-struct ChangeItem {
-    std::string description;
-    std::string changeID;
-    std::string state;
-    std::string anticipatedReleaseID;
-};
-
 struct Product {
     std::string name;
     std::map<std::string, ChangeItem> changeItems;

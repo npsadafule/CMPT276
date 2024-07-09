@@ -8,11 +8,7 @@
 #include "ChangeRequest.h"
 #include "Report.h"
 #include "User.h"
-
-// Global variables
-std::vector<Product> products;
-std::vector<User> users;
-std::map<std::string, ChangeRequest> changeRequests;
+#include "SystemController.h"
 
 // ============================================
 // Function Declarations

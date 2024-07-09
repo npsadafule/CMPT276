@@ -131,10 +131,7 @@ void shutdown() {
         outputFile.write(user.name.data(), USER_NAME_LENGTH);
         outputFile.write(user.phoneNumber.data(), PHONE_NUMBER_LENGTH);
         outputFile.write(user.email.data(), EMAIL_LENGTH);
-        outputFile.write(user.role.data(), ROLE_LENGTH);
-        if (user.role == "Employee") {
-            outputFile.write(user.department.data(), DEPARTMENT_LENGTH);
-        }
+        outputFile.write(user.department.data(), DEPARTMENT_LENGTH);
     }
 
     outputFile.close();

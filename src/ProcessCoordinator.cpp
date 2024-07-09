@@ -85,12 +85,8 @@ void handleChangeRequestMaintenance(int choice) {
                 std::getline(std::cin, newUser.phoneNumber);
                 std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
                 std::getline(std::cin, newUser.email);
-                std::cout << "Are you a Customer or an Employee? (C/E): ";
-                std::getline(std::cin, newUser.role);
-                if (newUser.role == "E") {
-                    std::cout << "Enter the name of the employee’s department (max 30 char): ";
-                    std::getline(std::cin, newUser.department);
-                }
+                std::cout << "If you are an employee, enter a department (max 30 char); otherwise, enter 'N/A': ";
+                std::getline(std::cin, newUser.department);
                 users.push_back(newUser);
                 profileName = newUser.name;
             }
