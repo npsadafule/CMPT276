@@ -10,7 +10,7 @@
 // ============================================
 struct Product {
     std::string name;
-    std::map<std::string, ChangeItem> changeItems;
+    std::map<std::string, ChangeItem> changeItems; // needs to be removed
 };
 
 struct ProductRelease {

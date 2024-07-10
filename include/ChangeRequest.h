@@ -8,7 +8,7 @@
 // ============================================
 struct ChangeRequest {
     std::string profileName;
-    std::string productName;
+    std::string productName; // needs to be removed
     std::string changeID;
     std::string description;
     std::string state;

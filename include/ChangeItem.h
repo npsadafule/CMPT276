@@ -18,6 +18,7 @@ struct ChangeItem {
     std::string changeID;
     std::string state;
     std::string anticipatedReleaseID;
+    std::string productName;
 };
 
 // ============================================

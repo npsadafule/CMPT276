@@ -77,6 +77,7 @@ void queryChangeRequest(const std::string& productName, const std::string& chang
     closeChangeRequestFile();
 }
 
+
 // ---------------------------------------------------------
 // Function: updateChangeRequest
 void updateChangeRequest(const std::string& productName, const std::string& changeID, const std::string& newState) {
