@@ -14,6 +14,12 @@ struct Product {
     std::map<std::string, std::string> releases;
 };
 
+struct ProductRelease {
+	std::string productName;
+	std::string releaseID;
+	std::string releaseDate;
+};
+
 // ============================================
 // Function Declarations
 // ============================================

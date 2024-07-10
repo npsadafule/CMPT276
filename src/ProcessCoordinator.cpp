@@ -9,12 +9,17 @@
 // Function Implementations
 // ============================================
 
+// Constants for repeating a scneario
+const int CREATE_PROD = 1;
+const int CREATE_PROD_REL = 2;
+
 // ---------------------------------------------------------
 // Function: handleProductMaintenance
 void handleProductMaintenance(int choice) {
     char X;
     switch (choice) {
         case 1: {
+		// Scenario 4.1: Creating a Product
             std::string productName;
             std::cout << "\nEnter the Product Name (max 30 char): \n \n";
             std::cin.ignore();
@@ -26,7 +31,7 @@ void handleProductMaintenance(int choice) {
                 std::cout << "\nDo you wish to add another product (Y/N)? \n \n";
                 std::cin >> X;
                 if (X == 'Y') {
-                    handleProductMaintenance(1);
+                    handleProductMaintenance(CREATE_PROD);
                 } else {
                     break;
                 }
@@ -35,6 +40,7 @@ void handleProductMaintenance(int choice) {
             }
         }
         case 2: {
+		// Scenario 4.2: Creating a Release of a Product
             std::string productName, releaseID, releaseDate;
             std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
             std::cin.ignore();
@@ -50,7 +56,7 @@ void handleProductMaintenance(int choice) {
                 std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
                 std::cin >> X;
                 if (X == 'Y') {
-                    handleProductMaintenance(2);
+                    handleProductMaintenance(CREATE_PROD_REL);
                 } else {
                     break;
                 }
@@ -72,6 +78,7 @@ void handleChangeRequestMaintenance(int choice) {
     std::vector<User> users; // Declare the 'users' variable
     switch (choice) {
         case 1: {
+		// Scenario 4.3: Create Change Request
             std::string profileName, productName, changeID, description, anticipatedReleaseID;
             std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
             std::cin.ignore();
@@ -117,6 +124,7 @@ void handleChangeRequestMaintenance(int choice) {
 void handleChangeItemMaintenance(int choice) {
     switch (choice) {
         case 1: {
+		// Scenario 4.4: Querying Change Items
             std::string productName, changeID;
             std::cout << "Select a product (must pre-exist): ";
             std::cin.ignore();
@@ -127,6 +135,7 @@ void handleChangeItemMaintenance(int choice) {
             break;
         }
         case 2: {
+		// Scenario 4.5: Update/Assess Change Item
             std::string productName, changeID, newState;
             std::cout << "Select a product (must pre-exist): ";
             std::cin.ignore();
@@ -151,6 +160,8 @@ void handleChangeItemMaintenance(int choice) {
 void handleReportGeneration(int choice) {
     switch (choice) {
         case 1: {
+		// Scenario 4.6: Report #1: List of All Change Items for a 
+		// Particular Product that are Not Done and Not Cancelled
             std::string productName;
             std::cout << "Enter the product name to generate Report #1: ";
             std::cin.ignore();
@@ -159,6 +170,8 @@ void handleReportGeneration(int choice) {
             break;
         }
         case 2: {
+		// Scenario 4.7: Report #2: List of Customers/Staff Who Need to Be Informed When
+		// a Particular Change Has Been Implemented, and in What ProductRelease ID
             std::string changeID;
             std::cout << "Enter the Change ID to generate Report #2: ";
             std::cin.ignore();
