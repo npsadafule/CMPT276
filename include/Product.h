@@ -11,7 +11,6 @@
 struct Product {
     std::string name;
     std::map<std::string, ChangeItem> changeItems;
-    std::map<std::string, std::string> releases;
 };
 
 struct ProductRelease {

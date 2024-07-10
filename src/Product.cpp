@@ -66,15 +66,16 @@ void createProduct(const std::string& name) {
 void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate) {
     Product product;
     std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
-    openProductFile();
     seekToBeginningOfProductFile();
 	// While there are products in the product.dat file...
     while (getNextProduct(product)) {
+		// TBD: checking the productRelease file before adding more product releases
 		// If the name of the product retrieved from the file
 		// is the same as the product we are trying to insert
-        if (product.name == productName) {
-            product.releases[releaseID] = releaseDate;
-        }
+        // if ((product.name == productName)) {
+        //     product.releases[releaseID] = releaseDate;
+        // }
+		
 		// Write the current product into the temp file
         tempFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
     }
