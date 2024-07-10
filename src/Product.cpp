@@ -3,7 +3,7 @@
 #include <fstream>
 
 // File handling functions
-std::fstream productFile;
+extern std::fstream productFile;
 
 
 // ============================================
@@ -68,15 +68,22 @@ void createRelease(const std::string& productName, const std::string& releaseID,
     std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
     openProductFile();
     seekToBeginningOfProductFile();
+	// While there are products in the product.dat file...
     while (getNextProduct(product)) {
+		// If the name of the product retrieved from the file
+		// is the same as the product we are trying to insert
         if (product.name == productName) {
             product.releases[releaseID] = releaseDate;
         }
+		// Write the current product into the temp file
         tempFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
     }
     closeProductFile();
     tempFile.close();
+	// Deletes the previous products file
     remove("products.dat");
+	// Updates the previous products file to a new one
     rename("temp.dat", "products.dat");
+	// Message output for the user
     std::cout << "Release " << releaseID << " for Product " << productName << " added successfully.\n";
 }

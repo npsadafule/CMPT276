@@ -10,6 +10,8 @@
 std::vector<Product> products;
 std::vector<User> users;
 std::map<std::string, ChangeRequest> changeRequests;
+// Global file streams
+std::fstream productFile("products.dat", std::ios::binary);
 
 // Constants for data lengths
 const int PRODUCT_NAME_LENGTH = 30;
@@ -30,7 +32,6 @@ const int DEPARTMENT_LENGTH = 30;
 // Function: initProduct
 void initProduct() {
     // Open the file for products
-	std::ifstream productFile("products.dat", std::ios::binary);
 	if (!(productFile.is_open())) {
 		// Check if we were unable to open the file
 		std::cerr << "Failed to open products.dat file.\n";
