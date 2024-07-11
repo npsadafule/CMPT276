@@ -6,6 +6,7 @@
 #include "ChangeItem.h"
 
 // Constants
+// Note: 1 extra for the null terminator (using C-style strings)
 const int PRODUCT_NAME_LENGTH = 30 +1;
 const int RELEASE_ID_LENGTH = 8 +1;
 const int RELEASE_DATE_LENGTH = 10 +1;
@@ -14,7 +15,6 @@ const int RELEASE_DATE_LENGTH = 10 +1;
 // Data structures
 // ============================================
 struct Product {
-	// Note: 1 extra for the null terminator
     char name[PRODUCT_NAME_LENGTH];
 };
 
