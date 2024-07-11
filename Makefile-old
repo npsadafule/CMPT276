@@ -15,22 +15,19 @@ BIN_DIR = bin
 INCLUDE_DIR = include
 
 # Source files
-MAIN_SRC_FILES = $(filter-out $(SRC_DIR)/unitTestMain.cpp $(SRC_DIR)/testProduct.cpp, $(wildcard $(SRC_DIR)/*.cpp))
-TEST_SRC_FILES = $(filter-out $(SRC_DIR)/main.cpp $(SRC_DIR)/testProduct.cpp, $(wildcard $(SRC_DIR)/*.cpp))
-TP_SRC_FILES = $(filter-out $(SRC_DIR)/unitTestMain.cpp $(SRC_DIR)/main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
+MAIN_SRC_FILES = $(filter-out $(SRC_DIR)/unitTestMain.cpp, $(wildcard $(SRC_DIR)/*.cpp))
+TEST_SRC_FILES = $(filter-out $(SRC_DIR)/main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
 
 # Object files
 MAIN_OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(MAIN_SRC_FILES))
 TEST_OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TEST_SRC_FILES))
-TP_OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(TP_SRC_FILES))
 
 # Executables
 MAIN_EXEC = $(BIN_DIR)/ITS
 TEST_EXEC = $(BIN_DIR)/unitTests
-TP_EXEC = $(BIN_DIR)/TP
 
 # Default target
-all: $(MAIN_EXEC) $(TP_EXEC) $(TEST_EXEC)
+all: $(MAIN_EXEC) $(TEST_EXEC)
 
 # Link the main executable
 $(MAIN_EXEC): $(MAIN_OBJ_FILES)
@@ -39,11 +36,6 @@ $(MAIN_EXEC): $(MAIN_OBJ_FILES)
 
 # Link the test executable
 $(TEST_EXEC): $(TEST_OBJ_FILES)
-	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) $^ -o $@
-
-# Link the product test executable
-$(TP_EXEC): $(TP_OBJ_FILES)
 	@mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
@@ -63,13 +55,5 @@ run: $(MAIN_EXEC)
 # Run the unit tests
 test: $(TEST_EXEC)
 	./$(TEST_EXEC)
-
-# Run the product test
-tp: $(TP_EXEC)
-	./$(TP_EXEC)
-
-print-tp-src-files:
-	@echo $(TP_SRC_FILES)
-
 
 .PHONY: all clean run test

@@ -36,7 +36,7 @@ void activateUI() {
         std::cout << "3) Change Item Maintenance\n";
         std::cout << "4) Report Generation\n";
         std::cout << "0) Exit\n";
-        std::cout << "Enter the number you want [0-4]: ";
+        std::cout << "Choose an option [0-4] and press ENTER: ";
         std::cin >> choice;
 
         switch (choice) {
