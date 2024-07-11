@@ -10,6 +10,9 @@
 #include "User.h"
 #include "SystemController.h"
 
+// Constants
+static const int STRCMP_TRUE = 0;
+
 // ============================================
 // Function Declarations
 // ============================================
@@ -25,7 +28,8 @@ void runAllTests();
 // Function: main
 int main() {
     runAllTests();
-    std::cout << "All unit tests passed.\n";
+    // std::cout << "All unit tests passed.\n";
+	std::cout << "End of unitTestMain" << std::endl;
     return 0;
 }
 
@@ -36,13 +40,33 @@ int main() {
 // ---------------------------------------------------------
 // Function: testCreateProduct
 void testCreateProduct() {
+	// Open the file
+	openProductFile();
+
+	// Pre-test initialization and output
+	Product product2 = {"tmpName"};
+	std::cout << "BEFORE TEST: Our 'empty' product on RAM has the name " << '"' << product2.name << '"' << std::endl;
+
 	// Run the function
+	std::cout << "Running createProduct()..." << std::endl;
     createProduct("testProduct");
 
-	// Test output evaluation
-    assert(products.size() == 1);
-    assert(products[0].name == "testProduct");
-    std::cout << "testCreateProduct passed.\n";
+	// Read "testProduct" out of file
+	retrieveProductByName("products.dat", "testProduct", product2);
+
+	std::cout << "AFTER TEST: The product we retrieved and stored into our empty product is named " << 
+				 '"' << product2.name << '"' << std::endl;
+
+	// Final evaluation
+	std::cout << "Test evaluation: ";
+	if (std::strcmp("testProduct", product2.name) == STRCMP_TRUE) {
+		std::cout << "passed" << std::endl;
+	} else {
+		std::cout << "failed" << std::endl;
+	}
+	
+	// Close the product file
+	closeProductFile();
 }
 
 // ---------------------------------------------------------

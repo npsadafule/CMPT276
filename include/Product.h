@@ -5,7 +5,7 @@
 #include <map>
 #include "ChangeItem.h"
 
-// constants
+// Constants
 const int PROD_NAME_LEN = 31;
 
 // ============================================
@@ -30,7 +30,9 @@ void closeProductFile();
 void writeProduct(const Product& product);
 void seekToBeginningOfProductFile();
 bool getNextProduct(Product& product);
-void readProductFile(const char* filename);
+void readProductFile(const char* filename, Product& product);
+bool retrieveProductByName(const char* filename, const char* productName, Product& product);
+
 void createProduct(const char* namePtr);
 void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate);
 

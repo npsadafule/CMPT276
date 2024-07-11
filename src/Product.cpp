@@ -63,6 +63,7 @@ bool getNextProduct(Product& product) {
     return !productFile.fail();
 }
 
+// For bringing up lists of products for reports
 void readProductFile(const char* filename, Product& product) {
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile) {
@@ -75,6 +76,34 @@ void readProductFile(const char* filename, Product& product) {
     }
 }
 
+// For retrieving a particular product with a particular name
+bool retrieveProductByName(const char* filename, const char* productName, Product& product) {
+    Product tmpProduct;
+
+	seekToBeginningOfProductFile();
+
+	std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        return false;
+    }
+
+    // Read each product from the file and compare its name with the target name
+    while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
+        if (std::strcmp(tmpProduct.name, productName) == 0) {
+            inFile.close();
+			
+			// Store the product into the product outside of the function
+			std::strcpy(product.name, tmpProduct.name);
+
+            return true; // Product found
+        }
+    }
+
+    inFile.close();
+    return false; // Product not found
+}
+
 // ---------------------------------------------------------
 // Function: createProduct
 void createProduct(const char* namePtr) {
@@ -84,24 +113,11 @@ void createProduct(const char* namePtr) {
 	// Store the string into product's name attribute
 	std::strcpy(product.name, namePtr);
 
-	std::cout << "INPUT: the product we received was named " << product.name << std::endl;
+	//std::cout << "createProduct: the product we received was named " << product.name << std::endl;
 
 	// Write it to file
-    openProductFile();
     seekToBeginningOfProductFile();
     writeProduct(product);
-    closeProductFile();
-
-	// Retrieve it from file and store it back into RAM
-
-	Product product2 = {};
-
-	std::cout << "BEFORE: the product we received was named " << product2.name << std::endl;
-
-	readProductFile("products.dat",product2);
-
-	
-	std::cout << "AFTER: the product we received was named " << product2.name << std::endl;
 }
 
 // ---------------------------------------------------------
