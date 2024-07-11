@@ -5,7 +5,6 @@
 // File handling functions
 extern std::fstream productFile;
 
-
 // ============================================
 // Function Implementations
 // ============================================
@@ -121,8 +120,8 @@ void createProduct(const char* namePtr) {
 }
 
 // ---------------------------------------------------------
-// Function: createRelease
-void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate) {
+// Function: createProductRelease
+void createProductRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate) {
     Product product;
     std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
     seekToBeginningOfProductFile();

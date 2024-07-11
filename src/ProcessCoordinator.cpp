@@ -52,7 +52,7 @@ void handleProductMaintenance(int choice) {
             std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
             std::cin >> X;
             if (X == 'Y') {
-                createRelease(productName, releaseID, releaseDate);
+                createProductRelease(productName, releaseID, releaseDate);
                 std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
                 std::cin >> X;
                 if (X == 'Y') {
