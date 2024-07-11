@@ -13,10 +13,11 @@ extern std::fstream productFile;
 // ---------------------------------------------------------
 // Function: openProductFile
 void openProductFile() {
-    productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary);
-    if (!productFile.is_open()) {
-        std::cerr << "Failed to open products.dat file.\n";
-    }
+	// Note: trunc is ensuring that we test with an empty file: pre-condition followed
+    productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
+    
+	// Check if file opening worked properly, exit if it didn't
+	if (!productFile.is_open()) exit(1);
 }
 
 // ---------------------------------------------------------
@@ -31,14 +32,26 @@ void closeProductFile() {
 // Function: writeProduct
 void writeProduct(const Product& product) {
     if (!productFile.is_open()) return;
+
+	// Get the character address of the product struct, write it a byte at a time (char),
+	// writing "sizeof(Product)" amount of bytes  
+	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
     productFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
+
+	// Check if we ran out of disk space; exit if we have
+	if (!productFile.good()) exit(1);
 }
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
 void seekToBeginningOfProductFile() {
     if (!productFile.is_open()) return;
+
+	// Reset internal flags
     productFile.clear();
+
+	// Set the position in the input sequence to the beginning of the file
+	// Zero offest from the beginning of the file
     productFile.seekg(0, std::ios::beg);
 }
 
@@ -52,13 +65,23 @@ bool getNextProduct(Product& product) {
 
 // ---------------------------------------------------------
 // Function: createProduct
-void createProduct(const std::string& name) {
-    Product product = {name};
+void createProduct(const char* namePtr) {
+	// Create the product
+    Product product = {};
+	
+	// Store the string into product's name attribute
+	std::strcpy(product.name, namePtr);
+
+	std::cout << "the product we received was named " << product.name << std::endl;
+
+	// Write it to file
     openProductFile();
     seekToBeginningOfProductFile();
     writeProduct(product);
     closeProductFile();
-    std::cout << "Product " << name << " added successfully.\n";
+
+	// Retrieve it from file and store it back into RAM
+	
 }
 
 // ---------------------------------------------------------

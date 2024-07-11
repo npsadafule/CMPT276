@@ -9,8 +9,8 @@
 // Data structures
 // ============================================
 struct Product {
-    std::string name;
-    std::map<std::string, ChangeItem> changeItems; // needs to be removed
+	// Note: 1 extra for the null terminator
+    char name[31];
 };
 
 struct ProductRelease {
@@ -27,7 +27,8 @@ void closeProductFile();
 void writeProduct(const Product& product);
 void seekToBeginningOfProductFile();
 bool getNextProduct(Product& product);
-void createProduct(const std::string& name);
+void readProductFile(const Product& product);
+void createProduct(const char* namePtr);
 void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate);
 
 #endif // PRODUCT_H
