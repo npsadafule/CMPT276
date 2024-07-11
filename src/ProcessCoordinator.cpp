@@ -20,10 +20,10 @@ void handleProductMaintenance(int choice) {
     switch (choice) {
         case 1: {
 		// Scenario 4.1: Creating a Product
-            char productName[31];
+            char productName[PROD_NAME_LEN];
             std::cout << "\nEnter the Product Name (max 30 char): \n \n";
             std::cin.ignore();
-            std::cin.getline(productName,31);
+            std::cin.getline(productName,PROD_NAME_LEN);
             std::cout << "\nAre you sure you want to add the product " << productName << " (Y/N)? \n \n";
             std::cin >> X;
             if (X == 'Y') {

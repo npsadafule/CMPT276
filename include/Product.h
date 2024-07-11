@@ -5,12 +5,15 @@
 #include <map>
 #include "ChangeItem.h"
 
+// constants
+const int PROD_NAME_LEN = 31;
+
 // ============================================
 // Data structures
 // ============================================
 struct Product {
 	// Note: 1 extra for the null terminator
-    char name[31];
+    char name[PROD_NAME_LEN];
 };
 
 struct ProductRelease {
@@ -27,7 +30,7 @@ void closeProductFile();
 void writeProduct(const Product& product);
 void seekToBeginningOfProductFile();
 bool getNextProduct(Product& product);
-void readProductFile(const Product& product);
+void readProductFile(const char* filename);
 void createProduct(const char* namePtr);
 void createRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate);
 

@@ -63,6 +63,18 @@ bool getNextProduct(Product& product) {
     return !productFile.fail();
 }
 
+void readProductFile(const char* filename, Product& product) {
+    std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        return;
+    }
+
+    while (inFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
+        std::cout << "Product Name: " << product.name << std::endl;
+    }
+}
+
 // ---------------------------------------------------------
 // Function: createProduct
 void createProduct(const char* namePtr) {
@@ -72,7 +84,7 @@ void createProduct(const char* namePtr) {
 	// Store the string into product's name attribute
 	std::strcpy(product.name, namePtr);
 
-	std::cout << "the product we received was named " << product.name << std::endl;
+	std::cout << "INPUT: the product we received was named " << product.name << std::endl;
 
 	// Write it to file
     openProductFile();
@@ -81,7 +93,15 @@ void createProduct(const char* namePtr) {
     closeProductFile();
 
 	// Retrieve it from file and store it back into RAM
+
+	Product product2 = {};
+
+	std::cout << "BEFORE: the product we received was named " << product2.name << std::endl;
+
+	readProductFile("products.dat",product2);
+
 	
+	std::cout << "AFTER: the product we received was named " << product2.name << std::endl;
 }
 
 // ---------------------------------------------------------
