@@ -134,9 +134,9 @@ void createProduct(const char* namePtr) {
 	while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, namePtr) == 0) {
 			productExists = true;
-            inFile.close();
         }
     }
+	inFile.close();
 
 	// If the product doesn't exist, append it to the end of the file
     if (!productExists) {
@@ -322,8 +322,32 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 	std::strcpy(productRelease.releaseDate, releaseDate);
 	
 	// Write it to file
-    seekToBeginningOfProductReleaseFile();
-	writeProductRelease(productRelease);
+	bool productReleaseExists = false;
+
+    ProductRelease tmpProductRelease;
+
+	seekToBeginningOfProductFile();
+
+	std::ifstream inFile("productReleases.dat", std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        exit(1);
+    }
+
+    // Read each product from the file and compare its name with the target name
+	// std::cout << "before read loop" << std::endl;
+    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+        if ((std::strcmp(tmpProductRelease.productName, productName) == 0) &&
+			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
+			productReleaseExists = true;
+        }
+    }
+	inFile.close();
+	
+	// If the product release doesn't exist, append it to the end of the file
+    if (!productReleaseExists) {
+		writeProductRelease(productRelease);
+	}	
 }
 
 

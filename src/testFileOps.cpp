@@ -26,7 +26,7 @@ void runAllTests();
 int main() {
     runAllTests();
     // std::cout << "All unit tests passed.\n";
-	std::cout << "End of unitTestMain" << std::endl;
+	std::cout << "End of testFileOps" << std::endl;
     return 0;
 }
 
