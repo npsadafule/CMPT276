@@ -12,7 +12,7 @@ std::vector<User> users;
 std::map<std::string, ChangeRequest> changeRequests;
 // Global file streams
 std::fstream productFile("products.dat", std::ios::binary);
-std::ifstream productReleaseFile("productReleases.dat", std::ios::binary);
+std::fstream productReleaseFile("productReleases.dat", std::ios::binary);
 
 
 // Constants for data lengths (OLD: for string objects)
@@ -47,7 +47,7 @@ void initProduct() {
 // ---------------------------------------------------------
 // Function: initChangeRequest
 void initChangeRequest() {
-    std::ifstream changeRequestFile("changeRequests.dat", std::ios::binary);
+    std::fstream changeRequestFile("changeRequests.dat", std::ios::binary);
     if (!(changeRequestFile.is_open())) {
         std::cerr << "Failed to open changeRequests.dat file.\n";
     }
@@ -62,7 +62,7 @@ void initChangeItem() {
 // ---------------------------------------------------------
 // Function: initReportGen
 void initReportGen() {
-    std::ifstream userFile("users.dat", std::ios::binary);
+    std::fstream userFile("users.dat", std::ios::binary);
     if (!(userFile.is_open())) {
         std::cerr << "Failed to open users.dat file.\n";
     }

@@ -55,11 +55,12 @@ void testCreateProductRelease() {
 				 " the releaseID " << '"' << productRelease.releaseID << '"' << ',' << " and releaseDate " << 
 				 '"' << productRelease.releaseDate << '"' << std::endl;
 
-	// Run the function
+	// // Run the function
 	std::cout << "Running createProductRelease()..." << std::endl;
 
     // Store the attribute test data as product releases
     for (int i=0; i<NUM_TEST_PR; i++) {
+		//std::cout << attributes[i][PR_NAME] << " " << attributes[i][PR_RELEASE_ID] << " " << attributes[i][PR_RELEASE_DATE] << std::endl;
         createProductRelease(attributes[i][PR_NAME],attributes[i][PR_RELEASE_ID],attributes[i][PR_RELEASE_DATE]);
     }
 
@@ -67,8 +68,14 @@ void testCreateProductRelease() {
     for (int i=0; i<NUM_TEST_PR; i++) {
 		retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
 		std::cout << productRelease.productName << ", " << productRelease.releaseID << 
-					 ", " << productRelease.releaseDate << std::endl << std::endl;
+					 ", " << productRelease.releaseDate << std::endl;
 	}
+
+	// Close the product release file
+	closeProductReleaseFile();
+
+
+
 
 	// std::cout << "AFTER TEST: The product we retrieved and stored into our empty product is named " << 
 	// 			 '"' << product2.name << '"' << std::endl;
@@ -80,9 +87,6 @@ void testCreateProductRelease() {
 	// } else {
 	// 	std::cout << "failed" << std::endl;
 	// }
-	
-	// // Close the product file
-	// closeProductFile();
 }
 
 // ---------------------------------------------------------

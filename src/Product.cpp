@@ -124,6 +124,56 @@ void createProduct(const char* namePtr) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ============================================
 // Function Implementations: Product Release
 // ============================================
@@ -134,17 +184,22 @@ void openProductReleaseFile() {
 	// Note: trunc is ensuring that we test with an empty file: pre-condition followed
     productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
     
+	// // Check if empty
+	// productReleaseFile.clear();
+	// productReleaseFile.seekg(0,std::ios::end);
+	// std::cout << "Is the file empty? " << productReleaseFile.tellg() << std::endl;
+
 	// Check if file opening worked properly, exit if it didn't
 	if (!productReleaseFile.is_open()) exit(1);
 }
 
 // ---------------------------------------------------------
 // Function: closeProductReleaseFile
-// void closeProductReleaseFile() {
-//     if (productFile.is_open()) {
-//         productFile.close();
-//     }
-// }
+void closeProductReleaseFile() {
+    if (productReleaseFile.is_open()) {
+        productReleaseFile.close();
+    }
+}
 
 // ---------------------------------------------------------
 // Function: writeProductRelease
@@ -178,6 +233,7 @@ void seekToBeginningOfProductReleaseFile() {
 // ---------------------------------------------------------
 // Function: getNextProductRelease
 bool getNextProductRelease(ProductRelease& productRelease) {
+	// std::cout << "get next product release" << std::endl;
     if (!productReleaseFile.is_open()) return false;
     productReleaseFile.read(reinterpret_cast<char*>(&productRelease), sizeof(ProductRelease));
     return !productReleaseFile.fail();
@@ -203,6 +259,7 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
     ProductRelease tmpProductRelease;
 
 	seekToBeginningOfProductFile();
+	productReleaseFile.flush();
 
 	std::ifstream inFile(filename, std::ios::binary);
     if (!inFile) {
@@ -212,16 +269,17 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
     // Read each product from the file and compare its name with the target name
 	// std::cout << "before read loop" << std::endl;
-	int counter = 1;
+	// int counter = 1;
     while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
-		std::cout << "loop #" << counter << std::endl;
+		// std::cout << "loop #" << counter << std::endl;
 		std::cout << "We read: " << tmpProductRelease.productName << 
 					 " and " << tmpProductRelease.releaseID << std::endl;
-		std::cout << "We are currently checking for " << productReleaseName <<
-					 " and " << releaseID << std::endl;
+		// std::cout << "We are currently checking for " << productReleaseName <<
+		// 			 " and " << releaseID << std::endl;
+
+		// If in the inFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.productName, productReleaseName) == 0) &&
 			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
-            inFile.close();
 			
 			// Store the product into the product outside of the function
 			std::strcpy(productRelease.productName, tmpProductRelease.productName);
@@ -230,11 +288,10 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
             return true; // Product found
         }
-		counter++;
+		// counter++;
     }
 	// std::cout << "after read loop" << std::endl;
 
-    inFile.close();
     return false; // Product not found
 }
 
@@ -242,20 +299,15 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 // Function: createProductRelease
 
 // NOTE: DOESNT APPEND, CHECK DUPLICATE
-void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate) {
-    std::cout << "createProductRelease start" << std::endl;
-
-	// Variables
+void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate) {	// Variables
 	ProductRelease productRelease = {};
-	bool duplicateFlag = false;
-
 	// Store input strings to their corresponding attributes
 	std::strcpy(productRelease.productName, productName);
 	std::strcpy(productRelease.releaseID, releaseID);
 	std::strcpy(productRelease.releaseDate, releaseDate);
-
+	
 	// Set up the productRelease.dat file for writing
-    seekToBeginningOfProductFile();
+    seekToBeginningOfProductReleaseFile();
 
 	// Set up the tempFile for writing
 	std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
@@ -266,10 +318,10 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 
 	// Set up a temporary Product Release for looping through a file
 	ProductRelease tmpPR;	
+	// Set up duplicate flag
+	bool duplicateFlag = false;
 	// While there are products in the product.dat file...
-	int counter = 1;
     while (getNextProductRelease(tmpPR)) {
-		std::cout << "product loop round #" << counter << std::endl;
 		// If an entry exists in the file with the same key, set the duplicate
 		// flag to "true" to prevent "appending" a duplicate to the file
         if ((strcmp(tmpPR.productName, productName) == 0) &&
@@ -278,11 +330,12 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 			//std::cout << "duplicate!" << std::endl;
         }
 		
-		// Write the current product into the temp file
+		// Write the current product release into the temp file
         tempFile.write(reinterpret_cast<const char*>(&tmpPR), sizeof(ProductRelease));
-		counter++;
     }
-	// If no duplicate found, append productRelease to tempFile
+	tempFile.flush();
+
+	// // If no duplicate found, append productRelease to tempFile
 	if (!duplicateFlag) {
 		tempFile.seekp(0, std::ios::end);
 		// std::cout << "writing new prod release into temp file" << std::endl;
@@ -290,10 +343,7 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 		// std::cout << "post-write call" << std::endl;
 	}
 
-	// Close tempFile
-	tempFile.close();
-
-	// Replace original products.dat with temp.dat
+	// // Replace original products.dat with temp.dat
 	if (!duplicateFlag) {
 		// std::cout << "no duplicates found in product rel file" << std::endl;
 		if (remove("productReleases.dat") != 0) {
@@ -311,4 +361,31 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 	}
 
 	// std::cout << "Reached end of createProductRelease" << std::endl;
+}
+
+// Function: createProductRelease
+void createProductRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate) {
+    Product product;
+    std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
+    seekToBeginningOfProductFile();
+	// While there are products in the product.dat file...
+    while (getNextProduct(product)) {
+		// TBD: checking the productRelease file before adding more product releases
+		// If the name of the product retrieved from the file
+		// is the same as the product we are trying to insert
+        // if ((product.name == productName)) {
+        //     product.releases[releaseID] = releaseDate;
+        // }
+		
+		// Write the current product into the temp file
+        tempFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
+    }
+    closeProductFile();
+    tempFile.close();
+	// Deletes the previous products file
+    remove("products.dat");
+	// Updates the previous products file to a new one
+    rename("temp.dat", "products.dat");
+	// Message output for the user
+    std::cout << "Release " << releaseID << " for Product " << productName << " added successfully.\n";
 }
