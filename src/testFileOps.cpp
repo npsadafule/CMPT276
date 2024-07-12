@@ -62,9 +62,6 @@ void testCreateProductRelease() {
 		//std::cout << attributes[i][PR_NAME] << " " << attributes[i][PR_RELEASE_ID] << " " << attributes[i][PR_RELEASE_DATE] << std::endl;
         createProductRelease(attributes[i][PR_NAME],attributes[i][PR_RELEASE_ID],attributes[i][PR_RELEASE_DATE]);
     }
-
-	// Close the product release file
-	closeProductReleaseFile();
 	
 	// Read entries out of file, and tally correct outputs
 	std::cout << "AFTER TEST: The product releases we retrieved and stored into our empty product are the following:" << std::endl;
@@ -76,8 +73,8 @@ void testCreateProductRelease() {
 		retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
 		
 		// Count if desired product release was retrieved
-		if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == 0) &&
-			(std::strcmp(productRelease.releaseID, attributes[i][PR_RELEASE_ID]) == 0)) {
+		if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == STRCMP_TRUE) &&
+			(std::strcmp(productRelease.releaseID, attributes[i][PR_RELEASE_ID]) == STRCMP_TRUE)) {
 			correctTally++;
 		}
 
@@ -93,6 +90,9 @@ void testCreateProductRelease() {
 	} else {
 		std::cout << "failed" << std::endl;
 	}
+
+	// Close the product release file
+	closeProductReleaseFile();
 }
 
 // ---------------------------------------------------------
