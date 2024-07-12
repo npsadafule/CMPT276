@@ -286,8 +286,13 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
     // Read each product from the file and compare its name with the target name
 	// std::cout << "before read loop" << std::endl;
-    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+	// inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease));
 
+	// std::cout << ".good " << inFile.good() << " .eof " << inFile.eof() <<
+	// 			 " .fail() " << inFile.fail() << " .bad " << inFile.bad() << std::endl;
+
+
+    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
 		// If in the inFile, there exists an element that matches what we hope to retrieve
 		// std::cout << "read: " << tmpProductRelease.productName << ", " << tmpProductRelease.releaseID << std::endl;
 		// std::cout << "comparing: " << productReleaseName << ", " << releaseID << std::endl;

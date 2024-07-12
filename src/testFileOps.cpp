@@ -63,30 +63,36 @@ void testCreateProductRelease() {
         createProductRelease(attributes[i][PR_NAME],attributes[i][PR_RELEASE_ID],attributes[i][PR_RELEASE_DATE]);
     }
 
-	// // Read entries out of file
+	// Close the product release file
+	closeProductReleaseFile();
+	
+	// Read entries out of file, and tally correct outputs
+	std::cout << "AFTER TEST: The product releases we retrieved and stored into our empty product are the following:" << std::endl;
+
+	// Initialize tally
+	int correctTally = 0;
     for (int i=0; i<NUM_TEST_PR; i++) {
-		// std::cout << "search: " << attributes[i][PR_NAME] << ", " << attributes[i][PR_RELEASE_ID] << std::endl;
+		// Perform the retrieval
 		retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
+		
+		// Count if desired product release was retrieved
+		if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == 0) &&
+			(std::strcmp(productRelease.releaseID, attributes[i][PR_RELEASE_ID]) == 0)) {
+			correctTally++;
+		}
+
+		// Display to the user
 		std::cout << productRelease.productName << ", " << productRelease.releaseID << 
 					 ", " << productRelease.releaseDate << std::endl;
 	}
 
-	// Close the product release file
-	closeProductReleaseFile();
-
-
-
-
-	// std::cout << "AFTER TEST: The product we retrieved and stored into our empty product is named " << 
-	// 			 '"' << product2.name << '"' << std::endl;
-
-	// // Final evaluation
-	// std::cout << "Test evaluation: ";
-	// if (std::strcmp("testProduct", product2.name) == STRCMP_TRUE) {
-	// 	std::cout << "passed" << std::endl;
-	// } else {
-	// 	std::cout << "failed" << std::endl;
-	// }
+	// Final evaluation
+	std::cout << "Test evaluation: ";
+	if (correctTally == 5) {
+		std::cout << "passed" << std::endl;
+	} else {
+		std::cout << "failed" << std::endl;
+	}
 }
 
 // ---------------------------------------------------------
