@@ -1,6 +1,7 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
+#include <cstring>
 #include <string>
 #include <map>
 #include "ChangeItem.h"

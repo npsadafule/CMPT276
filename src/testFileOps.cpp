@@ -37,9 +37,6 @@ int main() {
 // ---------------------------------------------------------
 // Function: testCreateProduct
 void testCreateProductRelease() {
-	// Open the file
-	openProductReleaseFile();
-
 	// Define a 3x5 array of C-style strings contianing the attribute test data
     const char* attributes[5][3] = {
         {"A", "11", "2024-06-11"},
@@ -49,6 +46,9 @@ void testCreateProductRelease() {
         {"E", "15", "2024-06-15"}
     };
 
+	// Open the file
+	openProductReleaseFile();
+
 	// Pre-test initialization and output
 	ProductRelease productRelease = {"tmpName","tmpRelID","tmpRelDate"};
 	std::cout << "BEFORE TEST: Our 'empty' product on RAM has the name " << '"' << productRelease.productName << '"' << ',' <<
@@ -57,15 +57,15 @@ void testCreateProductRelease() {
 
 	// // Run the function
 	std::cout << "Running createProductRelease()..." << std::endl;
-
     // Store the attribute test data as product releases
     for (int i=0; i<NUM_TEST_PR; i++) {
 		//std::cout << attributes[i][PR_NAME] << " " << attributes[i][PR_RELEASE_ID] << " " << attributes[i][PR_RELEASE_DATE] << std::endl;
         createProductRelease(attributes[i][PR_NAME],attributes[i][PR_RELEASE_ID],attributes[i][PR_RELEASE_DATE]);
     }
 
-	// // Read "testProduct" out of file
+	// // Read entries out of file
     for (int i=0; i<NUM_TEST_PR; i++) {
+		// std::cout << "search: " << attributes[i][PR_NAME] << ", " << attributes[i][PR_RELEASE_ID] << std::endl;
 		retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
 		std::cout << productRelease.productName << ", " << productRelease.releaseID << 
 					 ", " << productRelease.releaseDate << std::endl;

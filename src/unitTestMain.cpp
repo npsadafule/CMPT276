@@ -40,6 +40,11 @@ int main() {
 // ---------------------------------------------------------
 // Function: testCreateProduct
 void testCreateProduct() {
+	// ORIGINAL TEST
+
+	// String we are testing
+	char testString[PRODUCT_NAME_LENGTH] = "adam";
+
 	// Open the file
 	openProductFile();
 
@@ -49,17 +54,17 @@ void testCreateProduct() {
 
 	// Run the function
 	std::cout << "Running createProduct()..." << std::endl;
-    createProduct("testProduct");
+    createProduct(testString);
 
-	// Read "testProduct" out of file
-	retrieveProductByName("products.dat", "testProduct", product2);
+	// Read "joey" out of file
+	retrieveProductByName("products.dat", testString, product2);
 
 	std::cout << "AFTER TEST: The product we retrieved and stored into our empty product is named " << 
 				 '"' << product2.name << '"' << std::endl;
 
 	// Final evaluation
 	std::cout << "Test evaluation: ";
-	if (std::strcmp("testProduct", product2.name) == STRCMP_TRUE) {
+	if (std::strcmp(testString, product2.name) == STRCMP_TRUE) {
 		std::cout << "passed" << std::endl;
 	} else {
 		std::cout << "failed" << std::endl;
@@ -67,6 +72,49 @@ void testCreateProduct() {
 	
 	// Close the product file
 	closeProductFile();
+
+	// ==========================================
+
+	// LOOPING TEST
+
+	// // String we are testing
+	// const char* attributes[5] = {
+	// 	"reagan","anthony","ed","zolensky","joeBiden"
+	// };
+
+	// // Open the file
+	// openProductFile();
+
+	// // Pre-test initialization and output
+	// Product product2 = {"tmpName"};
+	// std::cout << "BEFORE TEST: Our 'empty' product on RAM has the name " << '"' << product2.name << '"' << std::endl;
+
+	// // Run the function
+	// std::cout << "Running createProduct()..." << std::endl;
+	// for (int i=0; i<5; i++)
+	// {
+	// 	createProduct(attributes[i]);
+	// }
+
+	// // Read "joey" out of file
+	// for (int i=0; i<5; i++)
+	// {
+	// 	retrieveProductByName("products.dat", attributes[i], product2);
+	// 	std::cout << product2.name << std::endl;
+	// }
+	// std::cout << "AFTER TEST: The product we retrieved and stored into our empty product is named " << 
+	// 			 '"' << product2.name << '"' << std::endl;
+
+	// // Final evaluation
+	// std::cout << "Test evaluation: ";
+	// if (std::strcmp(attributes[4], product2.name) == STRCMP_TRUE) {
+	// 	std::cout << "passed" << std::endl;
+	// } else {
+	// 	std::cout << "failed" << std::endl;
+	// }
+	
+	// // Close the product file
+	// closeProductFile();
 }
 
 // ---------------------------------------------------------
