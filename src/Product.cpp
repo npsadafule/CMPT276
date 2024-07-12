@@ -362,30 +362,3 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 
 	// std::cout << "Reached end of createProductRelease" << std::endl;
 }
-
-// Function: createProductRelease
-void createProductRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate) {
-    Product product;
-    std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
-    seekToBeginningOfProductFile();
-	// While there are products in the product.dat file...
-    while (getNextProduct(product)) {
-		// TBD: checking the productRelease file before adding more product releases
-		// If the name of the product retrieved from the file
-		// is the same as the product we are trying to insert
-        // if ((product.name == productName)) {
-        //     product.releases[releaseID] = releaseDate;
-        // }
-		
-		// Write the current product into the temp file
-        tempFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
-    }
-    closeProductFile();
-    tempFile.close();
-	// Deletes the previous products file
-    remove("products.dat");
-	// Updates the previous products file to a new one
-    rename("temp.dat", "products.dat");
-	// Message output for the user
-    std::cout << "Release " << releaseID << " for Product " << productName << " added successfully.\n";
-}
