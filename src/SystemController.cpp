@@ -12,15 +12,17 @@ std::vector<User> users;
 std::map<std::string, ChangeRequest> changeRequests;
 // Global file streams
 std::fstream productFile("products.dat", std::ios::binary);
+std::ifstream productReleaseFile("productReleases.dat", std::ios::binary);
+
 
 // Constants for data lengths (OLD: for string objects)
-const int CHANGE_DESCRIPTION_LENGTH = 150;
-const int CHANGE_ID_LENGTH = 6;
-const int STATE_LENGTH = 10;
-const int USER_NAME_LENGTH = 30;
-const int PHONE_NUMBER_LENGTH = 30;
-const int EMAIL_LENGTH = 30;
-const int DEPARTMENT_LENGTH = 30;
+// const int CHANGE_DESCRIPTION_LENGTH = 150;
+// const int CHANGE_ID_LENGTH = 6;
+// const int STATE_LENGTH = 10;
+// const int USER_NAME_LENGTH = 30;
+// const int PHONE_NUMBER_LENGTH = 30;
+// const int EMAIL_LENGTH = 30;
+// const int DEPARTMENT_LENGTH = 30;
 
 // ============================================
 // Function Implementations
@@ -29,16 +31,13 @@ const int DEPARTMENT_LENGTH = 30;
 // ---------------------------------------------------------
 // Function: initProduct
 void initProduct() {
-    // Open the file for products
 	if (!(productFile.is_open())) {
 		// Check if we were unable to open the file
 		std::cerr << "Failed to open products.dat file.\n";
 
     }
 
-	// Open the file for product releases
-	std::ifstream productReleasesFile("productReleases.dat", std::ios::binary);
-	if (!(productReleasesFile.is_open())) {
+	if (!(productReleaseFile.is_open())) {
 		// Check if we were unable to open the file
 		std::cerr << "Failed to open productReleases.dat file.\n";
 

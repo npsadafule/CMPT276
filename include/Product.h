@@ -25,7 +25,7 @@ struct ProductRelease {
 };
 
 // ============================================
-// Function Declarations
+// Function Declarations: Product
 // ============================================
 void openProductFile();
 void closeProductFile();
@@ -35,7 +35,21 @@ bool getNextProduct(Product& product);
 void readProductFile(const char* filename, Product& product);
 bool retrieveProductByName(const char* filename, const char* productName, Product& product);
 
-void createProduct(const char* namePtr);
-void createProductRelease(const std::string& productName, const std::string& releaseID, const std::string& releaseDate);
+// NOTE: DOESNT APPEND, CHECK DUPLICATE
+void createProduct(const char* namePtr); 
+
+// ============================================
+// Function Declarations: Product Release
+// ============================================
+void openProductReleaseFile();
+void closeProductReleaseFile();
+void writeProductRelease(const ProductRelease& productRelease);
+void seekToBeginningOfProductReleaseFile();
+bool getNextProductRelease(ProductRelease& productRelease);
+void readProductReleaseFile(const char* filename, ProductRelease& productRelease);
+bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease);
+
+// NOTE: DOESNT APPEND, CHECK DUPLICATE
+void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate);
 
 #endif // PRODUCT_H

@@ -20,10 +20,10 @@ void handleProductMaintenance(int choice) {
     switch (choice) {
         case 1: {
 		// Scenario 4.1: Creating a Product
-            char productName[PROD_NAME_LEN];
+            char productName[PRODUCT_NAME_LENGTH];
             std::cout << "\nEnter the Product Name (max 30 char): \n \n";
             std::cin.ignore();
-            std::cin.getline(productName,PROD_NAME_LEN);
+            std::cin.getline(productName,PRODUCT_NAME_LENGTH);
             std::cout << "\nAre you sure you want to add the product " << productName << " (Y/N)? \n \n";
             std::cin >> X;
             if (X == 'Y') {
@@ -41,28 +41,28 @@ void handleProductMaintenance(int choice) {
         }
         case 2: {
 		// Scenario 4.2: Creating a Release of a Product
-            std::string productName, releaseID, releaseDate;
-            std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
-            std::cin.ignore();
-            std::getline(std::cin, productName);
-            std::cout << "\nEnter the Release ID (max 30 char following your organization's format): \n \n";
-            std::getline(std::cin, releaseID);
-            std::cout << "\nEnter the Release Date (YYYY-MM-DD): \n \n";
-            std::getline(std::cin, releaseDate);
-            std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
-            std::cin >> X;
-            if (X == 'Y') {
-                createProductRelease(productName, releaseID, releaseDate);
-                std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
-                std::cin >> X;
-                if (X == 'Y') {
-                    handleProductMaintenance(CREATE_PROD_REL);
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+            // std::string productName, releaseID, releaseDate;
+            // std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
+            // std::cin.ignore();
+            // std::getline(std::cin, productName);
+            // std::cout << "\nEnter the Release ID (max 30 char following your organization's format): \n \n";
+            // std::getline(std::cin, releaseID);
+            // std::cout << "\nEnter the Release Date (YYYY-MM-DD): \n \n";
+            // std::getline(std::cin, releaseDate);
+            // std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
+            // std::cin >> X;
+            // if (X == 'Y') {
+            //     createRelease(productName, releaseID, releaseDate);
+            //     std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
+            //     std::cin >> X;
+            //     if (X == 'Y') {
+            //         handleProductMaintenance(CREATE_PROD_REL);
+            //     } else {
+            //         break;
+            //     }
+            // } else {
+            //     break;
+            // }
         }
         case 0: 
             activateUI();
