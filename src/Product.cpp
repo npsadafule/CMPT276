@@ -118,9 +118,30 @@ void createProduct(const char* namePtr) {
 
 	//std::cout << "createProduct: the product we received was named " << product.name << std::endl;
 
-	// Write it to file
-    seekToBeginningOfProductFile();
-    writeProduct(product);
+	// Check if the product is on the file
+	bool productExists = false;
+
+	Product tmpProduct;
+
+	seekToBeginningOfProductFile();
+	
+	std::ifstream inFile("products.dat", std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        exit(1);
+    }
+
+	while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
+        if (std::strcmp(tmpProduct.name, namePtr) == 0) {
+			productExists = true;
+            inFile.close();
+        }
+    }
+
+	// If the product doesn't exist, append it to the end of the file
+    if (!productExists) {
+		writeProduct(product);
+	}	
 }
 
 
