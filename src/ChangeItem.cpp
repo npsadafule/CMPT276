@@ -38,132 +38,139 @@ void openChangeItemFile() {
 // ---------------------------------------------------------
 // Function: closeProductFile
 void closeChangeItemFile() {
-    // if (productFile.is_open()) {
-    //     productFile.close();
-    // }
+    if (changeItemFile.is_open()) {
+        changeItemFile.close();
+    }
 }
 
 // ---------------------------------------------------------
 // Function: writeProduct
-void writeChangeItem(const ChangeItem& ChangeItem) {
-    // if (!productFile.is_open()) return;
+void writeChangeItem(const ChangeItem& changeItem) {
+    if (!changeItemFile.is_open()) return;
 
-	// // Get the character address of the product struct, write it a byte at a time (char),
-	// // writing "sizeof(Product)" amount of bytes  
-	// // Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
-    // productFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
+	// Get the character address of the product struct, write it a byte at a time (char),
+	// writing "sizeof(Product)" amount of bytes  
+	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
+    changeItemFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
 
-	// // Check if we ran out of disk space; exit if we have
-	// if (!productFile.good()) exit(1);
+	// Check if we ran out of disk space; exit if we have
+	if (!changeItemFile.good()) exit(1);
 }
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
 void seekToBeginningOfChangeItemFile() {
-    // if (!productFile.is_open()) return;
+    if (!changeItemFile.is_open()) return;
 
-	// // Reset internal flags
-    // productFile.clear();
+	// Reset internal flags
+    changeItemFile.clear();
 
-	// // Set the position in the input sequence to the beginning of the file
-	// // Zero offest from the beginning of the file
-    // productFile.seekg(0, std::ios::beg);
+	// Set the position in the input sequence to the beginning of the file
+	// Zero offest from the beginning of the file
+    changeItemFile.seekg(0, std::ios::beg);
 }
 
 // ---------------------------------------------------------
-// Function: getNextProduct
-bool getNextChangeItem(const ChangeItem& ChangeItem) {
-    // if (!productFile.is_open()) return false;
-    // productFile.read(reinterpret_cast<char*>(&product), sizeof(Product));
-    // return !productFile.fail();
-}
+// // Function: getNextProduct
+// bool getNextChangeItem(const ChangeItem& changeItem) {
+//     // if (!productFile.is_open()) return false;
+//     // productFile.read(reinterpret_cast<char*>(&product), sizeof(Product));
+//     // return !productFile.fail();
+// }
 
-// For bringing up lists of products for reports
-void readChangeItemFile(const char* filename,
-						int changeID,
-						const char* productName,
-						const char* description,
-						const char* anticipatedReleaseID,
-						const char* state) {
-    // std::ifstream inFile(filename, std::ios::binary);
-    // if (!inFile) {
-    //     std::cerr << "Failed to open file for reading!" << std::endl;
-    //     return;
-    // }
+// // For bringing up lists of products for reports
+// void readChangeItemFile(const char* filename,
+// 						int changeID,
+// 						const char* productName,
+// 						const char* description,
+// 						const char* anticipatedReleaseID,
+// 						const char* state) {
+//     // std::ifstream inFile(filename, std::ios::binary);
+//     // if (!inFile) {
+//     //     std::cerr << "Failed to open file for reading!" << std::endl;
+//     //     return;
+//     // }
 
-    // while (inFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
-    //     std::cout << "Product Name: " << product.name << std::endl;
-    // }
-}
+//     // while (inFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
+//     //     std::cout << "Product Name: " << product.name << std::endl;
+//     // }
+// }
 
 // For retrieving a particular product with a particular name
-bool retrieveChangeItemByKey(const char* filename, int changeID) {
+bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem) {
+	ChangeItem tmpChangeItem;
 
-	// seekToBeginningOfProductFile();
+	seekToBeginningOfChangeItemFile();
 
-	// std::ifstream inFile(filename, std::ios::binary);
-    // if (!inFile) {
-    //     std::cerr << "Failed to open file for reading!" << std::endl;
-    //     return false;
-    // }
+	std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        return false;
+    }
 
-    // // Read each product from the file and compare its name with the target name
-    // while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
-    //     if (std::strcmp(tmpProduct.name, productName) == 0) {
-    //         inFile.close();
+    // Read each product from the file and compare its name with the target name
+    while (inFile.read(reinterpret_cast<char*>(&tmpChangeItem), sizeof(ChangeItem))) {
+        if (tmpChangeItem.changeID == changeID) {
+            inFile.close();
 			
-	// 		// Store the product into the product outside of the function
-	// 		std::strcpy(product.name, tmpProduct.name);
+			// Store the product into the product outside of the function
+			changeItem.changeID = tmpChangeItem.changeID;
+			std::strcpy(changeItem.productName, tmpChangeItem.productName);
+			std::strcpy(changeItem.description, tmpChangeItem.description);
+			std::strcpy(changeItem.anticipatedReleaseID, tmpChangeItem.anticipatedReleaseID);
+			std::strcpy(changeItem.state, tmpChangeItem.state);
 
-    //         return true; // Product found
-    //     }
-    // }
+            return true; // Product found
+        }
+    }
 
-    // inFile.close();
-    // return false; // Product not found
+    inFile.close();
+    return false; // Product not found
 }
 
 // ---------------------------------------------------------
-// Function: createProduct
-
-// NOTE: DOESNT APPEND, CHECK DUPLICATE
+// Function: createChangeItem
 void createChangeItem(int changeID,
 					  const char* productName,
 					  const char* description,
 					  const char* anticipatedReleaseID,
 					  const char* state) { 
-	// // Create the product
-    // Product product = {};
+	// Create a temp change item to be written
+    ChangeItem tmpCI = {};
 	
-	// // Store the string into product's name attribute
-	// std::strcpy(product.name, namePtr);
+	// // Store the attributes into tmpCI's fields
+	tmpCI.changeID = changeID;
+	std::strcpy(tmpCI.productName, productName);
+	std::strcpy(tmpCI.description, description);
+	std::strcpy(tmpCI.anticipatedReleaseID, anticipatedReleaseID);
+	std::strcpy(tmpCI.state, state);
 
 	// //std::cout << "createProduct: the product we received was named " << product.name << std::endl;
 
-	// // Check if the product is on the file
-	// bool productExists = false;
+	// Check if the product is on the file
+	bool changeItemExists = false;
 
-	// Product tmpProduct;
+	ChangeItem tmpReadCI;
 
-	// seekToBeginningOfProductFile();
+	seekToBeginningOfChangeItemFile();
 	
-	// std::ifstream inFile("products.dat", std::ios::binary);
-    // if (!inFile) {
-    //     std::cerr << "Failed to open file for reading!" << std::endl;
-    //     exit(1);
-    // }
+	std::ifstream inFile("changeItems.dat", std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open change item file for reading!" << std::endl;
+        exit(1);
+    }
 
-	// while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
-    //     if (std::strcmp(tmpProduct.name, namePtr) == 0) {
-	// 		productExists = true;
-    //     }
-    // }
-	// inFile.close();
+	while (inFile.read(reinterpret_cast<char*>(&tmpReadCI), sizeof(ChangeItem))) {
+        if (tmpReadCI.changeID == tmpCI.changeID) {
+			changeItemExists = true;
+        }
+    }
+	inFile.close();
 
-	// // If the product doesn't exist, append it to the end of the file
-    // if (!productExists) {
-	// 	writeProduct(product);
-	// }	
+	// If the change item doesn't exist, append it to the end of the file
+    if (!changeItemExists) {
+		writeChangeItem(tmpCI);
+	}	
 }
 
 // ---------------------------------------------------------

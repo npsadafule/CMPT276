@@ -135,17 +135,54 @@ void testCreateChangeItem() {
 	openChangeItemFile();
 
 	// Pre-test initialization and output
-	ChangeItem tData = {1682, "testProdName", "testDesc", "AJK3", "Reported"};
+	ChangeItem displayCI = {1682, "testProdName", "testDesc", "AJK3", "Reported"};
 
-	std::cout << "BEFORE tmp change item: " << intToCString(tData.changeID) << " " << tData.productName <<
-				 " " << tData.description << " " << tData.anticipatedReleaseID << " " << 
-				 tData.state << std::endl;
+	std::cout << "BEFORE tmp change item: " << intToCString(displayCI.changeID) << " " << displayCI.productName <<
+				 " " << displayCI.description << " " << displayCI.anticipatedReleaseID << " " << 
+				 displayCI.state << std::endl;
 	
 	// Run the function
-	// std::cout << "Running createChangeItem()..." << std::endl;
-    // createChangeItem(ChangeItem& inCI);
+	std::cout << "Running createChangeItem()..." << std::endl;
+	for (int i=0; i<3; i++) {
+		createChangeItem(CITest[i].changeID,
+						 CITest[i].productName,
+						 CITest[i].description,
+						 CITest[i].anticipatedReleaseID,
+						 CITest[i].state);
+	}
 
-	
+	// Read entries out of file, and tally correct outputs
+	std::cout << "AFTER TEST: The change items we retrieved and stored into our empty product are the following:" << std::endl;
+
+	// Initialize tally
+	int correctTally = 0;
+    for (int i=0; i<3; i++) {
+		// Perform the retrieval
+		retrieveChangeItemByKey("changeItems.dat", CITest[i].changeID, displayCI);
+		
+		// Count if desired product release was retrieved
+		if (displayCI.changeID == CITest[i].changeID) {
+			correctTally++;
+		}
+
+		// Display to the user
+		std::cout << intToCString(displayCI.changeID) << 
+				  ", " << displayCI.productName << 
+				  ", " << displayCI.description << 
+				  ", " << displayCI.anticipatedReleaseID <<
+				  ", " << displayCI.state << std::endl;
+	}
+
+	// Final evaluation
+	std::cout << "Test evaluation: ";
+	if (correctTally == 3) {
+		std::cout << "passed" << std::endl;
+	} else {
+		std::cout << "failed" << std::endl;
+	}
+
+	// Close the change item file
+	closeChangeItemFile();
 }
 
 // ---------------------------------------------------------

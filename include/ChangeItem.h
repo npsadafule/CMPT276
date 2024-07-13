@@ -30,19 +30,19 @@ struct ChangeItem {
 // Function Declarations
 // ============================================
 
-const char* intToCString(int number);
+const char* intToCString(int number); // Essentially for displaying changeIDs
 void openChangeItemFile();
 void closeChangeItemFile();
-void writeChangeItem(const ChangeItem& ChangeItem);
+void writeChangeItem(const ChangeItem& changeItem);
 void seekToBeginningOfChangeItemFile();
-bool getNextChangeItem(const ChangeItem& ChangeItem);
-void readChangeItemFile(const char* filename,
-						int changeID,
-						const char* productName,
-						const char* description,
-						const char* anticipatedReleaseID,
-						const char* state);
-bool retrieveChangeItemByKey(const char* filename, int changeID);
+// bool getNextChangeItem(const ChangeItem& changeItem);
+// void readChangeItemFile(const char* filename,
+// 						int changeID,
+// 						const char* productName,
+// 						const char* description,
+// 						const char* anticipatedReleaseID,
+// 						const char* state);
+bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem);
 void createChangeItem(int changeID,
 					  const char* productName,
 					  const char* description,

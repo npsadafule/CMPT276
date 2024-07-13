@@ -85,7 +85,7 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
 
 	std::ifstream inFile(filename, std::ios::binary);
     if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
+        std::cerr << "Failed to open product file for reading!" << std::endl;
         return false;
     }
 
@@ -321,7 +321,7 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 
 	std::ifstream inFile("productReleases.dat", std::ios::binary);
     if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
+        std::cerr << "Failed to open product release file for reading!" << std::endl;
         exit(1);
     }
 
