@@ -70,6 +70,10 @@ void testCreateProduct() {
 	} else {
 		std::cout << "failed" << std::endl;
 	}
+
+	// Test sequential reading
+	seekToBeginningOfProductFile();
+	productFileDisplay20OrLess("products.dat");
 	
 	// Close the product file
 	closeProductFile();
@@ -113,6 +117,10 @@ void testCreateProduct() {
 	// 	std::cout << "failed" << std::endl;
 	// }
 	
+	// // Test sequential reading
+	// seekToBeginningOfProductFile();
+	// productFileDisplay20OrLess("products.dat");
+
 	// // Close the product file
 	// closeProductFile();
 

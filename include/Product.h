@@ -32,7 +32,8 @@ void closeProductFile();
 void writeProduct(const Product& product);
 void seekToBeginningOfProductFile();
 bool getNextProduct(Product& product);
-void readProductFile(const char* filename, Product& product);
+void displayProduct(const Product& product);
+void productFileDisplay20OrLess(const char* filename);
 bool retrieveProductByName(const char* filename, const char* productName, Product& product);
 void createProduct(const char* namePtr); 
 
@@ -44,7 +45,8 @@ void closeProductReleaseFile();
 void writeProductRelease(const ProductRelease& productRelease);
 void seekToBeginningOfProductReleaseFile();
 bool getNextProductRelease(ProductRelease& productRelease);
-void readProductReleaseFile(const char* filename, ProductRelease& productRelease);
+void displayProductRelease(const ProductRelease& productRelease);
+void productReleaseFileDisplay20OrLess(const char* filename);
 bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease);
 void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate);
 

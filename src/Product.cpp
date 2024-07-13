@@ -64,18 +64,29 @@ bool getNextProduct(Product& product) {
     return !productFile.fail();
 }
 
-// For bringing up lists of products for reports
-void readProductFile(const char* filename, Product& product) {
-    std::ifstream inFile(filename, std::ios::binary);
+void displayProduct(const Product& product) {
+	std::cout << product.name << std::endl;
+}
+
+void productFileDisplay20OrLess(const char* filename) {
+	const int MAX_READS = 20;
+
+	Product tmpProduct;
+
+	std::ifstream inFile(filename, std::ios::binary);
     if (!inFile) {
         std::cerr << "Failed to open file for reading!" << std::endl;
         return;
     }
 
-    while (inFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
-        std::cout << "Product Name: " << product.name << std::endl;
+	int counter = 0;
+    while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product)) &&
+		   counter < MAX_READS) {
+		displayProduct(tmpProduct);
+		counter++;
     }
 }
+
 
 // For retrieving a particular product with a particular name
 bool retrieveProductByName(const char* filename, const char* productName, Product& product) {
@@ -256,19 +267,31 @@ bool getNextProductRelease(ProductRelease& productRelease) {
     return !productReleaseFile.fail();
 }
 
-// ---------------------------------------------------------
-// For bringing up lists of products for reports
-// void readProductReleaseFile(const char* filename, ProductRelease& productRelease) {
-//     std::ifstream inFile(filename, std::ios::binary);
-//     if (!inFile) {
-//         std::cerr << "Failed to open file for reading!" << std::endl;
-//         return;
-//     }
+void displayProductRelease(const ProductRelease& productRelease) {
+	std::cout << productRelease.productName <<
+				 ", " << productRelease.releaseID <<
+				 ", " << productRelease.releaseDate << std::endl;
+}
 
-//     while (inFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
-//         std::cout << "Product Name: " << product.name << std::endl;
-//     }
-// }
+void productReleaseFileDisplay20OrLess(const char* filename) {
+	const int MAX_READS = 20;
+
+	ProductRelease tmpPR;
+
+    std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        return;
+    }
+
+	int counter = 0;
+    while (inFile.read(reinterpret_cast<char*>(&tmpPR), sizeof(ProductRelease)) &&
+		   counter < MAX_READS) {
+		displayProductRelease(tmpPR);
+		counter++;
+    }
+}
+
 
 // For retrieving a particular product with a particular name
 bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease) {
