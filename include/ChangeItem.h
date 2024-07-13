@@ -36,12 +36,8 @@ void closeChangeItemFile();
 void writeChangeItem(const ChangeItem& changeItem);
 void seekToBeginningOfChangeItemFile();
 // bool getNextChangeItem(const ChangeItem& changeItem);
-// void readChangeItemFile(const char* filename,
-// 						int changeID,
-// 						const char* productName,
-// 						const char* description,
-// 						const char* anticipatedReleaseID,
-// 						const char* state);
+void displayChangeItem(const ChangeItem& changeItem);
+void changeItemFileDisplay20OrLess(const char* filename);
 bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem);
 void createChangeItem(int changeID,
 					  const char* productName,

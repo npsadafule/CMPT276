@@ -181,6 +181,10 @@ void testCreateChangeItem() {
 		std::cout << "failed" << std::endl;
 	}
 
+	// Test sequential reading
+	seekToBeginningOfChangeItemFile();
+	changeItemFileDisplay20OrLess("changeItems.dat");
+
 	// Close the change item file
 	closeChangeItemFile();
 }

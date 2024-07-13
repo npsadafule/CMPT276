@@ -78,23 +78,34 @@ void seekToBeginningOfChangeItemFile() {
 //     // return !productFile.fail();
 // }
 
-// // For bringing up lists of products for reports
-// void readChangeItemFile(const char* filename,
-// 						int changeID,
-// 						const char* productName,
-// 						const char* description,
-// 						const char* anticipatedReleaseID,
-// 						const char* state) {
-//     // std::ifstream inFile(filename, std::ios::binary);
-//     // if (!inFile) {
-//     //     std::cerr << "Failed to open file for reading!" << std::endl;
-//     //     return;
-//     // }
+// For bringing up lists of products for reports
 
-//     // while (inFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
-//     //     std::cout << "Product Name: " << product.name << std::endl;
-//     // }
-// }
+void displayChangeItem(const ChangeItem& changeItem) {
+	std::cout << intToCString(changeItem.changeID) << 
+				  ", " << changeItem.productName << 
+				  ", " << changeItem.description << 
+				  ", " << changeItem.anticipatedReleaseID <<
+				  ", " << changeItem.state << std::endl;
+}
+
+void changeItemFileDisplay20OrLess(const char* filename) {
+	const int MAX_READS = 20;
+
+	ChangeItem tmpCI;
+
+    std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        return;
+    }
+
+	int counter = 0;
+    while (inFile.read(reinterpret_cast<char*>(&tmpCI), sizeof(ChangeItem)) &&
+		   counter < MAX_READS) {
+		displayChangeItem(tmpCI);
+		counter++;
+    }
+}
 
 // For retrieving a particular product with a particular name
 bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem) {
