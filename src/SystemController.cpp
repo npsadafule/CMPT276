@@ -11,9 +11,9 @@ std::vector<Product> products;
 std::vector<User> users;
 std::map<std::string, ChangeRequest> changeRequests;
 // Global file streams
-std::fstream productFile("products.dat", std::ios::binary);
-std::fstream productReleaseFile("productReleases.dat", std::ios::binary);
-
+std::fstream productFile;
+std::fstream productReleaseFile;
+std::fstream changeItemFile;
 
 // Constants for data lengths (OLD: for string objects)
 // const int CHANGE_DESCRIPTION_LENGTH = 150;
@@ -30,13 +30,15 @@ std::fstream productReleaseFile("productReleases.dat", std::ios::binary);
 
 // ---------------------------------------------------------
 // Function: initProduct
-void initProduct() {
+void initProduct(std::fstream& productFile, std::fstream& productReleaseFile) {
+	productFile.open("products.dat", std::ios::binary);
 	if (!(productFile.is_open())) {
 		// Check if we were unable to open the file
 		std::cerr << "Failed to open products.dat file.\n";
 
     }
 
+	productReleaseFile.open("productReleases.dat", std::ios::binary);
 	if (!(productReleaseFile.is_open())) {
 		// Check if we were unable to open the file
 		std::cerr << "Failed to open productReleases.dat file.\n";
@@ -55,8 +57,11 @@ void initChangeRequest() {
 
 // ---------------------------------------------------------
 // Function: initChangeItem
-void initChangeItem() {
-    std::cout << "Change items are initialized as part of products.\n";
+void initChangeItem(std::fstream& changeItemFile) {
+	changeItemFile.open("changeItems.dat", std::ios::binary);
+    if (!(changeItemFile.is_open())) {
+        std::cerr << "Failed to open changeRequests.dat file.\n";
+    }
 }
 
 // ---------------------------------------------------------
@@ -73,9 +78,9 @@ void initReportGen() {
 // ---------------------------------------------------------
 // Function: start
 void start() {
-    initProduct();
+    initProduct(productFile, productReleaseFile);
     initChangeRequest();
-    initChangeItem();
+    initChangeItem(changeItemFile);
     initReportGen();
 }
 

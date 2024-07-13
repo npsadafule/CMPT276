@@ -2,13 +2,13 @@
 #define CHANGEREQUEST_H
 
 #include <string>
+#include "Product.h"
 
 // ============================================
 // Data structures
 // ============================================
 struct ChangeRequest {
-    std::string profileName;
-    std::string productName; // needs to be removed
+    char productName[PRODUCT_NAME_LENGTH];
     std::string changeID;
     std::string description;
     std::string state;

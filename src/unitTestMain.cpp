@@ -74,7 +74,6 @@ void testCreateProduct() {
 	closeProductFile();
 
 	// ==========================================
-
 	// LOOPING TEST
 
 	// // String we are testing
@@ -115,6 +114,12 @@ void testCreateProduct() {
 	
 	// // Close the product file
 	// closeProductFile();
+
+	// ==========================================
+	// CHANGE ITEM TEST
+
+	
+
 }
 
 // ---------------------------------------------------------
