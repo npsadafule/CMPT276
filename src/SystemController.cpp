@@ -16,9 +16,7 @@ std::fstream productReleaseFile;
 std::fstream changeItemFile;
 
 // Constants for data lengths (OLD: for string objects)
-// const int CHANGE_DESCRIPTION_LENGTH = 150;
-// const int CHANGE_ID_LENGTH = 6;
-// const int STATE_LENGTH = 10;
+
 // const int USER_NAME_LENGTH = 30;
 // const int PHONE_NUMBER_LENGTH = 30;
 // const int EMAIL_LENGTH = 30;

@@ -122,6 +122,10 @@ void testCreateProduct() {
 
 }
 
+void testCreateChangeItem() {
+
+}
+
 // ---------------------------------------------------------
 // Function: testCreateMultipleProducts
 void testCreateMultipleProducts() {
@@ -168,7 +172,9 @@ void testUpdateChangeItem() {
 // ---------------------------------------------------------
 // Function: runAllTests
 void runAllTests() {
-    testCreateProduct();
+    // testCreateProduct();
+	testCreateChangeItem();
+	
     // testCreateMultipleProducts();
     // testCreateChangeRequest();
     // testQueryChangeItem();

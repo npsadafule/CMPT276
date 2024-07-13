@@ -4,7 +4,6 @@
 #include <cstring>
 #include <string>
 #include <map>
-#include "ChangeItem.h"
 
 // Constants
 // Note: 1 extra for the null terminator (using C-style strings)
