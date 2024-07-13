@@ -6,7 +6,7 @@
 // ============================================
 // Data structures
 // ============================================
-struct User {
+struct Requester {
     std::string name;
     std::string phoneNumber;
     std::string email;

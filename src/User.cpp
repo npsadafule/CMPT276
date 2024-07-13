@@ -2,6 +2,6 @@
 #include <vector>
 
 // Global variable definition
-extern std::vector<User> users;
+// extern std::vector<User> users;
 
 // No function implementations needed as per current requirements

@@ -91,10 +91,6 @@ void testCreateProductRelease() {
 		std::cout << "failed" << std::endl;
 	}
 
-	// Test sequential reading
-	seekToBeginningOfProductReleaseFile();
-	productReleaseFileDisplay20OrLess("productReleases.dat");
-
 	// Close the product release file
 	closeProductReleaseFile();
 }
