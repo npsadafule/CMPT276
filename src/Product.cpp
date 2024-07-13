@@ -107,8 +107,6 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
 
 // ---------------------------------------------------------
 // Function: createProduct
-
-// NOTE: DOESNT APPEND, CHECK DUPLICATE
 void createProduct(const char* namePtr) { 
 	// Create the product
     Product product = {};
@@ -305,8 +303,6 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
 // ---------------------------------------------------------
 // Function: createProductRelease
-
-// NOTE: DOESNT APPEND, CHECK DUPLICATE
 void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate) {	// Variables
 	// Create the product release
 	ProductRelease productRelease = {};

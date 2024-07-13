@@ -9,6 +9,7 @@
 #include "Report.h"
 #include "User.h"
 #include "SystemController.h"
+#include "ChangeItem.h"
 
 // Constants
 static const int STRCMP_TRUE = 0;
@@ -48,7 +49,7 @@ void testCreateProduct() {
 	// Open the file
 	openProductFile();
 
-	// Pre-test initialization and output
+	// Run the function
 	Product product2 = {"tmpName"};
 	std::cout << "BEFORE TEST: Our 'empty' product on RAM has the name " << '"' << product2.name << '"' << std::endl;
 
@@ -123,7 +124,28 @@ void testCreateProduct() {
 }
 
 void testCreateChangeItem() {
+	// Test data
+	const ChangeItem CITest[3] {
+		{1235, "Product A", "Sample description that runs on for a while", "R51B", "Reported"},
+		{4567, "Random stuff", "The quick brown fox jumps over the lazy dog", "AB12", "Reported"},
+		{6789, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
+	};
 
+	// Open the file
+	openChangeItemFile();
+
+	// Pre-test initialization and output
+	ChangeItem tData = {1682, "testProdName", "testDesc", "AJK3", "Reported"};
+
+	std::cout << "BEFORE tmp change item: " << intToCString(tData.changeID) << " " << tData.productName <<
+				 " " << tData.description << " " << tData.anticipatedReleaseID << " " << 
+				 tData.state << std::endl;
+	
+	// Run the function
+	// std::cout << "Running createChangeItem()..." << std::endl;
+    // createChangeItem(ChangeItem& inCI);
+
+	
 }
 
 // ---------------------------------------------------------
@@ -174,7 +196,7 @@ void testUpdateChangeItem() {
 void runAllTests() {
     // testCreateProduct();
 	testCreateChangeItem();
-	
+
     // testCreateMultipleProducts();
     // testCreateChangeRequest();
     // testQueryChangeItem();

@@ -34,8 +34,6 @@ void seekToBeginningOfProductFile();
 bool getNextProduct(Product& product);
 void readProductFile(const char* filename, Product& product);
 bool retrieveProductByName(const char* filename, const char* productName, Product& product);
-
-// NOTE: DOESNT APPEND, CHECK DUPLICATE
 void createProduct(const char* namePtr); 
 
 // ============================================
@@ -48,8 +46,6 @@ void seekToBeginningOfProductReleaseFile();
 bool getNextProductRelease(ProductRelease& productRelease);
 void readProductReleaseFile(const char* filename, ProductRelease& productRelease);
 bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease);
-
-// NOTE: DOESNT APPEND, CHECK DUPLICATE
 void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate);
 
 #endif // PRODUCT_H
