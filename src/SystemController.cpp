@@ -14,7 +14,9 @@ std::map<std::string, ChangeRequest> changeRequests;
 std::fstream requesterFile;
 std::fstream productFile;
 std::fstream productReleaseFile;
+std::fstream changeRequestFile;
 std::fstream changeItemFile;
+
 
 // ============================================
 // Function Implementations
@@ -50,7 +52,7 @@ void initProduct(std::fstream& productFile, std::fstream& productReleaseFile) {
 // ---------------------------------------------------------
 // Function: initChangeRequest
 void initChangeRequest() {
-    std::fstream changeRequestFile("changeRequests.dat", std::ios::binary);
+    changeRequestFile.open("changeRequests.dat", std::ios::binary);
     if (!(changeRequestFile.is_open())) {
         std::cerr << "Failed to open changeRequests.dat file.\n";
     }
