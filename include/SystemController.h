@@ -9,15 +9,16 @@
 
 // Extern declarations for global variables
 extern std::vector<Product> products;
-extern std::vector<User> users;
+// extern std::vector<User> users;
 extern std::map<std::string, ChangeRequest> changeRequests;
 
 // ============================================
 // Function Declarations
 // ============================================
-void initProduct();
+void initRequester(std::fstream& requesterFile);
+void initProduct(std::fstream& productFile, std::fstream& productReleaseFile);
 void initChangeRequest();
-void initChangeItem();
+void initChangeItem(std::fstream& changeItemFile);
 void initReportGen();
 void start();
 

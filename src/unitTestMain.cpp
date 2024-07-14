@@ -193,6 +193,60 @@ void testCreateChangeItem() {
 	closeChangeItemFile();
 }
 
+void testCreateRequester() {
+	// Test data
+	const Requester reqTest[3] {
+		{"joe", "6041237654", "fakeemail@yahoo.com", "Engineering"},
+		{"mama", "7784039872", "asedf@gmail.com", "N/A"}
+	};
+
+	// Open the file
+	openRequesterFile();
+
+	// Pre-test initialization and output
+	Requester displayReq = {"tmpName", "tmpNum", "tmpEmail", "tmpDep"};
+	std::cout << "BEFORE displayReq: " << displayReq.reqName << " " << displayReq.phoneNumber <<
+				 " " << displayReq.email << " " << displayReq.department << std::endl;
+
+	// Run the function
+	std::cout << "Running createRequester()..." << std::endl;
+    // Store the attribute test data as product releases
+    for (int i=0; i<3; i++) {
+        createRequester(reqTest[i].reqName,reqTest[i].phoneNumber,reqTest[i].email,reqTest[i].department);
+    }
+	
+	// // Read entries out of file, and tally correct outputs
+	// std::cout << "AFTER TEST: The product releases we retrieved and stored into our empty product are the following:" << std::endl;
+
+	// // Initialize tally
+	// int correctTally = 0;
+    // for (int i=0; i<NUM_TEST_PR; i++) {
+	// 	// Perform the retrieval
+	// 	retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
+		
+	// 	// Count if desired product release was retrieved
+	// 	if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == STRCMP_TRUE) &&
+	// 		(std::strcmp(productRelease.releaseID, attributes[i][PR_RELEASE_ID]) == STRCMP_TRUE)) {
+	// 		correctTally++;
+	// 	}
+
+	// 	// Display to the user
+	// 	std::cout << productRelease.productName << ", " << productRelease.releaseID << 
+	// 				 ", " << productRelease.releaseDate << std::endl;
+	// }
+
+	// // Final evaluation
+	// std::cout << "Test evaluation: ";
+	// if (correctTally == 5) {
+	// 	std::cout << "passed" << std::endl;
+	// } else {
+	// 	std::cout << "failed" << std::endl;
+	// }
+
+	// // Close the product release file
+	// closeProductReleaseFile();
+}
+
 // ---------------------------------------------------------
 // Function: testCreateMultipleProducts
 void testCreateMultipleProducts() {
@@ -241,6 +295,8 @@ void testUpdateChangeItem() {
 void runAllTests() {
     // testCreateProduct();
 	// testCreateChangeItem();
+	testCreateRequester();
+
 
     // testCreateMultipleProducts();
     // testCreateChangeRequest();

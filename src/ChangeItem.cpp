@@ -70,16 +70,7 @@ void seekToBeginningOfChangeItemFile() {
     changeItemFile.seekg(0, std::ios::beg);
 }
 
-// ---------------------------------------------------------
-// // Function: getNextProduct
-// bool getNextChangeItem(const ChangeItem& changeItem) {
-//     // if (!productFile.is_open()) return false;
-//     // productFile.read(reinterpret_cast<char*>(&product), sizeof(Product));
-//     // return !productFile.fail();
-// }
-
 // For bringing up lists of products for reports
-
 void displayChangeItem(const ChangeItem& changeItem) {
 	std::cout << intToCString(changeItem.changeID) << 
 				  ", " << changeItem.productName << 

@@ -10,7 +10,7 @@
 // ============================================
 struct Report {
     std::string changeID;
-    std::vector<User> users;
+    // std::vector<User> users;
 };
 
 // ============================================

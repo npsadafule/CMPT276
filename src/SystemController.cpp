@@ -8,23 +8,26 @@
 
 // Global variable definitions
 std::vector<Product> products;
-std::vector<User> users;
+// std::vector<User> users;
 std::map<std::string, ChangeRequest> changeRequests;
 // Global file streams
+std::fstream requesterFile;
 std::fstream productFile;
 std::fstream productReleaseFile;
 std::fstream changeItemFile;
 
-// Constants for data lengths (OLD: for string objects)
-
-// const int USER_NAME_LENGTH = 30;
-// const int PHONE_NUMBER_LENGTH = 30;
-// const int EMAIL_LENGTH = 30;
-// const int DEPARTMENT_LENGTH = 30;
-
 // ============================================
 // Function Implementations
 // ============================================
+
+// ---------------------------------------------------------
+// Function: initRequester
+void initRequester(std::fstream& requesterFile) {
+	requesterFile.open("requestersFile.dat", std::ios::binary);
+    if (!(requesterFile.is_open())) {
+        std::cerr << "Failed to open requestersFile.dat file.\n";
+    }
+}
 
 // ---------------------------------------------------------
 // Function: initProduct
@@ -76,6 +79,7 @@ void initReportGen() {
 // ---------------------------------------------------------
 // Function: start
 void start() {
+	initRequester(requesterFile);
     initProduct(productFile, productReleaseFile);
     initChangeRequest();
     initChangeItem(changeItemFile);

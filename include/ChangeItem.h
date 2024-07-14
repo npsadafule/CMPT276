@@ -20,9 +20,9 @@ const int STATE_LENGTH = 10 +1;
 // ============================================
 struct ChangeItem {
  	int changeID; // 6 digits, the primary key
-	char productName[PRODUCT_NAME_LENGTH];
+	char productName[PRODUCT_NAME_LENGTH]; // foreign to product
     char description[CHANGE_DESC_LENGTH];
-    char anticipatedReleaseID[RELEASE_ID_LENGTH];
+    char anticipatedReleaseID[RELEASE_ID_LENGTH]; // foreign to product release
     char state[STATE_LENGTH]; // Options: Reported, Assessed, InProgress, Done, Cancelled
 };
 
@@ -35,7 +35,6 @@ void openChangeItemFile();
 void closeChangeItemFile();
 void writeChangeItem(const ChangeItem& changeItem);
 void seekToBeginningOfChangeItemFile();
-// bool getNextChangeItem(const ChangeItem& changeItem);
 void displayChangeItem(const ChangeItem& changeItem);
 void changeItemFileDisplay20OrLess(const char* filename);
 bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem);
