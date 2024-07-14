@@ -12,46 +12,46 @@ extern std::fstream changeRequestFile;
 // ---------------------------------------------------------
 // Function: openChangeRequestFile
 void openChangeRequestFile() {
-	// // Note: trunc is ensuring that we test with an empty file: pre-condition followed
-    // requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+	// Note: trunc is ensuring that we test with an empty file: pre-condition followed
+    changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 
-	// // Check if file opening worked properly, exit if it didn't
-	// if (!requesterFile.is_open()) exit(1);
+	// Check if file opening worked properly, exit if it didn't
+	if (!changeRequestFile.is_open()) exit(1);
 }
 
 // ---------------------------------------------------------
 // Function: closeChangeRequestFile
 void closeChangeRequestFile() {
-    // if (requesterFile.is_open()) {
-    //     requesterFile.close();
-    // }
+    if (changeRequestFile.is_open()) {
+        changeRequestFile.close();
+    }
 }
 
 // ---------------------------------------------------------
 // Function: writeChangeRequest
 void writeChangeRequest(const ChangeRequest& changeRequest) {
- 	// if (!requesterFile.is_open()) return;
+ 	if (!changeRequestFile.is_open()) return;
 
-	// // Get the character address of the product struct, write it a byte at a time (char),
-	// // writing "sizeof(Product)" amount of bytes  
-	// // Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
-	// requesterFile.write(reinterpret_cast<const char*>(&requester), sizeof(Requester));
+	// Get the character address of the product struct, write it a byte at a time (char),
+	// writing "sizeof(Product)" amount of bytes  
+	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
+	changeRequestFile.write(reinterpret_cast<const char*>(&changeRequest), sizeof(ChangeRequest));
 
-	// // Check if we ran out of disk space; exit if we have
-	// if (!requesterFile.good()) exit(1);_cast<const char*>(&changeRequest), sizeof(ChangeRequest));
+	// Check if we ran out of disk space; exit if we have
+	if (!changeRequestFile.good()) exit(1);
 }
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfChangeRequestFile
 void seekToBeginningOfChangeRequestFile() {
- 	// if (!requesterFile.is_open()) return;
+ 	if (!changeRequestFile.is_open()) return;
 
-	// // Reset internal flags
-    // requesterFile.clear();
+	// Reset internal flags
+    changeRequestFile.clear();
 
-	// // Set the position in the input sequence to the beginning of the file
-	// // Zero offest from the beginning of the file
-    // requesterFile.seekg(0, std::ios::beg);
+	// Set the position in the input sequence to the beginning of the file
+	// Zero offest from the beginning of the file
+    changeRequestFile.seekg(0, std::ios::beg);
 }
 
 // ---------------------------------------------------------
@@ -63,33 +63,31 @@ void seekToBeginningOfChangeRequestFile() {
 // }
 
 bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const int changeID, ChangeRequest& changeRequest) {
-	// Requester tmpRequester;
+	ChangeRequest tmpCR;
 
-	// seekToBeginningOfRequesterFile();
+	seekToBeginningOfChangeRequestFile();
 
-	// std::ifstream inFile(filename, std::ios::binary);
-    // if (!inFile) {
-    //     std::cerr << "Failed to open requesters file for reading!" << std::endl;
-    //     return false;
-    // }
+	std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open change requests file for reading!" << std::endl;
+        return false;
+    }
 
-    // while (inFile.read(reinterpret_cast<char*>(&tmpRequester), sizeof(Requester))) {
-	// 	// If in the inFile, there exists an element that matches what we hope to retrieve
-    //     if (std::strcmp(tmpRequester.reqName, reqName) == 0) {
-	// 		inFile.close();
+    while (inFile.read(reinterpret_cast<char*>(&tmpCR), sizeof(ChangeRequest))) {
+		// If in the inFile, there exists an element that matches what we hope to retrieve
+        if ((std::strcmp(tmpCR.requesterName, reqName) == 0) && (tmpCR.changeID == changeID)) {
+			inFile.close();
 			
-	// 		// Store the product into the product outside of the function
-	// 		std::strcpy(requester.reqName, tmpRequester.reqName);
-	// 		std::strcpy(requester.phoneNumber, tmpRequester.phoneNumber);
-	// 		std::strcpy(requester.email, tmpRequester.email);
-	// 		std::strcpy(requester.department, tmpRequester.department);
+			// Store the change request into the change request outside of the function
+			std::strcpy(changeRequest.requesterName, reqName);
+			changeRequest.changeID = changeID;
 
-    //         return true; // Product found
-    //     }
-    // }
+            return true; // Change request found
+        }
+    }
 
-	// inFile.close();
-    // return false; // Product not found
+	inFile.close();
+    return false; // Product not found
 }
 
 // ---------------------------------------------------------
@@ -99,40 +97,41 @@ void createChangeRequest(const char* requesterName,
 						 const char* reportedRelease,
 						 const char* reportedDate,
 						 const char* priority) {
-    // // Create the requester
-	// Requester tmpReq = {};
+    // Create the change request
+	ChangeRequest tmpCR = {};
 	
-	// // Store input strings to their corresponding attributes
-	// std::strcpy(tmpReq.reqName, reqName);
-	// std::strcpy(tmpReq.phoneNumber, phoneNumber);
-	// std::strcpy(tmpReq.email, email);
-	// std::strcpy(tmpReq.department, department);
+	// Store input strings to their corresponding attributes
+	std::strcpy(tmpCR.requesterName, requesterName);
+	tmpCR.changeID = changeID;
+	std::strcpy(tmpCR.reportedRelease, reportedRelease);
+	std::strcpy(tmpCR.reportedDate, reportedDate);
+	std::strcpy(tmpCR.priority, priority);
 	
-	// // Write it to file
-	// bool requesterExists = false;
+	// Write it to file
+	bool CRExists = false;
 
-    // Requester tmpReadReq;
+    ChangeRequest tmpReadCR;
 
-	// seekToBeginningOfRequesterFile();
+	seekToBeginningOfChangeRequestFile();
 
-	// std::ifstream inFile("requestersFile.dat", std::ios::binary);
-    // if (!inFile) {
-    //     std::cerr << "Failed to open requester file for reading!" << std::endl;
-    //     exit(1);
-    // }
+	std::ifstream inFile("changeRequests.dat", std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open change requests file for reading!" << std::endl;
+        exit(1);
+    }
 
-    // // Read each requester from the file and compare its name with the target name
-    // while (inFile.read(reinterpret_cast<char*>(&tmpReadReq), sizeof(Requester))) {
-    //     if (std::strcmp(tmpReadReq.reqName, reqName) == 0) {
-	// 		requesterExists = true;
-    //     }
-    // }
-	// inFile.close();
+    // Read each requester from the file and compare its name with the target name
+    while (inFile.read(reinterpret_cast<char*>(&tmpReadCR), sizeof(ChangeRequest))) {
+        if ((std::strcmp(tmpReadCR.requesterName, requesterName) == 0) && (tmpReadCR.changeID == changeID)) {
+			CRExists = true;
+        }
+    }
+	inFile.close();
 	
-	// // If the requester doesn't exist, append it to the end of the file
-    // if (!requesterExists) {
-	// 	writeRequester(tmpReq);
-	// }	
+	// If the requester doesn't exist, append it to the end of the file
+    if (!CRExists) {
+		writeChangeRequest(tmpCR);
+	}	
 }
 
 // ---------------------------------------------------------

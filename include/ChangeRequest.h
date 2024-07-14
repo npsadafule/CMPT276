@@ -29,8 +29,7 @@ void closeChangeRequestFile();
 void writeChangeRequest(const ChangeRequest& changeRequest);
 void seekToBeginningOfChangeRequestFile();
 // bool getNextChangeRequest(ChangeRequest& changeRequest);
-// Do not need to display change requests (display functions would go here...
-// based on other modules.
+// No display functions (display functions would go here based on other modules).
 bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const int changeID, ChangeRequest& changeRequest);
 void createChangeRequest(const char* requesterName,
 						 const int changeID,
