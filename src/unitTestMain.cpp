@@ -355,10 +355,10 @@ void testUpdateChangeItem() {
 // ---------------------------------------------------------
 // Function: runAllTests
 void runAllTests() {
-    // testCreateProduct();
+    testCreateProduct();
 	// testCreateChangeItem();
 	// testCreateRequester();
-	testCreateChangeRequest();
+	// testCreateChangeRequest();
 
     // testCreateMultipleProducts();
     // testCreateChangeRequest();

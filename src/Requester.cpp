@@ -14,7 +14,6 @@ extern std::fstream requesterFile;
 // ---------------------------------------------------------
 // Function: openRequesterFile
 void openRequesterFile() {
-	// Note: trunc is ensuring that we test with an empty file: pre-condition followed
     requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 
 	// Check if file opening worked properly, exit if it didn't

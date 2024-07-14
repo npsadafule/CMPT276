@@ -12,7 +12,6 @@ extern std::fstream changeRequestFile;
 // ---------------------------------------------------------
 // Function: openChangeRequestFile
 void openChangeRequestFile() {
-	// Note: trunc is ensuring that we test with an empty file: pre-condition followed
     changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 
 	// Check if file opening worked properly, exit if it didn't

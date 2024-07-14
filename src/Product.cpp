@@ -14,7 +14,6 @@ extern std::fstream productReleaseFile;
 // ---------------------------------------------------------
 // Function: openProductFile
 void openProductFile() {
-	// Note: trunc is ensuring that we test with an empty file: pre-condition followed
     productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
@@ -203,7 +202,6 @@ void createProduct(const char* namePtr) {
 // ---------------------------------------------------------
 // Function: openProductReleaseFile
 void openProductReleaseFile() {
-	// Note: trunc is ensuring that we test with an empty file: pre-condition followed
     productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't

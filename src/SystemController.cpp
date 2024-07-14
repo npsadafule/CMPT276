@@ -25,57 +25,56 @@ std::fstream changeItemFile;
 // ---------------------------------------------------------
 // Function: initRequester
 void initRequester(std::fstream& requesterFile) {
-	requesterFile.open("requestersFile.dat", std::ios::binary);
+    requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!(requesterFile.is_open())) {
         std::cerr << "Failed to open requestersFile.dat file.\n";
+		exit(1);
     }
 }
 
 // ---------------------------------------------------------
 // Function: initProduct
 void initProduct(std::fstream& productFile, std::fstream& productReleaseFile) {
-	productFile.open("products.dat", std::ios::binary);
+    productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 	if (!(productFile.is_open())) {
 		// Check if we were unable to open the file
 		std::cerr << "Failed to open products.dat file.\n";
+		exit(1);
 
     }
 
-	productReleaseFile.open("productReleases.dat", std::ios::binary);
-	if (!(productReleaseFile.is_open())) {
+	productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+	if (!(productFile.is_open())) {
 		// Check if we were unable to open the file
-		std::cerr << "Failed to open productReleases.dat file.\n";
-
+		std::cerr << "Failed to open products.dat file.\n";
+		exit(1);
     }
 }
 
 // ---------------------------------------------------------
 // Function: initChangeRequest
 void initChangeRequest() {
-    changeRequestFile.open("changeRequests.dat", std::ios::binary);
+    changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!(changeRequestFile.is_open())) {
         std::cerr << "Failed to open changeRequests.dat file.\n";
+		exit(1);
     }
 }
 
 // ---------------------------------------------------------
 // Function: initChangeItem
 void initChangeItem(std::fstream& changeItemFile) {
-	changeItemFile.open("changeItems.dat", std::ios::binary);
+    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!(changeItemFile.is_open())) {
-        std::cerr << "Failed to open changeRequests.dat file.\n";
+        std::cerr << "Failed to open changeItem.dat file.\n";
+		exit(1);
     }
 }
 
 // ---------------------------------------------------------
 // Function: initReportGen
 void initReportGen() {
-    std::fstream userFile("users.dat", std::ios::binary);
-    if (!(userFile.is_open())) {
-        std::cerr << "Failed to open users.dat file.\n";
-    }
-
-	
+	// TBD
 }
 
 // ---------------------------------------------------------
