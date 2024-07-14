@@ -34,18 +34,18 @@ int readIntegerInput(MenuFuncPtr func, int min, int max) {
     int choice;
 
     // Prompt the user
-	system("clear");
+	// system("clear");
 	func();
-    std::cout << "Enter the number you want [" << min << "-" << max << "]: ";
+	std::cout << "Choose an option [" << min << "-" << max << "] and press ENTER: ";
 
     // Read the integer input and validate
     while (!(std::cin >> choice) || choice < min || choice > max) {
         std::cin.clear(); // Clear the error flag
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
-		system("clear");
-		std::cout << "Invalid input. Please enter a number between " << min << " and " << max << ".\n";
+		// system("clear");
+		std::cout << "\nInvalid input. Please enter a number between " << min << " and " << max << ".";
 		func();
-        std::cout << "Enter the number you want [" << min << "-" << max << "]: ";
+        std::cout << "Choose an option [" << min << "-" << max << "] and press ENTER: ";
     }
 
     // Clear input buffer
@@ -96,22 +96,34 @@ void displayReportGeneration() {
 // Function: activateUI
 void activateUI() {
     int choice = -1;
+	int subchoice = -1;
     do {
         choice = readIntegerInput(displayMainMenu,0,4);
         switch (choice) {
             case 1: 
-                choice = readIntegerInput(displayProductMaintenance,0,2);
-                handleProductMaintenance(choice); break;
-        
+                subchoice = readIntegerInput(displayProductMaintenance,0,2);
+				if (subchoice != 0) {
+					handleProductMaintenance(subchoice); 
+				}
+				break;
             case 2: 
-				choice = readIntegerInput(displayChangeRequestMaintenance,0,1);
-                handleChangeRequestMaintenance(choice); break;
+				subchoice = readIntegerInput(displayChangeRequestMaintenance,0,1);
+				if (subchoice != 0) {
+                	handleChangeRequestMaintenance(subchoice); 
+				}
+				break;
             case 3: 
-				choice = readIntegerInput(displayChangeItemMaintenance,0,2);
-                handleChangeItemMaintenance(choice); break;
+				subchoice = readIntegerInput(displayChangeItemMaintenance,0,2);
+				if (subchoice != 0) {
+					handleChangeItemMaintenance(subchoice);
+				}
+				break;
             case 4: 
-				choice = readIntegerInput(displayReportGeneration,0,2);
-                handleReportGeneration(choice); break;
+				subchoice = readIntegerInput(displayReportGeneration,0,2);
+				if (subchoice != 0) {
+					handleReportGeneration(subchoice);
+				}
+				break;
             case 0: 
                 shutdown();
                 std::cout << "Thank you for using the Issue Tracking System.\n"; 

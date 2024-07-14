@@ -66,9 +66,6 @@ void handleProductMaintenance(int choice) {
                 break;
             }
         }
-        case 0: 
-            activateUI();
-            break;
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }
@@ -78,7 +75,7 @@ void handleProductMaintenance(int choice) {
 // Function: handleChangeRequestMaintenance
 void handleChangeRequestMaintenance(int choice) {
     // std::vector<User> users; // Declare the 'users' variable
-    // switch (choice) {
+    switch (choice) {
     //     case 1: {
 	// 	// Scenario 4.3: Create Change Request
     //         std::string profileName, productName, changeID, description, anticipatedReleaseID;
@@ -113,12 +110,9 @@ void handleChangeRequestMaintenance(int choice) {
     //         createChangeRequest(profileName, productName, changeID, description, anticipatedReleaseID);
     //         break;
     //     }
-    //     case 0: 
-    //         activateUI();
-    //         break;
-    //     default: 
-    //         std::cout << "Invalid choice. Please try again.\n";
-    // }
+        default: 
+            std::cout << "Invalid choice. Please try again.\n";
+    }
 }
 
 // ---------------------------------------------------------
@@ -149,9 +143,6 @@ void handleChangeItemMaintenance(int choice) {
             updateChangeRequest(productName, changeID, newState);
             break;
         }
-        case 0: 
-            activateUI();
-            break;
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }
@@ -181,9 +172,6 @@ void handleReportGeneration(int choice) {
             generateReport2(changeID);
             break;
         }
-        case 0: 
-            activateUI();
-            break;
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }
