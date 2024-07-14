@@ -5,6 +5,7 @@
 // Function Declarations
 // ============================================
 void start();
+int readIntegerInput(int min, int max);
 void activateUI();
 void shutdown();
 
