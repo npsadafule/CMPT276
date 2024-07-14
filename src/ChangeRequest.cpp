@@ -79,8 +79,11 @@ bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const
 			inFile.close();
 			
 			// Store the change request into the change request outside of the function
-			std::strcpy(changeRequest.requesterName, reqName);
-			changeRequest.changeID = changeID;
+			std::strcpy(changeRequest.requesterName, tmpCR.requesterName);
+			changeRequest.changeID = tmpCR.changeID;
+			std::strcpy(changeRequest.reportedRelease, tmpCR.reportedRelease);
+			std::strcpy(changeRequest.reportedDate, tmpCR.reportedDate);
+			std::strcpy(changeRequest.priority, tmpCR.priority);
 
             return true; // Change request found
         }
