@@ -21,9 +21,20 @@ void handleProductMaintenance(int choice) {
         case 1: {
 			// Scenario 4.1: Creating a Product - duplication prevention logic not implemented
             char productName[PRODUCT_NAME_LENGTH];
+
+
+			// ABOUT TO IMPLEMENT READ FUNCTION
             std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n \n";
-            std::cin.ignore();
-            std::cin.getline(productName,PRODUCT_NAME_LENGTH);
+  			std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+			while (std::cin.fail())
+			{
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+				std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
+				std::cout << "Enter the Product Name (max 30 char, must not exist): \n \n";
+  				std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+			}
+
             std::cout << "\nAre you sure you want to add the product " << productName << " (Y/N)? \n \n";
             std::cin >> X;
             if (X == 'Y') {
