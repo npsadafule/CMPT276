@@ -2,7 +2,7 @@
 #include "Product.h"
 #include "ChangeRequest.h"
 #include "Report.h"
-#include "User.h"
+#include "Requester.h"
 #include <iostream>
 #include <fstream>
 

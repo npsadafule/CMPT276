@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "User.h"
+#include "Requester.h"
 
 // ============================================
 // Data structures

@@ -1,6 +1,6 @@
 #include "Report.h"
 #include "Product.h"
-#include "User.h"
+#include "Requester.h"
 #include <iostream>
 #include <fstream>
 

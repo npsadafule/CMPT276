@@ -7,7 +7,7 @@
 #include "Product.h"
 #include "ChangeRequest.h"
 #include "Report.h"
-#include "User.h"
+#include "Requester.h"
 #include "SystemController.h"
 #include "ChangeItem.h"
 
@@ -195,7 +195,7 @@ void testCreateChangeItem() {
 
 void testCreateRequester() {
 	// Test data
-	const Requester reqTest[3] {
+	const Requester reqTest[2] {
 		{"joe", "6041237654", "fakeemail@yahoo.com", "Engineering"},
 		{"mama", "7784039872", "asedf@gmail.com", "N/A"}
 	};
@@ -211,40 +211,45 @@ void testCreateRequester() {
 	// Run the function
 	std::cout << "Running createRequester()..." << std::endl;
     // Store the attribute test data as product releases
-    for (int i=0; i<3; i++) {
+    for (int i=0; i<2; i++) {
         createRequester(reqTest[i].reqName,reqTest[i].phoneNumber,reqTest[i].email,reqTest[i].department);
     }
 	
-	// // Read entries out of file, and tally correct outputs
-	// std::cout << "AFTER TEST: The product releases we retrieved and stored into our empty product are the following:" << std::endl;
+	// Read entries out of file, and tally correct outputs
+	std::cout << "AFTER TEST: The requesters we retrieved and stored into our empty product are the following:" << std::endl;
 
-	// // Initialize tally
-	// int correctTally = 0;
-    // for (int i=0; i<NUM_TEST_PR; i++) {
-	// 	// Perform the retrieval
-	// 	retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
+	// Initialize tally
+	int correctTally = 0;
+    for (int i=0; i<2; i++) {
+		// Perform the retrieval
+		retrieveRequesterByKey("requestersFile.dat", reqTest[i].reqName, displayReq);
 		
-	// 	// Count if desired product release was retrieved
-	// 	if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == STRCMP_TRUE) &&
-	// 		(std::strcmp(productRelease.releaseID, attributes[i][PR_RELEASE_ID]) == STRCMP_TRUE)) {
-	// 		correctTally++;
-	// 	}
+		// Count if desired product release was retrieved
+		if ((std::strcmp(displayReq.reqName, reqTest[i].reqName) == STRCMP_TRUE)) {
+			correctTally++;
+		}
 
-	// 	// Display to the user
-	// 	std::cout << productRelease.productName << ", " << productRelease.releaseID << 
-	// 				 ", " << productRelease.releaseDate << std::endl;
-	// }
+		// Display to the user
+		std::cout << displayReq.reqName << 
+					 ", " << displayReq.phoneNumber << 
+					 ", " << displayReq.email <<
+					 ", " << displayReq.department << std::endl;
+	}
 
-	// // Final evaluation
-	// std::cout << "Test evaluation: ";
-	// if (correctTally == 5) {
-	// 	std::cout << "passed" << std::endl;
-	// } else {
-	// 	std::cout << "failed" << std::endl;
-	// }
+	// Final evaluation
+	std::cout << "Test evaluation: ";
+	if (correctTally == 2) {
+		std::cout << "passed" << std::endl;
+	} else {
+		std::cout << "failed" << std::endl;
+	}
 
-	// // Close the product release file
-	// closeProductReleaseFile();
+	// Test sequential reading
+	seekToBeginningOfRequesterFile();
+	requesterFileDisplay20OrLess("requestersFile.dat");
+
+	// Close the product release file
+	closeRequesterFile();
 }
 
 // ---------------------------------------------------------

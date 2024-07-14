@@ -1,5 +1,5 @@
-#ifndef USER_H
-#define USER_H
+#ifndef REQUESTER_H
+#define REQUESTER_H
 
 #include <string>
 
@@ -34,4 +34,4 @@ void createRequester(const char* reqName,
 					 const char* phoneNumber,
 					 const char* email,
 					 const char* department);
-#endif // USER_H
+#endif // REQUESTER_H

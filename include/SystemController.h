@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include "Product.h"
-#include "User.h"
+#include "Requester.h"
 #include "ChangeRequest.h"
 
 // Extern declarations for global variables

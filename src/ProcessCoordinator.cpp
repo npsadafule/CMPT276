@@ -2,7 +2,7 @@
 #include "Product.h"
 #include "ChangeRequest.h"
 #include "Report.h"
-#include "User.h"
+#include "Requester.h"
 #include "UserInterface.h"
 #include <iostream>
 
@@ -75,48 +75,48 @@ void handleProductMaintenance(int choice) {
 // ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
 void handleChangeRequestMaintenance(int choice) {
-    std::vector<User> users; // Declare the 'users' variable
-    switch (choice) {
-        case 1: {
-		// Scenario 4.3: Create Change Request
-            std::string profileName, productName, changeID, description, anticipatedReleaseID;
-            std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
-            std::cin.ignore();
-            std::getline(std::cin, profileName);
+    // std::vector<User> users; // Declare the 'users' variable
+    // switch (choice) {
+    //     case 1: {
+	// 	// Scenario 4.3: Create Change Request
+    //         std::string profileName, productName, changeID, description, anticipatedReleaseID;
+    //         std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
+    //         std::cin.ignore();
+    //         std::getline(std::cin, profileName);
 
-            if (profileName == "new") {
-                User newUser;
-                std::cout << "Enter the Customer Name (max 30 char): ";
-                std::getline(std::cin, newUser.name);
-                std::cout << "Enter the phone number of the customer (max 30 char in the format (DDD)DDD-DDDD): ";
-                std::getline(std::cin, newUser.phoneNumber);
-                std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
-                std::getline(std::cin, newUser.email);
-                std::cout << "If you are an employee, enter a department (max 30 char); otherwise, enter 'N/A': ";
-                std::getline(std::cin, newUser.department);
-                users.push_back(newUser);
-                profileName = newUser.name;
-            }
+    //         if (profileName == "new") {
+    //             User newUser;
+    //             std::cout << "Enter the Customer Name (max 30 char): ";
+    //             std::getline(std::cin, newUser.name);
+    //             std::cout << "Enter the phone number of the customer (max 30 char in the format (DDD)DDD-DDDD): ";
+    //             std::getline(std::cin, newUser.phoneNumber);
+    //             std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
+    //             std::getline(std::cin, newUser.email);
+    //             std::cout << "If you are an employee, enter a department (max 30 char); otherwise, enter 'N/A': ";
+    //             std::getline(std::cin, newUser.department);
+    //             users.push_back(newUser);
+    //             profileName = newUser.name;
+    //         }
 
-            std::cout << "Select a product (must pre-exist): ";
-            std::getline(std::cin, productName);
+    //         std::cout << "Select a product (must pre-exist): ";
+    //         std::getline(std::cin, productName);
 
-            std::cout << "Enter the Change ID (6 digit number): ";
-            std::getline(std::cin, changeID);
-            std::cout << "Enter the description for the product (max 150 char): ";
-            std::getline(std::cin, description);
-            std::cout << "Enter the Anticipated Release ID for the product (max 8 char): ";
-            std::getline(std::cin, anticipatedReleaseID);
+    //         std::cout << "Enter the Change ID (6 digit number): ";
+    //         std::getline(std::cin, changeID);
+    //         std::cout << "Enter the description for the product (max 150 char): ";
+    //         std::getline(std::cin, description);
+    //         std::cout << "Enter the Anticipated Release ID for the product (max 8 char): ";
+    //         std::getline(std::cin, anticipatedReleaseID);
 
-            createChangeRequest(profileName, productName, changeID, description, anticipatedReleaseID);
-            break;
-        }
-        case 0: 
-            activateUI();
-            break;
-        default: 
-            std::cout << "Invalid choice. Please try again.\n";
-    }
+    //         createChangeRequest(profileName, productName, changeID, description, anticipatedReleaseID);
+    //         break;
+    //     }
+    //     case 0: 
+    //         activateUI();
+    //         break;
+    //     default: 
+    //         std::cout << "Invalid choice. Please try again.\n";
+    // }
 }
 
 // ---------------------------------------------------------

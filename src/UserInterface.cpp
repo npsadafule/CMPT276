@@ -2,7 +2,7 @@
 #include "Product.h"
 #include "ChangeRequest.h"
 #include "Report.h"
-#include "User.h"
+#include "Requester.h"
 #include "ProcessCoordinator.h"
 #include "SystemController.h"
 #include <iostream>
@@ -14,7 +14,7 @@
 
 // Global variables
 extern std::vector<Product> products;
-extern std::vector<User> users;
+// extern std::vector<User> users;
 extern std::map<std::string, ChangeRequest> changeRequests;
 
 // Function Declarations
