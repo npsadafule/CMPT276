@@ -15,10 +15,10 @@ extern std::map<std::string, ChangeRequest> changeRequests;
 // ============================================
 // Function Declarations
 // ============================================
-void initRequester(std::fstream& requesterFile);
-void initProduct(std::fstream& productFile, std::fstream& productReleaseFile);
+void initRequester();
+void initProduct();
 void initChangeRequest();
-void initChangeItem(std::fstream& changeItemFile);
+void initChangeItem();
 void initReportGen();
 void start();
 

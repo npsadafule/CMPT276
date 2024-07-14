@@ -24,7 +24,7 @@ std::fstream changeItemFile;
 
 // ---------------------------------------------------------
 // Function: initRequester
-void initRequester(std::fstream& requesterFile) {
+void initRequester() {
     requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!(requesterFile.is_open())) {
         std::cerr << "Failed to open requestersFile.dat file.\n";
@@ -34,7 +34,7 @@ void initRequester(std::fstream& requesterFile) {
 
 // ---------------------------------------------------------
 // Function: initProduct
-void initProduct(std::fstream& productFile, std::fstream& productReleaseFile) {
+void initProduct() {
     productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 	if (!(productFile.is_open())) {
 		// Check if we were unable to open the file
@@ -63,7 +63,7 @@ void initChangeRequest() {
 
 // ---------------------------------------------------------
 // Function: initChangeItem
-void initChangeItem(std::fstream& changeItemFile) {
+void initChangeItem() {
     changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!(changeItemFile.is_open())) {
         std::cerr << "Failed to open changeItem.dat file.\n";
@@ -80,10 +80,10 @@ void initReportGen() {
 // ---------------------------------------------------------
 // Function: start
 void start() {
-	initRequester(requesterFile);
-    initProduct(productFile, productReleaseFile);
+	initRequester();
+    initProduct();
     initChangeRequest();
-    initChangeItem(changeItemFile);
+    initChangeItem();
     initReportGen();
 }
 
