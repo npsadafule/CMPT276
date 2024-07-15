@@ -220,19 +220,52 @@ void handleProductMaintenance(int choice) {
 void handleChangeRequestMaintenance(int choice) {
     // std::vector<User> users; // Declare the 'users' variable
 	int requesterChoice; // For use in A5 release.
+
+	std::cout << std::endl;
+
     switch (choice) {
         case 1: {
-		// Scenario 4.3: Create Change Request
-		// String used
-		char requester[REQ_NAME_LENGTH];
-		bool repeat = false;
+			// Scenario 4.3: Create Change Request
+			// String used
+			char requester[REQ_NAME_LENGTH];
+			bool repeat = false;
 
-		// Options for displaying and an input confirmation screen
-		do
-		{
-			std::cout << "end of program so far" << std::endl;
-			std::cin.get();
-		} while (repeat);
+			// Enter requester 
+			Requester tmpRequester;
+			int notExists;
+			int notProperLen;
+			
+			// For repeat choice
+			do {
+				// Get a requester name
+				do {
+					std::cout << "\nEnter the Requester name (max 30 char, must pre-exist): \n";
+					std::cin.getline(requester, REQ_NAME_LENGTH);
+
+					// Check if input length is valid
+					if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						notExists = false; // Reset notExists flag
+					} else if (strlen(requester) == 0) {
+						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						notExists = false; // Reset notExists flag
+					} else {
+						// Check if the product exists
+						notExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+						if (notExists) {
+							std::cout << "\nThe Requester must exist!" << std::endl;
+						}
+						notProperLen = false; // Exit the loop if both conditions are false
+					}
+				} while (notProperLen || notExists);
+
+				std::cout << "end so far" << std::endl;
+				std::cin.get();
+			} while (repeat);
 
 
     //         std::string profileName, productName, changeID, description, anticipatedReleaseID;
