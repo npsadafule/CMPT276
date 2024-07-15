@@ -21,19 +21,26 @@ void handleProductMaintenance(int choice) {
         case 1: {
 			// Scenario 4.1: Creating a Product - duplication prevention logic not implemented
             char productName[PRODUCT_NAME_LENGTH];
-
+			Product tmpProd;
+			int notProperLen;
+			int exists;
 
 			// ABOUT TO IMPLEMENT READ FUNCTION
-            std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n \n";
-  			std::cin.getline(productName, PRODUCT_NAME_LENGTH);
-			while (std::cin.fail())
-			{
-				std::cin.clear();
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-				std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
-				std::cout << "Enter the Product Name (max 30 char, must not exist): \n \n";
-  				std::cin.getline(productName, PRODUCT_NAME_LENGTH);
-			}
+			do {
+				std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n \n";
+				std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+
+				notProperLen = std::cin.fail() || strlen(productName) == 0;
+				exists = retrieveProductByName("products.dat", productName, tmpProd);
+
+				if (notProperLen) {
+					std::cin.clear(); // Clear the fail state
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+					std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
+				} else if (exists) {
+					std::cout << "\nThe product must not exist!" << std::endl;
+				}
+			} while (notProperLen || exists);
 
             std::cout << "\nAre you sure you want to add the product " << productName << " (Y/N)? \n \n";
             std::cin >> X;
