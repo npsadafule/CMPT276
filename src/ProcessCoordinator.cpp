@@ -18,6 +18,9 @@ int entryCount;
 // Function Implementations
 // ============================================
 
+// General functions
+
+
 // Display functions for Scenario 4.1
 // ============================================
 // ---------------------------------------------------------
@@ -51,6 +54,10 @@ void requesterOptions() {
 	std::cout << "=== Enter '" << std::to_string(entryCount+1) << "' for previous 20 items, '" <<
 				 std::to_string(entryCount+2) << "' for next 20 items ===" << std::endl <<
 				 "=== 0 (zero) for exiting the list ===" << std::endl;
+}
+
+void reqSearchChoice() {
+	std::cout << "Enter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
 }
 
 // Functions for Executing Scenarios
@@ -219,7 +226,8 @@ void handleProductMaintenance(int choice) {
 // Function: handleChangeRequestMaintenance
 void handleChangeRequestMaintenance(int choice) {
     // std::vector<User> users; // Declare the 'users' variable
-	int requesterChoice; // For use in A5 release.
+	static const int ENTER_REQ = 1;
+	static const int CREATE_REQ = 2;
 
 	std::cout << std::endl;
 
@@ -230,38 +238,73 @@ void handleChangeRequestMaintenance(int choice) {
 			char requester[REQ_NAME_LENGTH];
 			bool repeat = false;
 
-			// Enter requester 
+			// Variables
+			// Requester selection
+			int reqChoice;
 			Requester tmpRequester;
-			int notExists;
-			int notProperLen;
+			// Enter requester 
+			int ERnotExists;
+			int ERnotProperLen;
+			// Create requester
+			int CRnotProperLen;
+			int CRexists;
 			
 			// For repeat choice
 			do {
 				// Get a requester name
-				do {
-					std::cout << "\nEnter the Requester name (max 30 char, must pre-exist): \n";
-					std::cin.getline(requester, REQ_NAME_LENGTH);
+				reqChoice = readIntegerInput(reqSearchChoice,1,2);
+				if (reqChoice == ENTER_REQ) {
+					do {
+						std::cout << "\nEnter the Requester name (max 30 char, must pre-exist): \n";
+						std::cin.getline(requester, REQ_NAME_LENGTH);
 
-					// Check if input length is valid
-					if (std::cin.fail()) {
-						std::cin.clear(); // Clear the fail state
-						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
-						notProperLen = true; // Continue the loop
-						notExists = false; // Reset notExists flag
-					} else if (strlen(requester) == 0) {
-						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
-						notProperLen = true; // Continue the loop
-						notExists = false; // Reset notExists flag
-					} else {
-						// Check if the product exists
-						notExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
-						if (notExists) {
-							std::cout << "\nThe Requester must exist!" << std::endl;
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+							ERnotProperLen = true; // Continue the loop
+							ERnotExists = false; // Reset ERnotExists flag
+						} else if (strlen(requester) == 0) {
+							std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							ERnotProperLen = true; // Continue the loop
+							ERnotExists = false; // Reset ERnotExists flag
+						} else {
+							// Check if the product exists
+							ERnotExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+							if (ERnotExists) {
+								std::cout << "\nThe Requester must exist!" << std::endl;
+							}
+							ERnotProperLen = false; // Exit the loop if both conditions are false
 						}
-						notProperLen = false; // Exit the loop if both conditions are false
-					}
-				} while (notProperLen || notExists);
+					} while (ERnotProperLen || ERnotExists);
+				} else if (reqChoice == CREATE_REQ) {
+					do {
+						std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
+						std::cin.getline(requester, REQ_NAME_LENGTH);
+
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+							CRexists = false; // Reset CRexists flag
+						} else if (strlen(requester) == 0) {
+							std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+							CRexists = false; // Reset CRexists flag
+						} else {
+							// Check if the requester already exists
+							CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+							if (CRexists) {
+								std::cout << "\nThe requester already exists!" << std::endl;
+							}
+							CRnotProperLen = false; // Exit the loop if both conditions are false
+						}
+					} while (CRnotProperLen || CRexists);
+
+				}				
 
 				std::cout << "end so far" << std::endl;
 				std::cin.get();

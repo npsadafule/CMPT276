@@ -4,6 +4,8 @@
 // ============================================
 // Function Declarations
 // ============================================
+
+
 void confirmAddingProduct();
 void doYouWantAnotherProduct();
 
@@ -12,6 +14,7 @@ void doYouWantAnotherProdRel();
 
 // For use for A5 release
 void requesterOptions();
+void reqSearchChoice();
 
 void handleProductMaintenance(int choice);
 void handleChangeRequestMaintenance(int choice);
