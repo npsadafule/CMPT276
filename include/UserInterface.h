@@ -1,11 +1,14 @@
 #ifndef USERINTERFACE_H
 #define USERINTERFACE_H
 
+// Global function type pointers
+typedef void (*MenuFuncPtr)();
+
 // ============================================
 // Function Declarations
 // ============================================
 void start();
-int readIntegerInput(int min, int max);
+int readIntegerInput(MenuFuncPtr func, int min, int max);
 void activateUI();
 void shutdown();
 void displayMainMenu();

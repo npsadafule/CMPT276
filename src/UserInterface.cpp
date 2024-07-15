@@ -18,9 +18,6 @@ extern std::vector<Product> products;
 // extern std::vector<User> users;
 extern std::map<std::string, ChangeRequest> changeRequests;
 
-// Static variables
-typedef void (*MenuFuncPtr)();
-
 // Function Declarations
 // ============================================
 

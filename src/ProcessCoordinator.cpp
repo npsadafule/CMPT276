@@ -6,83 +6,102 @@
 #include "UserInterface.h"
 #include <iostream>
 
-// Function Implementations
-// ============================================
-
 // Constants for repeating a scneario
 const int CREATE_PROD = 1;
 const int CREATE_PROD_REL = 2;
+static const int YES = 1;
+static const int NO = 0;
 
+// Function Implementations
+// ============================================
+
+// Display functions for Scenario 4.1
+// ============================================
+// ---------------------------------------------------------
+// Function: verifyAddingProduct
+void confirmAddingProduct() {
+	std::cout << "\nAre you sure you want to add the product (1 for Y, 0 for N)?\n";
+}
+
+void doYouWantAnotherProduct() {
+	std::cout << "\nDo you wish to add another product (1 for Y, 0 for N)?\n";
+}
+
+// Functions for Executing Scenarios
+// ============================================
 // ---------------------------------------------------------
 // Function: handleProductMaintenance
 void handleProductMaintenance(int choice) {
-    char X;
+    int choiceConfirmAdd;
+	int choiceRepeat;
     switch (choice) {
         case 1: {
-			// Scenario 4.1: Creating a Product - duplication prevention logic not implemented
-            char productName[PRODUCT_NAME_LENGTH];
-			Product tmpProd;
-			int notProperLen;
-			int exists;
+			bool repeat = false;
+			do
+			{
+				// Scenario 4.1: Creating a Product - duplication prevention logic not implemented
+				char productName[PRODUCT_NAME_LENGTH];
+				Product tmpProd;
+				int notProperLen;
+				int exists;
 
-			// ABOUT TO IMPLEMENT READ FUNCTION
-			do {
-				std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n \n";
-				std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+				// ABOUT TO IMPLEMENT READ FUNCTION
+				do {
+					std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n \n";
+					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
-				notProperLen = std::cin.fail() || strlen(productName) == 0;
-				exists = retrieveProductByName("products.dat", productName, tmpProd);
+					notProperLen = std::cin.fail() || strlen(productName) == 0;
+					exists = retrieveProductByName("products.dat", productName, tmpProd);
 
-				if (notProperLen) {
-					std::cin.clear(); // Clear the fail state
-					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-					std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
-				} else if (exists) {
-					std::cout << "\nThe product must not exist!" << std::endl;
+					if (notProperLen) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
+					} else if (exists) {
+						std::cout << "\nThe product must not exist!" << std::endl;
+					}
+				} while (notProperLen || exists);
+				choiceConfirmAdd = readIntegerInput(confirmAddingProduct,NO,YES);
+				if (choiceConfirmAdd == YES) {
+					createProduct(productName);
+					choiceRepeat = readIntegerInput(doYouWantAnotherProduct,NO,YES);
+					if (choiceRepeat == YES) {
+						repeat = true;
+					} else {
+						break;
+					}
+				} else {
+					break;
 				}
-			} while (notProperLen || exists);
-
-            std::cout << "\nAre you sure you want to add the product " << productName << " (Y/N)? \n \n";
-            std::cin >> X;
-            if (X == 'Y') {
-                createProduct(productName);
-                std::cout << "\nDo you wish to add another product (Y/N)? \n \n";
-                std::cin >> X;
-                if (X == 'Y') {
-                    handleProductMaintenance(CREATE_PROD);
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+			} while (repeat);
+			break;
         }
         case 2: {
-			// Scenario 4.2: Creating a Release of a Product - duplication prevention logic not implemented
-            char productName[PRODUCT_NAME_LENGTH], releaseID[RELEASE_ID_LENGTH], releaseDate[RELEASE_DATE_LENGTH];
-            std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
-            std::cin.ignore();
-			std::cin.getline(productName,PRODUCT_NAME_LENGTH);
-            std::cout << "\nEnter the Release ID (max 30 char following your organization's format): \n \n";
-            std::cin.ignore();
-			std::cin.getline(releaseID,RELEASE_ID_LENGTH);
-            std::cout << "\nEnter the Release Date (YYYYMMDD): \n \n";
-            std::cin.ignore();
-			std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
-            std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
-            std::cin >> X;
-            if (X == 'Y') {
-                createProductRelease(productName, releaseID, releaseDate);
-                std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
-                std::cin >> X;
-                if (X == 'Y') {
-                    handleProductMaintenance(CREATE_PROD_REL);
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+			// // Scenario 4.2: Creating a Release of a Product - duplication prevention logic not implemented
+            // char productName[PRODUCT_NAME_LENGTH], releaseID[RELEASE_ID_LENGTH], releaseDate[RELEASE_DATE_LENGTH];
+            // std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
+            // std::cin.ignore();
+			// std::cin.getline(productName,PRODUCT_NAME_LENGTH);
+            // std::cout << "\nEnter the Release ID (max 30 char following your organization's format): \n \n";
+            // std::cin.ignore();
+			// std::cin.getline(releaseID,RELEASE_ID_LENGTH);
+            // std::cout << "\nEnter the Release Date (YYYYMMDD): \n \n";
+            // std::cin.ignore();
+			// std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
+            // std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
+            // std::cin >> X;
+            // if (X == 'Y') {
+            //     createProductRelease(productName, releaseID, releaseDate);
+            //     std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
+            //     std::cin >> X;
+            //     if (X == 'Y') {
+            //         handleProductMaintenance(CREATE_PROD_REL);
+            //     } else {
+            //         break;
+            //     }
+            // } else {
+            //     break;
+            // }
         }
         default: 
             std::cout << "Invalid choice. Please try again.\n";

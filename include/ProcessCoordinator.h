@@ -4,7 +4,8 @@
 // ============================================
 // Function Declarations
 // ============================================
-// void readProductName(char productName[], int maxLength);
+void confirmAddingProduct();
+void doYouWantAnotherProduct();
 void handleProductMaintenance(int choice);
 void handleChangeRequestMaintenance(int choice);
 void handleChangeItemMaintenance(int choice);
