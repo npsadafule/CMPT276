@@ -60,18 +60,27 @@ void handleProductMaintenance(int choice) {
 
 				// Product name read
 				do {
-					std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n \n";
+					std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
-					notProperLen = std::cin.fail() || strlen(productName) == 0;
-					exists = retrieveProductByName("products.dat", productName, tmpProd);
-
-					if (notProperLen) {
+					// Check if input length is valid
+					if (std::cin.fail()) {
 						std::cin.clear(); // Clear the fail state
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
-					} else if (exists) {
-						std::cout << "\nThe product must not exist!" << std::endl;
+						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						exists = false; // Reset exists flag
+					} else if (strlen(productName) == 0) {
+						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						exists = false; // Reset exists flag
+					} else {
+						// Check if the product already exists
+						exists = retrieveProductByName("products.dat", productName, tmpProd);
+						if (exists) {
+							std::cout << "\nThe product already exists!" << std::endl;
+						}
+						notProperLen = false; // Exit the loop if both conditions are false
 					}
 				} while (notProperLen || exists);
 
@@ -209,12 +218,6 @@ void handleChangeRequestMaintenance(int choice) {
 			productFileDisplay20OrLess("products.dat");
 			std::cin.get();
 		} while (repeat);
-		
-
-
-
-
-
 
 
     //         std::string profileName, productName, changeID, description, anticipatedReleaseID;
