@@ -19,6 +19,37 @@ int entryCount;
 // ============================================
 
 // General functions
+void readStringInp() {
+	Requester tmpRequester;
+	char requester[REQ_NAME_LENGTH];
+	int CRnotProperLen;
+	int CRexists;
+	
+	do {
+		std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
+		std::cin.getline(requester, REQ_NAME_LENGTH);
+
+		// Check if input length is valid
+		if (std::cin.fail()) {
+			std::cin.clear(); // Clear the fail state
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+			std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+			CRnotProperLen = true; // Continue the loop
+			CRexists = false; // Reset CRexists flag
+		} else if (strlen(requester) == 0) {
+			std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+			CRnotProperLen = true; // Continue the loop
+			CRexists = false; // Reset CRexists flag
+		} else {
+			// Check if the requester already exists
+			CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+			if (CRexists) {
+				std::cout << "\nThe requester already exists!" << std::endl;
+			}
+			CRnotProperLen = false; // Exit the loop if both conditions are false
+		}
+	} while (CRnotProperLen || CRexists);
+}
 
 
 // Display functions for Scenario 4.1

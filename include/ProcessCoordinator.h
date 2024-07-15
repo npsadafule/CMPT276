@@ -5,6 +5,7 @@
 // Function Declarations
 // ============================================
 
+void readStringInp();
 
 void confirmAddingProduct();
 void doYouWantAnotherProduct();
