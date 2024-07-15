@@ -23,8 +23,21 @@ void confirmAddingProduct() {
 	std::cout << "\nAre you sure you want to add the product (1 for Y, 0 for N)?\n";
 }
 
+// Function: doYouWantAnotherProduct
 void doYouWantAnotherProduct() {
 	std::cout << "\nDo you wish to add another product (1 for Y, 0 for N)?\n";
+}
+
+// Display functions for Scenario 4.1
+// ============================================
+// ---------------------------------------------------------
+void confirmAddingProdRel() {
+	std::cout << "\nAre you sure you want to add this product release (1 for Y, 0 for N)?\n" <<
+	std::endl;
+}
+
+void doYouWantAnotherProdRel() {
+	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n" << std::endl;
 }
 
 // Functions for Executing Scenarios
@@ -45,7 +58,7 @@ void handleProductMaintenance(int choice) {
 				int notProperLen;
 				int exists;
 
-				// ABOUT TO IMPLEMENT READ FUNCTION
+				// Product name read
 				do {
 					std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
@@ -61,6 +74,8 @@ void handleProductMaintenance(int choice) {
 						std::cout << "\nThe product must not exist!" << std::endl;
 					}
 				} while (notProperLen || exists);
+
+				// Final choices
 				choiceConfirmAdd = readIntegerInput(confirmAddingProduct,NO,YES);
 				if (choiceConfirmAdd == YES) {
 					createProduct(productName);
@@ -88,87 +103,77 @@ void handleProductMaintenance(int choice) {
 				int notProperLen;
 				int notExists;
 				int exists;
+				bool ifUniqueProdRel;
 				
-				// Get a product name
 				do {
-					std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
-					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+					do {
+						std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
+						std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
-					notProperLen = std::cin.fail() || strlen(productName) == 0;
-					notExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						notProperLen = std::cin.fail() || strlen(productName) == 0;
+						notExists = !retrieveProductByName("products.dat", productName, tmpProd);
 
-					if (notProperLen) {
-						std::cin.clear(); // Clear the fail state
-						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
-					} else if (notExists) {
-						std::cout << "\nThe product must exist!" << std::endl;
+						if (notProperLen) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nThe product name must be 1 to 30 characters!" << std::endl;
+						} else if (notExists) {
+							std::cout << "\nThe product must exist!" << std::endl;
+						}
+					} while (notProperLen || notExists);
+
+					// Get a product release ID
+					do {
+						std::cout << "\nEnter the Release ID (max 8 char following your organizations format): \n \n";
+						std::cin.getline(releaseID, RELEASE_ID_LENGTH);
+
+						notProperLen = std::cin.fail() || strlen(releaseID) == 0;
+
+						if (notProperLen) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nThe release ID must be 1 to 8 characters!" << std::endl;
+						}
+					} while (notProperLen);
+
+					// Check for uniquenes by product release ID
+					ifUniqueProdRel = retrieveProductReleaseByKey("productReleases.dat", productName, releaseID, tmpRel);
+					if (ifUniqueProdRel)
+					{
+						std::cout << "You must enter a product release that has a unique compound primary key " 
+						"(i.e., unique combination of product name and release ID).\n";
 					}
-				} while (notProperLen || notExists);
+				} while (ifUniqueProdRel);				
 
-				// Get a product release ID
+				// Get a release date
 				do {
-					std::cout << "\nEnter the Release ID (max 8 char following your organizations format): \n \n";
-					std::cin.getline(releaseID, RELEASE_ID_LENGTH);
+					std::cout << "\nEnter the release date (YYYYMMDD)): \n \n";
+					std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
 
-					notProperLen = std::cin.fail() || strlen(releaseID) == 0;
+					notProperLen = std::cin.fail() || strlen(releaseDate) == 0;
 
 					if (notProperLen) {
 						std::cin.clear(); // Clear the fail state
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nThe release ID must be 1 to 8 characters!" << std::endl;
+						std::cout << "\nThe release date must be 1 to 8 characters!" << std::endl;
 					}
 				} while (notProperLen);
 
-				std::cout << "Here's the end so far" << std::endl;
-				std::cin.get();
-
-				// Make sure that you are entering a unique product release now that you have the compound key
-				do {
-					std::cout << "\nEnter the Release ID (max 8 char following your organizations format): \n \n";
-					std::cin.getline(releaseID, RELEASE_ID_LENGTH);
-
-					notProperLen = std::cin.fail() || strlen(releaseID) == 0;
-					exists = retrieveProductReleaseByKey("productReleases.dat", productName, releaseID, tmpRel);
-
-					if (notProperLen) {
-						std::cin.clear(); // Clear the fail state
-						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nThe release ID must be 1 to 8 characters!" << std::endl;
-					} else if (exists) {
-						std::cout << "\nThe release ID must not exist!" << std::endl;
+				// Final choices
+				choiceConfirmAdd = readIntegerInput(confirmAddingProdRel,NO,YES);
+				if (choiceConfirmAdd == YES) {
+					createProductRelease(productName,releaseID,releaseDate);
+					choiceRepeat = readIntegerInput(doYouWantAnotherProdRel,NO,YES);
+					if (choiceRepeat == YES) {
+						repeat = true;
+					} else {
+						break;
 					}
-				} while (notProperLen || exists);
-
-				// Get a product release date
-
-				
-				
+				} else {
+					break;
+				}			
 			} while (repeat);
 			break;
-			
-            // std::cout << "\nEnter the Release ID (max 8 char following your organization's format): \n \n";
-            // std::cin.ignore();
-			// std::cin.getline(releaseID,RELEASE_ID_LENGTH);
-
-            // std::cout << "\nEnter the Release Date (YYYYMMDD): \n \n";
-            // std::cin.ignore();
-			// std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
-
-            // std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
-            // std::cin >> X;
-            // if (X == 'Y') {
-            //     createProductRelease(productName, releaseID, releaseDate);
-            //     std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
-            //     std::cin >> X;
-            //     if (X == 'Y') {
-            //         handleProductMaintenance(CREATE_PROD_REL);
-            //     } else {
-            //         break;
-            //     }
-            // } else {
-            //     break;
-            // }
         }
         default: 
             std::cout << "Invalid choice. Please try again.\n";

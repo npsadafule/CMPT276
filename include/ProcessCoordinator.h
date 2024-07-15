@@ -6,6 +6,10 @@
 // ============================================
 void confirmAddingProduct();
 void doYouWantAnotherProduct();
+
+void confirmAddingProdRel();
+void doYouWantAnotherProdRel();
+
 void handleProductMaintenance(int choice);
 void handleChangeRequestMaintenance(int choice);
 void handleChangeItemMaintenance(int choice);
