@@ -10,6 +10,9 @@ void doYouWantAnotherProduct();
 void confirmAddingProdRel();
 void doYouWantAnotherProdRel();
 
+// For use for A5 release
+void requesterOptions();
+
 void handleProductMaintenance(int choice);
 void handleChangeRequestMaintenance(int choice);
 void handleChangeItemMaintenance(int choice);

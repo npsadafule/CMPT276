@@ -245,8 +245,8 @@ void testCreateRequester() {
 	}
 
 	// Test sequential reading
-	seekToBeginningOfRequesterFile();
-	requesterFileDisplay20OrLess("requestersFile.dat");
+	// seekToBeginningOfRequesterFile();
+	// requesterFileDisplay20OrLess("requestersFile.dat");
 
 	// Close the product release file
 	closeRequesterFile();

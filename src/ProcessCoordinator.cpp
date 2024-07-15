@@ -12,6 +12,9 @@ const int CREATE_PROD_REL = 2;
 static const int YES = 1;
 static const int NO = 0;
 
+// Variables for navigation options
+int entryCount;
+
 // Function Implementations
 // ============================================
 
@@ -28,7 +31,7 @@ void doYouWantAnotherProduct() {
 	std::cout << "\nDo you wish to add another product (1 for Y, 0 for N)?\n";
 }
 
-// Display functions for Scenario 4.1
+// Display functions for Scenario 4.2
 // ============================================
 // ---------------------------------------------------------
 void confirmAddingProdRel() {
@@ -38,6 +41,16 @@ void confirmAddingProdRel() {
 
 void doYouWantAnotherProdRel() {
 	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n" << std::endl;
+}
+
+// Display functions for Scenario 4.3
+// ============================================
+// ---------------------------------------------------------
+// For use for A5 release.
+void requesterOptions() {
+	std::cout << "=== Enter '" << std::to_string(entryCount+1) << "' for previous 20 items, '" <<
+				 std::to_string(entryCount+2) << "' for next 20 items ===" << std::endl <<
+				 "=== 0 (zero) for exiting the list ===" << std::endl;
 }
 
 // Functions for Executing Scenarios
@@ -206,6 +219,7 @@ void handleProductMaintenance(int choice) {
 // Function: handleChangeRequestMaintenance
 void handleChangeRequestMaintenance(int choice) {
     // std::vector<User> users; // Declare the 'users' variable
+	int requesterChoice; // For use in A5 release.
     switch (choice) {
         case 1: {
 		// Scenario 4.3: Create Change Request
@@ -213,9 +227,10 @@ void handleChangeRequestMaintenance(int choice) {
 		char requester[REQ_NAME_LENGTH];
 		bool repeat = false;
 
+		// Options for displaying and an input confirmation screen
 		do
 		{
-			productFileDisplay20OrLess("products.dat");
+			std::cout << "end of program so far" << std::endl;
 			std::cin.get();
 		} while (repeat);
 

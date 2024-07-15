@@ -59,10 +59,10 @@ void displayRequester(const Requester& requester) {
 	std::cout << requester.reqName << 
 					 ", " << requester.phoneNumber << 
 					 ", " << requester.email <<
-					 ", " << requester.department << std::endl;
+					 ", " << requester.department;
 }
 
-void requesterFileDisplay20OrLess(const char* filename) {
+int requesterFileDisplay20OrLess(int page, const char* filename) {
 	const int MAX_READS = 20;
 
 	Requester tmpReq;
@@ -70,15 +70,37 @@ void requesterFileDisplay20OrLess(const char* filename) {
     std::ifstream inFile(filename, std::ios::binary);
     if (!inFile) {
         std::cerr << "Failed to open requesters file for reading!" << std::endl;
-        return;
+        return -1;
     }
 
-	int counter = 0;
-    while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-		   counter < MAX_READS) {
-		displayRequester(tmpReq);
-		counter++;
-    }
+	// Get to the page
+	for (int i=0; i<page-1; i++)
+	{		
+		// Read 20 items
+		int counter = 0;
+		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
+			counter < MAX_READS) {
+			counter++;
+		}
+	}
+
+	// Print the page if valid
+	if (inFile.fail()) {
+		inFile.clear();
+		std::cout << "The page you requested does not exist!" << std::endl;
+		return -1;
+	}
+	else {
+		int counter = 0;
+		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
+			counter < MAX_READS) {
+			std::cout << std::to_string(counter+1) << ") ";
+			displayRequester(tmpReq);
+			std::cout << std::endl;
+			counter++;
+		}
+		return counter;
+	}
 }
 
 
