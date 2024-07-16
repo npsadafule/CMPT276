@@ -5,6 +5,7 @@
 #include "Requester.h"
 #include "UserInterface.h"
 #include <iostream>
+#include <iomanip>
 #include <ctime>
 #include <cstdio>  // For sprintf
 
@@ -82,6 +83,12 @@ void CIPrompt() {
 
 void confirmAddCR() {
 	std::cout << "\nAre you sure you want to add a customer request?\n";
+}
+
+// Display functions for Scenario 4.4
+// ============================================
+void repeatCIQuery() {
+	std::cout << "\nDo you wish to query for another Change Item (1 for Y, 0 for N)?\n";
 }
 
 // Functions for Executing Scenarios
@@ -516,13 +523,11 @@ void handleChangeRequestMaintenance(int choice) {
 					// Create the new change ID
 					createChangeItem(changeID,productName,description,anticipatedReleaseID,state);
 				}
-				// TODO in A5: Get the reported release ID
 
 				// Final choices
 				choiceConfirmAdd = readIntegerInput(confirmAddCR,NO,YES);
 				if (choiceConfirmAdd == YES) {
 					getTodaysDate(date, sizeof(date));
-					std::cout << "I am making: " << requester << " " << changeID << " " << anticipatedReleaseID << " " << date << " " << "Low" << std::endl;
 					createChangeRequest(requester,changeID,reportedRelease,date,"Low");
 					choiceRepeat = readIntegerInput(doYouWantAnotherProdRel,NO,YES);
 					if (choiceRepeat == YES) {
@@ -546,18 +551,91 @@ void handleChangeRequestMaintenance(int choice) {
 void handleChangeItemMaintenance(int choice) {
     switch (choice) {
         case 1: {
-		// Scenario 4.4: Querying Change Items
-            std::string productName, changeID;
-            std::cout << "Select a product (must pre-exist): ";
-            std::cin.ignore();
-            std::getline(std::cin, productName);
-            std::cout << "Enter the Change ID: ";
-            std::getline(std::cin, changeID);
-            queryChangeRequest(productName, changeID);
+			// Scenario 4.4: Querying Change Items
+
+			// Variables
+			// General
+			bool repeat;
+			int choiceRepeat;
+			// Storage
+            char productName[PRODUCT_NAME_LENGTH];
+			int changeID;
+			// Get an existing product
+			Product tmpProd;
+			int notProperLen;
+			int notExists;
+			// Get a chnage item based on product
+			ChangeItem tmpCI;
+			int CInotExists;
+			int CIOfProductExists;
+
+			// For repeating the scenario
+			do {
+				do {
+					std::cout << "\nSelect a product name (max 30 char, must pre-exist): \n";
+					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+
+					// Check if input length is valid
+					if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						notExists = false; // Reset notExists flag
+					} else if (strlen(productName) == 0) {
+						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						notExists = false; // Reset notExists flag
+					} else {
+						// Check if the product exists
+						notExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						if (notExists) {
+							std::cout << "\nThe product must exist!" << std::endl;
+						}
+						notProperLen = false; // Exit the loop if both conditions are false
+					}
+				} while (notProperLen || notExists);
+			
+				// Get the change ID based on product choice
+				do {
+					changeID = readIntegerInput(CIPrompt,0,999999);
+
+					CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+					if (CInotExists) {
+						std::cout << "\nThe change item must exist!\n";
+					}
+					else {
+						CInotExists = false;
+						CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+						if (!CIOfProductExists)
+						{
+							std::cout << "The change item must have your selected change ID 'and' product name.\n";
+						}
+					}
+				} while (CInotExists || (!CIOfProductExists));
+
+
+				// Print the information of the product's change item
+				std::cout << std::endl;
+				std::cout << std::setw(25) << std::left << "Product:" << tmpCI.productName << std::endl;
+				std::cout << std::setw(25) << std::left << "Description:" << tmpCI.description << std::endl;
+				std::cout << std::setw(25) << std::left << "Change ID:" << std::to_string(changeID) << std::endl;
+				std::cout << std::setw(25) << std::left << "State:" << tmpCI.state << std::endl;
+				std::cout << std::setw(25) << std::left << "Anticipated Release ID:" << tmpCI.productName << std::endl;
+
+				// Final choices
+				choiceRepeat = readIntegerInput(repeatCIQuery,NO,YES);
+				if (choiceRepeat == YES) {
+					repeat = true;
+				} else {
+					repeat = false;
+				}
+			} while (repeat);
+
             break;
         }
         case 2: {
-		// Scenario 4.5: Update/Assess Change Item
+			// Scenario 4.5: Update/Assess Change Item
             std::string productName, changeID, newState;
             std::cout << "Select a product (must pre-exist): ";
             std::cin.ignore();

@@ -174,8 +174,35 @@ void createChangeItem(int changeID,
 	}	
 }
 
-// ---------------------------------------------------------
-// Function: queryChangeItem
+// For retrieving a particular product with a particular name
+bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product) {
+	seekToBeginningOfChangeItemFile();
+
+	std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        return false;
+    }
+
+    // Read each product from the file and compare its name with the target name
+    while (inFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
+        // If in the inFile, there exists an element that matches what we hope to retrieve
+        if ((std::strcmp(changeItem.productName, product) == 0) &&
+			(changeItem.changeID == changeID)) {
+			inFile.close();
+            return true; // release ID found
+        }
+    }
+    inFile.close();
+    return false; // Product not found
+}
+
+// // ---------------------------------------------------------
+// // Function: queryChangeItem
+// void queryChangeItem(const char* product, const int changeID) {
+	
+// }
+
 // void queryChangeItem(
 // const std::string& productName, // in
 // const std::string& changeID // in
