@@ -1,11 +1,13 @@
 #include "Report.h"
 #include "Product.h"
 #include "Requester.h"
+#include "ChangeItem.h"
 #include <iostream>
 #include <fstream>
 
 // File handling functions
 std::fstream reportFile;
+extern std::fstream changeItemFile;
 
 // ============================================
 // Function Implementations
@@ -53,41 +55,45 @@ bool getNextReport(Report& report) {
 // ---------------------------------------------------------
 // Function: generateReport1
 void generateReport1(const std::string& productName) {
-    // Product product;
-    // openProductFile();
-    // seekToBeginningOfProductFile();
-    // while (getNextProduct(product)) {
-    //     if (product.name == productName) {
-    //         std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
-    //         for (const auto& [id, item] : product.changeItems) {
-    //             if (item.state != "Done" && item.state != "Cancelled") {
-    //                 std::cout << "ID: " << id << ", Description: " << item.description << ", State: " << item.state << ", Anticipated Release ID: " << item.anticipatedReleaseID << "\n";
-    //             }
-    //         }
-    //         closeProductFile();
-    //         return;
-    //     }
-    // }
-    // std::cerr << "Product does not exist. Please try again.\n";
-    // closeProductFile();
+    ChangeItem changeItem;
+    openChangeItemFile();
+    seekToBeginningOfChangeItemFile();
+    
+    std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
+    bool found = false;
+    while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
+        if (std::strcmp(changeItem.productName, productName.c_str()) == 0 &&
+            std::strcmp(changeItem.state, "Done") != 0 && 
+            std::strcmp(changeItem.state, "Cancelled") != 0) {
+            std::cout << "ID: " << changeItem.changeID 
+                      << ", Description: " << changeItem.description 
+                      << ", State: " << changeItem.state 
+                      << ", Anticipated Release ID: " << changeItem.anticipatedReleaseID << "\n";
+            found = true;
+        }
+    }
+    if (!found) {
+        std::cerr << "No matching change items found for product: " << productName << ".\n";
+    }
+    closeChangeItemFile();
 }
 
 // ---------------------------------------------------------
 // Function: generateReport2
 void generateReport2(const std::string& changeID) {
-    // openReportFile();
-    // seekToBeginningOfReportFile();
-    // Report report;
-    // while (getNextReport(report)) {
-    //     if (report.changeID == changeID) {
-    //         std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
-    //         for (const auto& user : report.users) {
-    //             std::cout << "Name: " << user.name << ", Email: " << user.email << "\n";
-    //         }
-    //         closeReportFile();
-    //         return;
-    //     }
-    // }
-    // std::cerr << "Change Request not found. Please try again.\n";
-    // closeReportFile();
+    openReportFile();
+    seekToBeginningOfReportFile();
+    Report report;
+    while (getNextReport(report)) {
+        if (report.changeID == changeID) {
+            std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
+            for (const auto& user : report.users) {
+                std::cout << "Name: " << user.name << ", Email: " << user.email << "\n";
+            }
+            closeReportFile();
+            return;
+        }
+    }
+    std::cerr << "Change Request not found. Please try again.\n";
+    closeReportFile();
 }

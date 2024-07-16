@@ -3,14 +3,20 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 #include "Requester.h"
 
 // ============================================
 // Data structures
 // ============================================
+struct User {
+    std::string name;
+    std::string email;
+};
+
 struct Report {
     std::string changeID;
-    // std::vector<User> users;
+    std::vector<User> users;
 };
 
 // ============================================
@@ -23,5 +29,7 @@ void seekToBeginningOfReportFile();
 bool getNextReport(Report& report);
 void generateReport1(const std::string& productName);
 void generateReport2(const std::string& changeID);
+
+extern std::fstream reportFile;
 
 #endif // REPORT_H
