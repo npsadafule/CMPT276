@@ -44,6 +44,9 @@ void createChangeItem(int changeID,
 					  const char* anticipatedReleaseID,
 					  const char* state);
 bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product);
+bool updateChangeItem(int origChangeID, ChangeItem& changeItem);
+
+
 
 // // ---------------------------------------------------------
 // // Function: queryChangeItem

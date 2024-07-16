@@ -197,6 +197,45 @@ bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, Chang
     return false; // Product not found
 }
 
+bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
+	// For reading
+	ChangeItem readCI;
+
+	seekToBeginningOfChangeItemFile();
+
+	std::fstream inFile("changeItems.dat", std::ios::binary | std::ios::in | std::ios::out);
+    if (!inFile) {
+        std::cerr << "Failed to open file for reading!" << std::endl;
+        return false;
+    }
+
+    // Find the position of the change item in the file
+	int CIPos = 0;
+    while (inFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
+        if (readCI.changeID == origChangeID) {
+			std::streampos position = inFile.tellg(); // Get current position
+
+			// Move the inFile pointer back to the beginning of the found item
+			inFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
+
+			// Write the updated ChangeItem back to the inFile
+			inFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
+
+			// Check if write was successful
+			if (!inFile) {
+				std::cerr << "Failed to write updated ChangeItem!" << std::endl;
+				inFile.close();
+				return false;
+			}			
+        }
+    }
+
+	// Write was successful
+	inFile.close();
+	return true;
+}
+        
+
 // // ---------------------------------------------------------
 // // Function: queryChangeItem
 // void queryChangeItem(const char* product, const int changeID) {

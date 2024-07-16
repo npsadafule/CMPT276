@@ -10,8 +10,6 @@
 #include <cstdio>  // For sprintf
 
 // Constants for repeating a scneario
-const int CREATE_PROD = 1;
-const int CREATE_PROD_REL = 2;
 static const int YES = 1;
 static const int NO = 0;
 
@@ -89,6 +87,20 @@ void confirmAddCR() {
 // ============================================
 void repeatCIQuery() {
 	std::cout << "\nDo you wish to query for another Change Item (1 for Y, 0 for N)?\n";
+}
+
+// Display functions for Scenario 4.5
+// ============================================
+void choiceUpdateDisp() {
+	std::cout << "\nSelect what update to make to this change item of Product A:\n"
+				 "1) Update Description\n"
+				 "2) Update State\n"
+				 "3) Update Anticipated Release ID\n"
+				 "0) Save updates made to the chosen Change Item\n";
+}
+
+void choiceSaveUpdDisp() {
+	std::cout << "Save the changes made to the Change Item (1 for Y, 0 for N)?" << std::endl;
 }
 
 // Functions for Executing Scenarios
@@ -496,7 +508,7 @@ void handleChangeRequestMaintenance(int choice) {
 
 					// Enter an anticipated release ID
 					do {
-						std::cout << "\nEnter the anticipated release ID for the change item (max 150 char): \n";
+						std::cout << "\nEnter the anticipated release ID for the change item (max 8 char): \n";
 						std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 						// Check if input length is valid
@@ -564,7 +576,7 @@ void handleChangeItemMaintenance(int choice) {
 			Product tmpProd;
 			int notProperLen;
 			int notExists;
-			// Get a chnage item based on product
+			// Get a change item based on product
 			ChangeItem tmpCI;
 			int CInotExists;
 			int CIOfProductExists;
@@ -636,15 +648,190 @@ void handleChangeItemMaintenance(int choice) {
         }
         case 2: {
 			// Scenario 4.5: Update/Assess Change Item
-            std::string productName, changeID, newState;
-            std::cout << "Select a product (must pre-exist): ";
-            std::cin.ignore();
-            std::getline(std::cin, productName);
-            std::cout << "Enter the Change ID: ";
-            std::getline(std::cin, changeID);
-            std::cout << "Enter the new state: ";
-            std::getline(std::cin, newState);
-            updateChangeRequest(productName, changeID, newState);
+
+			// Variables
+			// General
+			bool repeat;
+			int choiceRepeat;
+			// Storage
+            char productName[PRODUCT_NAME_LENGTH];
+			int changeID;
+			// Get an existing product
+			Product tmpProd;
+			int notProperLen;
+			int notExists;
+			// Get a change item based on product
+			ChangeItem tmpCI;
+			int CInotExists;
+			int CIOfProductExists;
+			// Deciding what update to make
+			int choiceUpdate;
+			// Description update
+			char description[CHANGE_DESC_LENGTH];
+			int CInotProperLen;
+			// State update
+			char state[STATE_LENGTH];
+			// Anticipated release ID update
+			char anticipatedReleaseID[RELEASE_ID_LENGTH];
+			int releaseIDExists;
+			// Save updates choice
+			int choiceSaveUpdates;
+			int origChangeID;
+
+			// For repeating the scenario
+			do {
+				do {
+					std::cout << "\nSelect a product name (max 30 char, must pre-exist): \n";
+					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+
+					// Check if input length is valid
+					if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						notExists = false; // Reset notExists flag
+					} else if (strlen(productName) == 0) {
+						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						notExists = false; // Reset notExists flag
+					} else {
+						// Check if the product exists
+						notExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						if (notExists) {
+							std::cout << "\nThe product must exist!" << std::endl;
+						}
+						notProperLen = false; // Exit the loop if both conditions are false
+					}
+				} while (notProperLen || notExists);
+			
+				// Get the change ID based on product choice
+				do {
+					changeID = readIntegerInput(CIPrompt,0,999999);
+
+					CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+					if (CInotExists) {
+						std::cout << "\nThe change item must exist!\n";
+					}
+					else {
+						CInotExists = false;
+						CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+						if (!CIOfProductExists)
+						{
+							std::cout << "The change item must have your selected change ID 'and' product name.\n";
+						}
+					}
+				} while (CInotExists || (!CIOfProductExists));
+
+				// Store the original change ID (for overwriting)
+				origChangeID = tmpCI.changeID;
+
+				// Select what update to make
+				do {
+					choiceUpdate = readIntegerInput(choiceUpdateDisp,0,3);
+					switch (choiceUpdate) {
+						case 1: { // Description
+							std::cout << "\nCurrent description: " << tmpCI.description << std::endl;
+							// Enter description for change item
+							do {
+								std::cout << "Enter the new description for the change item (max 150 char): \n";
+								std::cin.getline(description, CHANGE_DESC_LENGTH);
+
+								// Check if input length is valid
+								if (std::cin.fail()) {
+									std::cin.clear(); // Clear the fail state
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+									std::cout << "\nInvalid input. Please enter 1 to 150 characters." << std::endl;
+									CInotProperLen = true; // Continue the loop
+								} else if (strlen(description) == 0) {
+									std::cout << "\nDescription cannot be empty. Please enter 1 to 150 characters." << std::endl;
+									CInotProperLen = true; // Continue the loop
+								} else {
+									CInotProperLen = false;
+								}
+							} while (CInotProperLen);
+
+							// Store for updating
+							std::strcpy(tmpCI.description,description);
+							break;
+						}
+						case 2: { // State
+							std::cout << "\nCurrent state: " << tmpCI.state << std::endl;
+							do {
+								std::cout << "Enter the new state of the change item (max 10 char):\n";
+								std::cin.getline(state, STATE_LENGTH);
+
+								// Check if input length is valid
+								if (std::cin.fail()) {
+									std::cin.clear(); // Clear the fail state
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+									std::cout << "\nInvalid input. Please enter 1 to 10 characters." << std::endl;
+									CInotProperLen = true; // Continue the loop
+								} else if (strlen(state) == 0) {
+									std::cout << "\nEmail cannot be empty. Please enter 1 to 10 characters." << std::endl;
+									CInotProperLen = true; // Continue the loop
+								} else {
+									CInotProperLen = false;
+								}
+							} while (CInotProperLen);
+
+							// Store for updating
+							std::strcpy(tmpCI.state,state);
+							break;
+						}
+						case 3: { // Anticipated release ID
+							std::cout << "\nCurrent anticipated release ID: " << tmpCI.anticipatedReleaseID << std::endl;
+							// Enter an anticipated release ID
+							do {
+								std::cout << "Enter the new anticipated release ID for the change item (max 8 char): \n";
+								std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
+
+								// Check if input length is valid
+								if (std::cin.fail()) {
+									std::cin.clear(); // Clear the fail state
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+									std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
+									CInotProperLen = true; // Continue the loop
+								} else if (strlen(anticipatedReleaseID) == 0) {
+									std::cout << "\nDescription cannot be empty. Please enter 1 to 8 characters." << std::endl;
+									CInotProperLen = true; // Continue the loop
+
+								} else {
+									CInotProperLen = false;
+									// Aftere verifying the input length, check if this release ID exists
+									releaseIDExists = determineReleaseIDExistence(anticipatedReleaseID);
+									if (!releaseIDExists)
+									{
+										std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
+									}
+								}
+							} while (CInotProperLen || (!releaseIDExists));
+
+							// Store for updating
+							std::strcpy(tmpCI.anticipatedReleaseID,anticipatedReleaseID);
+							break;
+						}
+					}
+				} while (choiceUpdate != 0);
+
+				// Ask user if they are sure they want to update
+				choiceSaveUpdates = readIntegerInput(choiceSaveUpdDisp,NO,YES);
+				if (choiceSaveUpdates == YES) {
+					// Store the desired updates
+					std::cout << "result of update 1 yay 0 L :" << updateChangeItem(origChangeID,tmpCI) << std::endl;
+				} else {
+					break;
+				}
+
+				// Final choices
+				choiceRepeat = readIntegerInput(repeatCIQuery,NO,YES);
+				if (choiceRepeat == YES) {
+					repeat = true;
+				} else {
+					repeat = false;
+				}
+			} while (repeat);
+
             break;
         }
         default: 
