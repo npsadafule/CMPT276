@@ -1,6 +1,6 @@
 #include "Report.h"
 #include "Product.h"
-#include "User.h"
+#include "Requester.h"
 #include <iostream>
 #include <fstream>
 
@@ -53,41 +53,41 @@ bool getNextReport(Report& report) {
 // ---------------------------------------------------------
 // Function: generateReport1
 void generateReport1(const std::string& productName) {
-    Product product;
-    openProductFile();
-    seekToBeginningOfProductFile();
-    while (getNextProduct(product)) {
-        if (product.name == productName) {
-            std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
-            for (const auto& [id, item] : product.changeItems) {
-                if (item.state != "Done" && item.state != "Cancelled") {
-                    std::cout << "ID: " << id << ", Description: " << item.description << ", State: " << item.state << ", Anticipated Release ID: " << item.anticipatedReleaseID << "\n";
-                }
-            }
-            closeProductFile();
-            return;
-        }
-    }
-    std::cerr << "Product does not exist. Please try again.\n";
-    closeProductFile();
+    // Product product;
+    // openProductFile();
+    // seekToBeginningOfProductFile();
+    // while (getNextProduct(product)) {
+    //     if (product.name == productName) {
+    //         std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
+    //         for (const auto& [id, item] : product.changeItems) {
+    //             if (item.state != "Done" && item.state != "Cancelled") {
+    //                 std::cout << "ID: " << id << ", Description: " << item.description << ", State: " << item.state << ", Anticipated Release ID: " << item.anticipatedReleaseID << "\n";
+    //             }
+    //         }
+    //         closeProductFile();
+    //         return;
+    //     }
+    // }
+    // std::cerr << "Product does not exist. Please try again.\n";
+    // closeProductFile();
 }
 
 // ---------------------------------------------------------
 // Function: generateReport2
 void generateReport2(const std::string& changeID) {
-    openReportFile();
-    seekToBeginningOfReportFile();
-    Report report;
-    while (getNextReport(report)) {
-        if (report.changeID == changeID) {
-            std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
-            for (const auto& user : report.users) {
-                std::cout << "Name: " << user.name << ", Email: " << user.email << "\n";
-            }
-            closeReportFile();
-            return;
-        }
-    }
-    std::cerr << "Change Request not found. Please try again.\n";
-    closeReportFile();
+    // openReportFile();
+    // seekToBeginningOfReportFile();
+    // Report report;
+    // while (getNextReport(report)) {
+    //     if (report.changeID == changeID) {
+    //         std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
+    //         for (const auto& user : report.users) {
+    //             std::cout << "Name: " << user.name << ", Email: " << user.email << "\n";
+    //         }
+    //         closeReportFile();
+    //         return;
+    //     }
+    // }
+    // std::cerr << "Change Request not found. Please try again.\n";
+    // closeReportFile();
 }

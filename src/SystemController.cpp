@@ -2,75 +2,98 @@
 #include "Product.h"
 #include "ChangeRequest.h"
 #include "Report.h"
-#include "User.h"
+#include "Requester.h"
+#include "ChangeItem.h"
 #include <iostream>
 #include <fstream>
 
 // Global variable definitions
 std::vector<Product> products;
-std::vector<User> users;
+// std::vector<User> users;
 std::map<std::string, ChangeRequest> changeRequests;
+// Global file streams
+std::fstream requesterFile;
+std::fstream productFile;
+std::fstream productReleaseFile;
+std::fstream changeRequestFile;
+std::fstream changeItemFile;
+
 
 // ============================================
 // Function Implementations
 // ============================================
 
 // ---------------------------------------------------------
+// Function: initRequester
+void initRequester() {
+    requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    if (!(requesterFile.is_open())) {
+        std::cerr << "Failed to open requestersFile.dat file.\n";
+		exit(1);
+    }
+}
+
+// ---------------------------------------------------------
 // Function: initProduct
 void initProduct() {
-    std::ifstream productFile("products.dat", std::ios::binary);
-    if (productFile.is_open()) {
-        Product product;
-        while (productFile.read(reinterpret_cast<char*>(&product), sizeof(Product))) {
-            products.push_back(product);
-        }
-        productFile.close();
-    } else {
-        std::cerr << "Failed to open products.dat file.\n";
+    productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+	if (!(productFile.is_open())) {
+		// Check if we were unable to open the file
+		std::cerr << "Failed to open products.dat file.\n";
+		exit(1);
+
+    }
+
+	productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+	if (!(productFile.is_open())) {
+		// Check if we were unable to open the file
+		std::cerr << "Failed to open products.dat file.\n";
+		exit(1);
     }
 }
 
 // ---------------------------------------------------------
 // Function: initChangeRequest
 void initChangeRequest() {
-    std::ifstream changeRequestFile("changeRequests.dat", std::ios::binary);
-    if (changeRequestFile.is_open()) {
-        ChangeRequest changeRequest;
-        while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
-            changeRequests[changeRequest.changeID] = changeRequest;
-        }
-        changeRequestFile.close();
-    } else {
+    changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    if (!(changeRequestFile.is_open())) {
         std::cerr << "Failed to open changeRequests.dat file.\n";
+		exit(1);
     }
 }
 
 // ---------------------------------------------------------
 // Function: initChangeItem
 void initChangeItem() {
-    std::cout << "Change items are initialized as part of products.\n";
+    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    if (!(changeItemFile.is_open())) {
+        std::cerr << "Failed to open changeItem.dat file.\n";
+		exit(1);
+    }
 }
 
 // ---------------------------------------------------------
 // Function: initReportGen
 void initReportGen() {
-    std::ifstream userFile("users.dat", std::ios::binary);
-    if (userFile.is_open()) {
-        User user;
-        while (userFile.read(reinterpret_cast<char*>(&user), sizeof(User))) {
-            users.push_back(user);
-        }
-        userFile.close();
-    } else {
-        std::cerr << "Failed to open users.dat file.\n";
-    }
+	// TBD
 }
 
 // ---------------------------------------------------------
 // Function: start
 void start() {
+	initRequester();
     initProduct();
     initChangeRequest();
     initChangeItem();
     initReportGen();
+}
+
+// ---------------------------------------------------------
+// Function: shutdown
+void shutdown() {
+	closeRequesterFile();
+    closeProductFile();
+    closeChangeRequestFile();
+    closeChangeItemFile();
+    closeReportFile();
 }

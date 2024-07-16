@@ -4,10 +4,25 @@
 // ============================================
 // Function Declarations
 // ============================================
+
+void readStringInp();
+
+void confirmAddingProduct();
+void doYouWantAnotherProduct();
+
+void confirmAddingProdRel();
+void doYouWantAnotherProdRel();
+
+// For use for A5 release
+void requesterOptions();
+void reqSearchChoice();
+
 void handleProductMaintenance(int choice);
 void handleChangeRequestMaintenance(int choice);
 void handleChangeItemMaintenance(int choice);
 void handleReportGeneration(int choice);
 void displayHelp();
+
+
 
 #endif // PROCESSCOORDINATOR_H

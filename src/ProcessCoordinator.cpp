@@ -2,65 +2,252 @@
 #include "Product.h"
 #include "ChangeRequest.h"
 #include "Report.h"
-#include "User.h"
+#include "Requester.h"
 #include "UserInterface.h"
 #include <iostream>
+
+// Constants for repeating a scneario
+const int CREATE_PROD = 1;
+const int CREATE_PROD_REL = 2;
+static const int YES = 1;
+static const int NO = 0;
+
+// Variables for navigation options
+int entryCount;
 
 // Function Implementations
 // ============================================
 
+// General functions
+void readStringInp() {
+	Requester tmpRequester;
+	char requester[REQ_NAME_LENGTH];
+	int CRnotProperLen;
+	int CRexists;
+	
+	do {
+		std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
+		std::cin.getline(requester, REQ_NAME_LENGTH);
+
+		// Check if input length is valid
+		if (std::cin.fail()) {
+			std::cin.clear(); // Clear the fail state
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+			std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+			CRnotProperLen = true; // Continue the loop
+			CRexists = false; // Reset CRexists flag
+		} else if (strlen(requester) == 0) {
+			std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+			CRnotProperLen = true; // Continue the loop
+			CRexists = false; // Reset CRexists flag
+		} else {
+			// Check if the requester already exists
+			CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+			if (CRexists) {
+				std::cout << "\nThe requester already exists!" << std::endl;
+			}
+			CRnotProperLen = false; // Exit the loop if both conditions are false
+		}
+	} while (CRnotProperLen || CRexists);
+}
+
+
+// Display functions for Scenario 4.1
+// ============================================
+// ---------------------------------------------------------
+// Function: verifyAddingProduct
+void confirmAddingProduct() {
+	std::cout << "\nAre you sure you want to add the product (1 for Y, 0 for N)?\n";
+}
+
+// Function: doYouWantAnotherProduct
+void doYouWantAnotherProduct() {
+	std::cout << "\nDo you wish to add another product (1 for Y, 0 for N)?\n";
+}
+
+// Display functions for Scenario 4.2
+// ============================================
+// ---------------------------------------------------------
+void confirmAddingProdRel() {
+	std::cout << "\nAre you sure you want to add this product release (1 for Y, 0 for N)?\n" <<
+	std::endl;
+}
+
+void doYouWantAnotherProdRel() {
+	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n" << std::endl;
+}
+
+// Display functions for Scenario 4.3
+// ============================================
+// ---------------------------------------------------------
+// For use for A5 release.
+void requesterOptions() {
+	std::cout << "=== Enter '" << std::to_string(entryCount+1) << "' for previous 20 items, '" <<
+				 std::to_string(entryCount+2) << "' for next 20 items ===" << std::endl <<
+				 "=== 0 (zero) for exiting the list ===" << std::endl;
+}
+
+void reqSearchChoice() {
+	std::cout << "Enter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
+}
+
+// Functions for Executing Scenarios
+// ============================================
 // ---------------------------------------------------------
 // Function: handleProductMaintenance
 void handleProductMaintenance(int choice) {
-    char X;
+    int choiceConfirmAdd;
+	int choiceRepeat;
     switch (choice) {
         case 1: {
-            std::string productName;
-            std::cout << "\nEnter the Product Name (max 30 char): \n \n";
-            std::cin.ignore();
-            std::getline(std::cin, productName);
-            std::cout << "\nAre you sure you want to add the product " << productName << " (Y/N)? \n \n";
-            std::cin >> X;
-            if (X == 'Y') {
-                createProduct(productName);
-                std::cout << "\nDo you wish to add another product (Y/N)? \n \n";
-                std::cin >> X;
-                if (X == 'Y') {
-                    handleProductMaintenance(1);
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+			bool repeat = false;
+			do
+			{
+				// Scenario 4.1: Creating a Product - duplication prevention logic not implemented
+				char productName[PRODUCT_NAME_LENGTH];
+				Product tmpProd;
+				int notProperLen;
+				int exists;
+
+				// Product name read
+				do {
+					std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n";
+					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+
+					// Check if input length is valid
+					if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						exists = false; // Reset exists flag
+					} else if (strlen(productName) == 0) {
+						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+						notProperLen = true; // Continue the loop
+						exists = false; // Reset exists flag
+					} else {
+						// Check if the product already exists
+						exists = retrieveProductByName("products.dat", productName, tmpProd);
+						if (exists) {
+							std::cout << "\nThe product already exists!" << std::endl;
+						}
+						notProperLen = false; // Exit the loop if both conditions are false
+					}
+				} while (notProperLen || exists);
+
+				// Final choices
+				choiceConfirmAdd = readIntegerInput(confirmAddingProduct,NO,YES);
+				if (choiceConfirmAdd == YES) {
+					createProduct(productName);
+					choiceRepeat = readIntegerInput(doYouWantAnotherProduct,NO,YES);
+					if (choiceRepeat == YES) {
+						repeat = true;
+					} else {
+						break;
+					}
+				} else {
+					break;
+				}
+			} while (repeat);
+			break;
         }
         case 2: {
-            std::string productName, releaseID, releaseDate;
-            std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n \n";
-            std::cin.ignore();
-            std::getline(std::cin, productName);
-            std::cout << "\nEnter the Release ID (max 30 char following your organization's format): \n \n";
-            std::getline(std::cin, releaseID);
-            std::cout << "\nEnter the Release Date (YYYY-MM-DD): \n \n";
-            std::getline(std::cin, releaseDate);
-            std::cout << "\nAre you sure you want to add the release " << releaseID << " for Product " << productName << " (Y/N)? \n \n";
-            std::cin >> X;
-            if (X == 'Y') {
-                createRelease(productName, releaseID, releaseDate);
-                std::cout << "\nDo you wish to add another release (Y/N)? \n \n";
-                std::cin >> X;
-                if (X == 'Y') {
-                    handleProductMaintenance(2);
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
+			// Scenario 4.2: Creating a Release of a Product - duplication prevention logic not implemented
+            char productName[PRODUCT_NAME_LENGTH], releaseID[RELEASE_ID_LENGTH], releaseDate[RELEASE_DATE_LENGTH];
+            
+			bool repeat = false;
+			do
+			{
+				Product tmpProd;
+				ProductRelease tmpRel;
+				int notProperLen;
+				int notExists;
+				bool ifUniqueProdRel;
+				
+				do {
+					do {
+						std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n";
+						std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+							notProperLen = true; // Continue the loop
+							notExists = false; // Reset notExists flag
+						} else if (strlen(productName) == 0) {
+							std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							notProperLen = true; // Continue the loop
+							notExists = false; // Reset notExists flag
+						} else {
+							// Check if the product exists
+							notExists = !retrieveProductByName("products.dat", productName, tmpProd);
+							if (notExists) {
+								std::cout << "\nThe product must exist!" << std::endl;
+							}
+							notProperLen = false; // Exit the loop if both conditions are false
+						}
+					} while (notProperLen || notExists);
+
+					// Get a product release ID
+					do {
+						std::cout << "\nEnter the Release ID (max 8 char following your organization's format): \n";
+						std::cin.getline(releaseID, RELEASE_ID_LENGTH);
+
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
+							notProperLen = true;
+						} else {
+							// Check if input is empty (0 characters)
+							notProperLen = strlen(releaseID) == 0;
+							if (notProperLen) {
+								std::cout << "\nInput cannot be empty. Please enter 1 to 8 characters." << std::endl;
+							}
+						}
+					} while (notProperLen);
+
+					// Check for uniquenes by product release ID
+					ifUniqueProdRel = retrieveProductReleaseByKey("productReleases.dat", productName, releaseID, tmpRel);
+					if (ifUniqueProdRel)
+					{
+						std::cout << "You must enter a product release that has a unique compound primary key " 
+						"(i.e., unique combination of product name and release ID).\n";
+					}
+				} while (ifUniqueProdRel);				
+
+				// Get a release date
+				do {
+					std::cout << "\nEnter the release date (YYYYMMDD)): \n \n";
+					std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
+
+					notProperLen = std::cin.fail() || strlen(releaseDate) != 8;
+
+					if (notProperLen) {
+						std::cin.clear(); // Clear the fail state
+						std::cout << "\nThe release date must be 8 characters!" << std::endl;
+					}
+				} while (notProperLen);
+
+				// Final choices
+				choiceConfirmAdd = readIntegerInput(confirmAddingProdRel,NO,YES);
+				if (choiceConfirmAdd == YES) {
+					createProductRelease(productName,releaseID,releaseDate);
+					choiceRepeat = readIntegerInput(doYouWantAnotherProdRel,NO,YES);
+					if (choiceRepeat == YES) {
+						repeat = true;
+					} else {
+						break;
+					}
+				} else {
+					break;
+				}			
+			} while (repeat);
+			break;
         }
-        case 0: 
-            activateUI();
-            break;
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }
@@ -69,48 +256,124 @@ void handleProductMaintenance(int choice) {
 // ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
 void handleChangeRequestMaintenance(int choice) {
-    std::vector<User> users; // Declare the 'users' variable
+    // std::vector<User> users; // Declare the 'users' variable
+	static const int ENTER_REQ = 1;
+	static const int CREATE_REQ = 2;
+
+	std::cout << std::endl;
+
     switch (choice) {
         case 1: {
-            std::string profileName, productName, changeID, description, anticipatedReleaseID;
-            std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
-            std::cin.ignore();
-            std::getline(std::cin, profileName);
+			// Scenario 4.3: Create Change Request
+			// String used
+			char requester[REQ_NAME_LENGTH];
+			bool repeat = false;
 
-            if (profileName == "new") {
-                User newUser;
-                std::cout << "Enter the Customer Name (max 30 char): ";
-                std::getline(std::cin, newUser.name);
-                std::cout << "Enter the phone number of the customer (max 30 char in the format (DDD)DDD-DDDD): ";
-                std::getline(std::cin, newUser.phoneNumber);
-                std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
-                std::getline(std::cin, newUser.email);
-                std::cout << "Are you a Customer or an Employee? (C/E): ";
-                std::getline(std::cin, newUser.role);
-                if (newUser.role == "E") {
-                    std::cout << "Enter the name of the employee’s department (max 30 char): ";
-                    std::getline(std::cin, newUser.department);
-                }
-                users.push_back(newUser);
-                profileName = newUser.name;
-            }
+			// Variables
+			// Requester selection
+			int reqChoice;
+			Requester tmpRequester;
+			// Enter requester 
+			int ERnotExists;
+			int ERnotProperLen;
+			// Create requester
+			int CRnotProperLen;
+			int CRexists;
+			
+			// For repeat choice
+			do {
+				// Get a requester name
+				reqChoice = readIntegerInput(reqSearchChoice,1,2);
+				if (reqChoice == ENTER_REQ) {
+					do {
+						std::cout << "\nEnter the Requester name (max 30 char, must pre-exist): \n";
+						std::cin.getline(requester, REQ_NAME_LENGTH);
 
-            std::cout << "Select a product (must pre-exist): ";
-            std::getline(std::cin, productName);
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+							ERnotProperLen = true; // Continue the loop
+							ERnotExists = false; // Reset ERnotExists flag
+						} else if (strlen(requester) == 0) {
+							std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							ERnotProperLen = true; // Continue the loop
+							ERnotExists = false; // Reset ERnotExists flag
+						} else {
+							// Check if the product exists
+							ERnotExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+							if (ERnotExists) {
+								std::cout << "\nThe Requester must exist!" << std::endl;
+							}
+							ERnotProperLen = false; // Exit the loop if both conditions are false
+						}
+					} while (ERnotProperLen || ERnotExists);
+				} else if (reqChoice == CREATE_REQ) {
+					do {
+						std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
+						std::cin.getline(requester, REQ_NAME_LENGTH);
 
-            std::cout << "Enter the Change ID (6 digit number): ";
-            std::getline(std::cin, changeID);
-            std::cout << "Enter the description for the product (max 150 char): ";
-            std::getline(std::cin, description);
-            std::cout << "Enter the Anticipated Release ID for the product (max 8 char): ";
-            std::getline(std::cin, anticipatedReleaseID);
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+							CRexists = false; // Reset CRexists flag
+						} else if (strlen(requester) == 0) {
+							std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+							CRexists = false; // Reset CRexists flag
+						} else {
+							// Check if the requester already exists
+							CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+							if (CRexists) {
+								std::cout << "\nThe requester already exists!" << std::endl;
+							}
+							CRnotProperLen = false; // Exit the loop if both conditions are false
+						}
+					} while (CRnotProperLen || CRexists);
 
-            createChangeRequest(profileName, productName, changeID, description, anticipatedReleaseID);
-            break;
+				}				
+
+				std::cout << "end so far" << std::endl;
+				std::cin.get();
+			} while (repeat);
+
+
+    //         std::string profileName, productName, changeID, description, anticipatedReleaseID;
+    //         std::cout << "Select your profile (enter name or 'new' to create a new profile): ";
+    //         std::cin.ignore();
+    //         std::getline(std::cin, profileName);
+
+    //         if (profileName == "new") {
+    //             User newUser;
+    //             std::cout << "Enter the Customer Name (max 30 char): ";
+    //             std::getline(std::cin, newUser.name);
+    //             std::cout << "Enter the phone number of the customer (max 30 char in the format (DDD)DDD-DDDD): ";
+    //             std::getline(std::cin, newUser.phoneNumber);
+    //             std::cout << "Enter the email of the customer (max 30 char in the format username@email_provider.domain_type): ";
+    //             std::getline(std::cin, newUser.email);
+    //             std::cout << "If you are an employee, enter a department (max 30 char); otherwise, enter 'N/A': ";
+    //             std::getline(std::cin, newUser.department);
+    //             users.push_back(newUser);
+    //             profileName = newUser.name;
+    //         }
+
+    //         std::cout << "Select a product (must pre-exist): ";
+    //         std::getline(std::cin, productName);
+
+    //         std::cout << "Enter the Change ID (6 digit number): ";
+    //         std::getline(std::cin, changeID);
+    //         std::cout << "Enter the description for the product (max 150 char): ";
+    //         std::getline(std::cin, description);
+    //         std::cout << "Enter the Anticipated Release ID for the product (max 8 char): ";
+    //         std::getline(std::cin, anticipatedReleaseID);
+
+    //         createChangeRequest(profileName, productName, changeID, description, anticipatedReleaseID);
+    //         break;
         }
-        case 0: 
-            activateUI();
-            break;
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }
@@ -121,6 +384,7 @@ void handleChangeRequestMaintenance(int choice) {
 void handleChangeItemMaintenance(int choice) {
     switch (choice) {
         case 1: {
+		// Scenario 4.4: Querying Change Items
             std::string productName, changeID;
             std::cout << "Select a product (must pre-exist): ";
             std::cin.ignore();
@@ -131,6 +395,7 @@ void handleChangeItemMaintenance(int choice) {
             break;
         }
         case 2: {
+		// Scenario 4.5: Update/Assess Change Item
             std::string productName, changeID, newState;
             std::cout << "Select a product (must pre-exist): ";
             std::cin.ignore();
@@ -142,9 +407,6 @@ void handleChangeItemMaintenance(int choice) {
             updateChangeRequest(productName, changeID, newState);
             break;
         }
-        case 0: 
-            activateUI();
-            break;
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }
@@ -155,6 +417,8 @@ void handleChangeItemMaintenance(int choice) {
 void handleReportGeneration(int choice) {
     switch (choice) {
         case 1: {
+		// Scenario 4.6: Report #1: List of All Change Items for a 
+		// Particular Product that are Not Done and Not Cancelled
             std::string productName;
             std::cout << "Enter the product name to generate Report #1: ";
             std::cin.ignore();
@@ -163,6 +427,8 @@ void handleReportGeneration(int choice) {
             break;
         }
         case 2: {
+		// Scenario 4.7: Report #2: List of Customers/Staff Who Need to Be Informed When
+		// a Particular Change Has Been Implemented, and in What ProductRelease ID
             std::string changeID;
             std::cout << "Enter the Change ID to generate Report #2: ";
             std::cin.ignore();
@@ -170,9 +436,6 @@ void handleReportGeneration(int choice) {
             generateReport2(changeID);
             break;
         }
-        case 0: 
-            activateUI();
-            break;
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }

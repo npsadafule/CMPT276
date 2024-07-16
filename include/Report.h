@@ -3,14 +3,14 @@
 
 #include <string>
 #include <vector>
-#include "User.h"
+#include "Requester.h"
 
 // ============================================
 // Data structures
 // ============================================
 struct Report {
     std::string changeID;
-    std::vector<User> users;
+    // std::vector<User> users;
 };
 
 // ============================================
