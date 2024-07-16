@@ -47,8 +47,15 @@ void createChangeItem(int changeID,
 					  const char* description,
 					  const char* anticipatedReleaseID,
 					  const char* state);
-// ---------------------------------------------------------
-// Function: queryChangeItem
+bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product);
+bool updateChangeItem(int origChangeID, ChangeItem& changeItem);
+
+
+
+// // ---------------------------------------------------------
+// // Function: queryChangeItem
+// void queryChangeItem(const char* product, const int changeID);
+
 // void queryChangeItem(
 // const std::string& productName, // in
 // const std::string& changeID // in
