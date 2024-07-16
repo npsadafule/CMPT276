@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <vector>
 #include <fstream>
+#include <cstring>
 
 // Global variable definitions
 extern std::vector<Product> products;
@@ -236,66 +237,29 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 }
         
 
-// // ---------------------------------------------------------
-// // Function: queryChangeItem
-// void queryChangeItem(const char* product, const int changeID) {
-	
-// }
-
-// void queryChangeItem(
-// const std::string& productName, // in
-// const std::string& changeID // in
-// ) {
-// // Description:
-// // Queries and displays the details of a change item for a specified
-// // product. If the product
-// // or the change item does not exist, it displays an error message.
-// auto it = std::find_if(products.begin(), products.end(), [&](const
-// 	Product& p) { return p.name == productName; });
-// if (it == products.end()) {
-// 	std::cerr << "Product does not exist. Please try again.\n";
-// 	return;
-// }
-
-// auto itemIt = it->changeItems.find(changeID);
-// if (itemIt == it->changeItems.end()) {
-// 	std::cerr << "Change Item does not exist. Please try again.\n";
-// 	return;
-// }
-
-
-// const ChangeItem& item = itemIt->second;
-// std::cout << "Product: " << productName << "\nDescription: " << item.
-// 	description << "\nChange ID: " << item.changeID << "\nState: " <<
-// 	item.state << "\nAnticipated Release ID: " << item.
-// 	anticipatedReleaseID << "\n";
-// }
+// ---------------------------------------------------------
+// Function: queryChangeItem
+void queryChangeItem(const std::string& productName, const int changeID) {
+    ChangeItem changeItem;
+    if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
+        displayChangeItem(changeItem);
+    } else {
+        std::cerr << "Change Item or Product does not exist. Please try again.\n";
+    }
+}
 
 // ---------------------------------------------------------
 // Function: updateChangeItem
-// void updateChangeItem(
-// 	const std::string& productName, // in
-// 	const std::string& changeID, // in
-// 	const std::string& newState // in
-// ) {
-// 	// Description:
-// 	// Updates the state of a change item for a specified product. If the
-// 	// product or the change
-// 	// item does not exist, it displays an error message.
-// 	auto it = std::find_if(products.begin(), products.end(), [&](const
-// 	Product& p) { return p.name == productName; });
-// 	if (it == products.end()) {
-// 	std::cerr << "Product does not exist. Please try again.\n";
-// 	return;
-// 	}
-
-// 	auto itemIt = it->changeItems.find(changeID);
-// 	if (itemIt == it->changeItems.end()) {
-// 	std::cerr << "Change Item does not exist. Please try again.\n";
-// 	return;
-// 	}
-
-// 	ChangeItem& item = itemIt->second;
-// 	item.state = newState;
-// 	std::cout << "Change Item updated successfully.\n";
-// }
+void updateChangeItem(const std::string& productName, const int changeID, const std::string& newState) {
+    ChangeItem changeItem;
+    if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
+        std::strcpy(changeItem.state, newState.c_str());
+        if (updateChangeItem(changeID, changeItem)) {
+            std::cout << "Change Item updated successfully.\n";
+        } else {
+            std::cerr << "Failed to update Change Item. Please try again.\n";
+        }
+    } else {
+        std::cerr << "Change Item or Product does not exist. Please try again.\n";
+    }
+}
