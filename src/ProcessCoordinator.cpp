@@ -18,40 +18,6 @@ int entryCount;
 // Function Implementations
 // ============================================
 
-// General functions
-void readStringInp() {
-	Requester tmpRequester;
-	char requester[REQ_NAME_LENGTH];
-	int CRnotProperLen;
-	int CRexists;
-	
-	do {
-		std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
-		std::cin.getline(requester, REQ_NAME_LENGTH);
-
-		// Check if input length is valid
-		if (std::cin.fail()) {
-			std::cin.clear(); // Clear the fail state
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-			std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
-			CRnotProperLen = true; // Continue the loop
-			CRexists = false; // Reset CRexists flag
-		} else if (strlen(requester) == 0) {
-			std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
-			CRnotProperLen = true; // Continue the loop
-			CRexists = false; // Reset CRexists flag
-		} else {
-			// Check if the requester already exists
-			CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
-			if (CRexists) {
-				std::cout << "\nThe requester already exists!" << std::endl;
-			}
-			CRnotProperLen = false; // Exit the loop if both conditions are false
-		}
-	} while (CRnotProperLen || CRexists);
-}
-
-
 // Display functions for Scenario 4.1
 // ============================================
 // ---------------------------------------------------------
@@ -266,7 +232,7 @@ void handleChangeRequestMaintenance(int choice) {
         case 1: {
 			// Scenario 4.3: Create Change Request
 			// String used
-			char requester[REQ_NAME_LENGTH];
+			char requester[REQ_NAME_LENGTH], phoneNum[PHONE_NUMBER_LENGTH], email[EMAIL_LENGTH];
 			bool repeat = false;
 
 			// Variables
@@ -310,6 +276,7 @@ void handleChangeRequestMaintenance(int choice) {
 						}
 					} while (ERnotProperLen || ERnotExists);
 				} else if (reqChoice == CREATE_REQ) {
+					// Get requester name
 					do {
 						std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
 						std::cin.getline(requester, REQ_NAME_LENGTH);
@@ -335,10 +302,52 @@ void handleChangeRequestMaintenance(int choice) {
 						}
 					} while (CRnotProperLen || CRexists);
 
-				}				
+					// Get phone number
+					do {
+						std::cout << "\nEnter your phone number (10 digits in the format DDDDDDDDDD): \n";
+						std::cin.getline(phoneNum, PHONE_NUMBER_LENGTH);
 
-				std::cout << "end so far" << std::endl;
-				std::cin.get();
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 10 characters." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+						} else if (strlen(phoneNum) < 10) {
+							std::cout << "\nPhone number cannot be less than 10 digits. Please enter 10 digits." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+						} else {
+							CRnotProperLen = false;
+						}
+					} while (CRnotProperLen);
+
+					// Get email
+					do {
+						std::cout << "\nEnter the email of the customer (max 24 char in the format "
+									 "username@email_provider.domain_type):\n";
+						std::cin.getline(email, PHONE_NUMBER_LENGTH);
+
+						// Check if input length is valid
+						if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 24 characters." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+						} else if (strlen(email) == 0) {
+							std::cout << "\nEmail cannot be empty. Please enter 1 to 24 characters." << std::endl;
+							CRnotProperLen = true; // Continue the loop
+						} else {
+							CRnotProperLen = false;
+						}
+					} while (CRnotProperLen);
+
+					// Get department
+
+					
+
+					std::cout << "end so far" << std::endl;
+					std::cin.get();
+				}				
 			} while (repeat);
 
 
