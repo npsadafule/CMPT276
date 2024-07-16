@@ -211,7 +211,6 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
     }
 
     // Find the position of the change item in the file
-	int CIPos = 0;
     while (inFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
         if (readCI.changeID == origChangeID) {
 			std::streampos position = inFile.tellg(); // Get current position
@@ -221,6 +220,10 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 
 			// Write the updated ChangeItem back to the inFile
 			inFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
+
+			// Validate what we inserted
+			inFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
+			inFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem));
 
 			// Check if write was successful
 			if (!inFile) {
@@ -237,29 +240,29 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 }
         
 
-// ---------------------------------------------------------
-// Function: queryChangeItem
-void queryChangeItem(const std::string& productName, const int changeID) {
-    ChangeItem changeItem;
-    if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
-        displayChangeItem(changeItem);
-    } else {
-        std::cerr << "Change Item or Product does not exist. Please try again.\n";
-    }
-}
+// // ---------------------------------------------------------
+// // Function: queryChangeItem
+// void queryChangeItem(const std::string& productName, const int changeID) {
+//     ChangeItem changeItem;
+//     if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
+//         displayChangeItem(changeItem);
+//     } else {
+//         std::cerr << "Change Item or Product does not exist. Please try again.\n";
+//     }
+// }
 
-// ---------------------------------------------------------
-// Function: updateChangeItem
-void updateChangeItem(const std::string& productName, const int changeID, const std::string& newState) {
-    ChangeItem changeItem;
-    if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
-        std::strcpy(changeItem.state, newState.c_str());
-        if (updateChangeItem(changeID, changeItem)) {
-            std::cout << "Change Item updated successfully.\n";
-        } else {
-            std::cerr << "Failed to update Change Item. Please try again.\n";
-        }
-    } else {
-        std::cerr << "Change Item or Product does not exist. Please try again.\n";
-    }
-}
+// // ---------------------------------------------------------
+// // Function: updateChangeItem
+// void updateChangeItem(const std::string& productName, const int changeID, const std::string& newState) {
+//     ChangeItem changeItem;
+//     if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
+//         std::strcpy(changeItem.state, newState.c_str());
+//         if (updateChangeItem(changeID, changeItem)) {
+//             std::cout << "Change Item updated successfully.\n";
+//         } else {
+//             std::cerr << "Failed to update Change Item. Please try again.\n";
+//         }
+//     } else {
+//         std::cerr << "Change Item or Product does not exist. Please try again.\n";
+//     }
+// }

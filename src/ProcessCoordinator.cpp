@@ -83,6 +83,10 @@ void confirmAddCR() {
 	std::cout << "\nAre you sure you want to add a customer request?\n";
 }
 
+void repeatChangeCR() {
+	std::cout << "\nDo you wish to create another Change Request? (1 for Y, 0 for N)?\n";
+}
+
 // Display functions for Scenario 4.4
 // ============================================
 void repeatCIQuery() {
@@ -100,7 +104,11 @@ void choiceUpdateDisp() {
 }
 
 void choiceSaveUpdDisp() {
-	std::cout << "Save the changes made to the Change Item (1 for Y, 0 for N)?" << std::endl;
+	std::cout << "\nSave the changes made to the Change Item (1 for Y, 0 for N)?" << std::endl;
+}
+
+void repeatUpdate() {
+	std::cout << "\nDo you wish to update another Change Item? (1 for Y, 0 for N)?\n";
 }
 
 // Functions for Executing Scenarios
@@ -541,7 +549,7 @@ void handleChangeRequestMaintenance(int choice) {
 				if (choiceConfirmAdd == YES) {
 					getTodaysDate(date, sizeof(date));
 					createChangeRequest(requester,changeID,reportedRelease,date,"Low");
-					choiceRepeat = readIntegerInput(doYouWantAnotherProdRel,NO,YES);
+					choiceRepeat = readIntegerInput(repeatChangeCR,NO,YES);
 					if (choiceRepeat == YES) {
 						repeat = true;
 					} else {
@@ -818,13 +826,13 @@ void handleChangeItemMaintenance(int choice) {
 				choiceSaveUpdates = readIntegerInput(choiceSaveUpdDisp,NO,YES);
 				if (choiceSaveUpdates == YES) {
 					// Store the desired updates
-					std::cout << "result of update 1 yay 0 L :" << updateChangeItem(origChangeID,tmpCI) << std::endl;
+					updateChangeItem(origChangeID,tmpCI);
 				} else {
 					break;
 				}
 
 				// Final choices
-				choiceRepeat = readIntegerInput(repeatCIQuery,NO,YES);
+				choiceRepeat = readIntegerInput(repeatUpdate,NO,YES);
 				if (choiceRepeat == YES) {
 					repeat = true;
 				} else {
