@@ -7,8 +7,6 @@
 
 
 
-// rownak 
-
 #ifndef CHANGEITEM_H
 #define CHANGEITEM_H
 
@@ -49,25 +47,8 @@ void createChangeItem(int changeID,
 					  const char* state);
 bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product);
 bool updateChangeItem(int origChangeID, ChangeItem& changeItem);
-
-
-
-// // ---------------------------------------------------------
-// // Function: queryChangeItem
-// void queryChangeItem(const char* product, const int changeID);
-
-// void queryChangeItem(
-// const std::string& productName, // in
-// const std::string& changeID // in
-
-// );
-
-// ---------------------------------------------------------
-// Function: updateChangeItem
-// void updateChangeItem(
-// const std::string& productName, // in
-// const std::string& changeID, // in
-// const std::string& newState // in
-// );
+void closeHighestCID();
+void seekToBeginningOfHighestCIDFile();
+void storeHighestCID();
 
 #endif // CHANGEITEM_H

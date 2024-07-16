@@ -20,6 +20,8 @@ void initProduct();
 void initChangeRequest();
 void initChangeItem();
 void initReportGen();
+void initHighestCID();
 void start();
+void shutdown();
 
 #endif // SYSTEMCONTROLLER_H

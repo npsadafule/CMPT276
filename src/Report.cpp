@@ -9,6 +9,7 @@
 std::fstream reportFile;
 extern std::fstream changeItemFile;
 
+
 // ============================================
 // Function Implementations
 // ============================================

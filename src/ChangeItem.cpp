@@ -13,9 +13,10 @@
 #include <fstream>
 #include <cstring>
 
-// Global variable definitions
+// Global variable exertns
 extern std::vector<Product> products;
 extern std::fstream changeItemFile;
+extern std::fstream highestCIDFile;
 
 // ============================================
 // Function Implementations
@@ -173,6 +174,9 @@ void createChangeItem(int changeID,
     if (!changeItemExists) {
 		writeChangeItem(tmpCI);
 	}	
+
+	// Update highest CID on file if neede
+	storeHighestCID();
 }
 
 // For retrieving a particular product with a particular name
@@ -191,6 +195,7 @@ bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, Chang
         if ((std::strcmp(changeItem.productName, product) == 0) &&
 			(changeItem.changeID == changeID)) {
 			inFile.close();
+			
             return true; // release ID found
         }
     }
@@ -234,35 +239,72 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
         }
     }
 
+	// Update highest CID on file if needed
+	storeHighestCID();
+
 	// Write was successful
 	inFile.close();
 	return true;
 }
-        
 
-// // ---------------------------------------------------------
-// // Function: queryChangeItem
-// void queryChangeItem(const std::string& productName, const int changeID) {
-//     ChangeItem changeItem;
-//     if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
-//         displayChangeItem(changeItem);
-//     } else {
-//         std::cerr << "Change Item or Product does not exist. Please try again.\n";
-//     }
-// }
+void closeHighestCID() {
+	if (highestCIDFile.is_open()) {
+        highestCIDFile.close();
+    }
+}
 
-// // ---------------------------------------------------------
-// // Function: updateChangeItem
-// void updateChangeItem(const std::string& productName, const int changeID, const std::string& newState) {
-//     ChangeItem changeItem;
-//     if (retrieveChangeItemByKeyAndProduct("changeItems.dat", changeID, changeItem, const_cast<char*>(productName.c_str()))) {
-//         std::strcpy(changeItem.state, newState.c_str());
-//         if (updateChangeItem(changeID, changeItem)) {
-//             std::cout << "Change Item updated successfully.\n";
-//         } else {
-//             std::cerr << "Failed to update Change Item. Please try again.\n";
-//         }
-//     } else {
-//         std::cerr << "Change Item or Product does not exist. Please try again.\n";
-//     }
-// }
+// Function: seekToBeginningOfProductFile
+void seekToBeginningOfHighestCIDFile() {
+    if (!highestCIDFile.is_open()) return;
+
+	// Reset internal flags
+    highestCIDFile.clear();
+
+	// Set the position in the input sequence to the beginning of the file
+	// Zero offest from the beginning of the file
+    highestCIDFile.seekg(0, std::ios::beg);
+}
+
+void storeHighestCID() {
+	// For reading
+	ChangeItem readCI;
+	ChangeItem highestCID;
+	highestCID.changeID = -1; // -1 if no change item (i.e., no change IDs) exist on file
+
+	seekToBeginningOfChangeItemFile();
+	seekToBeginningOfHighestCIDFile();
+
+	std::fstream inHighCIDFile("highestCID.dat", std::ios::binary | std::ios::in | std::ios::out);
+    if (!inHighCIDFile) {
+        std::cerr << "Failed to open highest CID file for reading!" << std::endl;
+        exit(1);
+    }
+	std::fstream inFile("changeItems.dat", std::ios::binary | std::ios::in | std::ios::out);
+    if (!inFile) {
+        std::cerr << "Failed to open change item file for reading!" << std::endl;
+        exit(1);
+    }
+
+    // Find the position of the change item in the file
+    while (inFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
+        // Store the highest 
+		if (readCI.changeID > highestCID.changeID) {	
+			highestCID.changeID = readCI.changeID;
+        }
+    }
+
+	// Store highest CID
+	inHighCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
+
+	// // Validate what we inserted
+	// std::streampos position = inFile.tellg(); // Get current position
+	// // Move the inFile pointer back to the beginning of the found item
+	// inFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
+	// inHighCIDFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
+	// inHighCIDFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem));	
+	// // Print the highest CID
+	// std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
+	// std::cout << "The highest Change ID on file is " << std::to_string(readCI.changeID) << std::endl;
+
+	inFile.close();
+}

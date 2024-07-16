@@ -17,6 +17,7 @@ std::fstream productFile;
 std::fstream productReleaseFile;
 std::fstream changeRequestFile;
 std::fstream changeItemFile;
+std::fstream highestCIDFile;
 
 
 // ============================================
@@ -78,14 +79,24 @@ void initReportGen() {
 	// TBD
 }
 
+void initHighestCID() {
+    highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    if (!(highestCIDFile.is_open())) {
+        std::cerr << "Failed to open highestCID.dat file.\n";
+		exit(1);
+    }
+}
+
 // ---------------------------------------------------------
 // Function: start
 void start() {
+	storeHighestCID();
 	initRequester();
     initProduct();
     initChangeRequest();
     initChangeItem();
     initReportGen();
+	initHighestCID();
 }
 
 // ---------------------------------------------------------
@@ -96,4 +107,5 @@ void shutdown() {
     closeChangeRequestFile();
     closeChangeItemFile();
     closeReportFile();
+	closeHighestCID();
 }
