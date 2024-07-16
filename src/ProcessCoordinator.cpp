@@ -848,7 +848,6 @@ void handleReportGeneration(int choice) {
 		// Particular Product that are Not Done and Not Cancelled
             std::string productName;
             std::cout << "Enter the product name to generate Report #1: ";
-            std::cin.ignore();
             std::getline(std::cin, productName);
             generateReport1(productName);
             break;
@@ -858,7 +857,6 @@ void handleReportGeneration(int choice) {
 		// a Particular Change Has Been Implemented, and in What ProductRelease ID
             std::string changeID;
             std::cout << "Enter the Change ID to generate Report #2: ";
-            std::cin.ignore();
             std::getline(std::cin, changeID);
             generateReport2(changeID);
             break;
