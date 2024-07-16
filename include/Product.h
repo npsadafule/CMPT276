@@ -47,5 +47,6 @@ void displayProductRelease(const ProductRelease& productRelease);
 void productReleaseFileDisplay20OrLess(const char* filename);
 bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease);
 void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate);
+bool determineReleaseIDExistence(const char* releaseID);
 
 #endif // PRODUCT_H

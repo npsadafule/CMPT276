@@ -339,3 +339,27 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 		writeProductRelease(productRelease);
 	}	
 }
+
+// Function: getNextChangeRequest
+bool determineReleaseIDExistence(const char* releaseID) {
+    ProductRelease tmpProductRelease;
+
+	seekToBeginningOfProductReleaseFile();
+
+	std::ifstream inFile("productReleases.dat", std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open product releases file for reading!" << std::endl;
+        return false;
+    }
+
+	// Determine if the release exists
+    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+		// If in the inFile, there exists an element that matches what we hope to retrieve
+        if ((std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
+			inFile.close();
+            return true; // release ID found
+        }
+    }
+	inFile.close();
+    return false; // release ID not found
+}
