@@ -66,7 +66,7 @@ void initChangeRequest() {
 // ---------------------------------------------------------
 // Function: initChangeItem
 void initChangeItem() {
-    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
     if (!(changeItemFile.is_open())) {
         std::cerr << "Failed to open changeItem.dat file.\n";
 		exit(1);

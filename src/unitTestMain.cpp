@@ -130,9 +130,9 @@ void testCreateProduct() {
 void testCreateChangeItem() {
 	// Test data
 	const ChangeItem CITest[3] {
-		{9988, "Product A", "Sample description that runs on for a while", "R51B", "Reported"},
-		{8877, "Random stuff", "The quick brown fox jumps over the lazy dog", "AB12", "Reported"},
-		{7766, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
+		{5454, "Product A", "Sample description that runs on for a while", "R51B", "Reported"},
+		{6767, "Random stuff", "The quick brown fox jumps over the lazy dog", "AB12", "Reported"},
+		{2323, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
 	};
 
 	// Open the file
@@ -356,9 +356,9 @@ void testUpdateChangeItem() {
 // Function: runAllTests
 void runAllTests() {
     // testCreateProduct();
-	// testCreateChangeItem();
+	testCreateChangeItem();
 	// testCreateRequester();
-	testCreateChangeRequest();
+	// testCreateChangeRequest();
 
     // testCreateMultipleProducts();
     // testCreateChangeRequest();
