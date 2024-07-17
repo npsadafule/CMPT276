@@ -1,6 +1,7 @@
 #include "Report.h"
 #include "Product.h"
 #include "Requester.h"
+#include "ChangeRequest.h"
 #include "ChangeItem.h"
 #include <iostream>
 #include <fstream>
@@ -8,7 +9,8 @@
 // File handling functions
 std::fstream reportFile;
 extern std::fstream changeItemFile;
-
+extern std::fstream requesterFile;
+extern std::fstream changeRequestFile;
 
 // ============================================
 // Function Implementations
@@ -82,19 +84,83 @@ void generateReport1(const std::string& productName) {
 // ---------------------------------------------------------
 // Function: generateReport2
 void generateReport2(const std::string& changeID) {
-    openReportFile();
-    seekToBeginningOfReportFile();
-    Report report;
-    while (getNextReport(report)) {
-        if (report.changeID == changeID) {
-            std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
-            for (const auto& user : report.users) {
-                std::cout << "Name: " << user.name << ", Email: " << user.email << "\n";
-            }
-            closeReportFile();
-            return;
+    ChangeItem changeItem;
+    Requester requester;
+    ChangeRequest changeRequest;
+    bool changeItemFound = false;
+    bool changeRequestFound = false;
+    bool requesterFound = false;
+
+    openChangeItemFile();
+    if (!changeItemFile.is_open()) {
+        std::cerr << "Failed to open changeItemFile.\n";
+        return;
+    }
+    seekToBeginningOfChangeItemFile();
+
+    // Search for the ChangeItem with the specified changeID
+    while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
+        if (std::to_string(changeItem.changeID) == changeID) {
+            changeItemFound = true;
+            break;
         }
     }
-    std::cerr << "Change Request not found. Please try again.\n";
-    closeReportFile();
+    closeChangeItemFile();
+
+    if (!changeItemFound) {
+        std::cerr << "ChangeItem with ChangeID " << changeID << " not found.\n";
+        return;
+    }
+
+    std::cout << "Found ChangeItem: ID=" << changeItem.changeID << ", Description=" << changeItem.description << "\n";
+
+    openChangeRequestFile();
+    if (!changeRequestFile.is_open()) {
+        std::cerr << "Failed to open changeRequestFile.\n";
+        return;
+    }
+    seekToBeginningOfChangeRequestFile();
+
+    std::vector<std::string> requesterNames;
+    while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
+        if (changeRequest.changeID == std::stoi(changeID)) {
+            changeRequestFound = true;
+            requesterNames.push_back(changeRequest.requesterName);
+        }
+    }
+    closeChangeRequestFile();
+
+    if (!changeRequestFound) {
+        std::cerr << "No change request found for ChangeItem with ChangeID " << changeID << ".\n";
+        return;
+    }
+
+    openRequesterFile();
+    if (!requesterFile.is_open()) {
+        std::cerr << "Failed to open requesterFile.\n";
+        return;
+    }
+    seekToBeginningOfRequesterFile();
+
+    std::vector<Requester> relatedRequesters;
+    while (requesterFile.read(reinterpret_cast<char*>(&requester), sizeof(Requester))) {
+        for (const auto& name : requesterNames) {
+            if (std::strcmp(requester.reqName, name.c_str()) == 0) {
+                relatedRequesters.push_back(requester);
+                requesterFound = true;
+            }
+        }
+    }
+    closeRequesterFile();
+
+    if (!requesterFound) {
+        std::cerr << "No requesters found for ChangeItem with ChangeID " << changeID << ".\n";
+        return;
+    }
+
+    // Generate the report
+    std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
+    for (const auto& req : relatedRequesters) {
+        std::cout << "Name: " << req.reqName << ", Email: " << req.email << "\n";
+    }
 }
