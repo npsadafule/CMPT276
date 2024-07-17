@@ -39,11 +39,11 @@ int main() {
 void testCreateProductRelease() {
 	// Define a 3x5 array of C-style strings contianing the attribute test data
     const char* attributes[5][3] = {
-        {"L", "11", "20240611"},
-        {"G", "12", "20240612"},
-        {"H", "13", "20240613"},
-        {"I", "14", "20240614"},
-        {"J", "15", "20240615"}
+        {"apple", "11", "20240611"},
+        {"banana", "12", "20240612"},
+        {"cherry", "13", "20240613"},
+        {"mange", "14", "20240614"},
+        {"peach", "15", "20240615"}
     };
 
 	// Open the file

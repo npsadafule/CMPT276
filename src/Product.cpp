@@ -278,17 +278,10 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
 	seekToBeginningOfProductReleaseFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return false;
-    }
-
-    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
 		// If in the inFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.productName, productReleaseName) == 0) &&
 			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
-			inFile.close();
 			
 			// Store the product into the product outside of the function
 			std::strcpy(productRelease.productName, tmpProductRelease.productName);
@@ -299,7 +292,6 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
         }
     }
 
-	inFile.close();
     return false; // Product not found
 }
 
