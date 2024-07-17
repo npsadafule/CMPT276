@@ -196,8 +196,8 @@ void testCreateChangeItem() {
 void testCreateRequester() {
 	// Test data
 	const Requester reqTest[2] {
-		{"joe", "6041237654", "fakeemail@yahoo.com", "Engineering"},
-		{"mama", "7784039872", "asedf@gmail.com", "N/A"}
+		{"crazy", "6041237654", "fakeemail@yahoo.com", "Engineering"},
+		{"boy", "7784039872", "asedf@gmail.com", "N/A"}
 	};
 
 	// Open the file
@@ -355,9 +355,9 @@ void testUpdateChangeItem() {
 // ---------------------------------------------------------
 // Function: runAllTests
 void runAllTests() {
-    testCreateProduct();
+    // testCreateProduct();
 	// testCreateChangeItem();
-	// testCreateRequester();
+	testCreateRequester();
 	// testCreateChangeRequest();
 
     // testCreateMultipleProducts();

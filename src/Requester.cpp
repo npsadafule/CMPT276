@@ -157,20 +157,14 @@ void createRequester(const char* reqName,
 
 	seekToBeginningOfRequesterFile();
 
-	std::ifstream inFile("requestersFile.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open requester file for reading!" << std::endl;
-        exit(1);
-    }
-
     // Read each requester from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&tmpReadReq), sizeof(Requester))) {
+    while (requesterFile.read(reinterpret_cast<char*>(&tmpReadReq), sizeof(Requester))) {
         if (std::strcmp(tmpReadReq.reqName, reqName) == 0) {
 			requesterExists = true;
         }
     }
-	inFile.close();
-	
+	requesterFile.clear();
+
 	// If the requester doesn't exist, append it to the end of the file
     if (!requesterExists) {
 		writeRequester(tmpReq);
