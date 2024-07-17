@@ -196,8 +196,8 @@ void testCreateChangeItem() {
 void testCreateRequester() {
 	// Test data
 	const Requester reqTest[2] {
-		{"crazy", "6041237654", "fakeemail@yahoo.com", "Engineering"},
-		{"boy", "7784039872", "asedf@gmail.com", "N/A"}
+		{"new", "6041237654", "fakeemail@yahoo.com", "Engineering"},
+		{"jeans", "7784039872", "asedf@gmail.com", "N/A"}
 	};
 
 	// Open the file

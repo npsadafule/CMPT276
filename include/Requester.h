@@ -28,7 +28,6 @@ void closeRequesterFile();
 void writeRequester(const Requester& requester);
 void seekToBeginningOfRequesterFile();
 void displayRequester(const Requester& requester);
-int requesterFileDisplay20OrLess(int page, const char* filename);
 bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester& requester);
 void createRequester(const char* reqName,
 					 const char* phoneNumber,

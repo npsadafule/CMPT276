@@ -62,47 +62,6 @@ void displayRequester(const Requester& requester) {
 					 ", " << requester.department;
 }
 
-int requesterFileDisplay20OrLess(int page, const char* filename) {
-	const int MAX_READS = 20;
-
-	Requester tmpReq;
-
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open requesters file for reading!" << std::endl;
-        return -1;
-    }
-
-	// Get to the page
-	for (int i=0; i<page-1; i++)
-	{		
-		// Read 20 items
-		int counter = 0;
-		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-			counter < MAX_READS) {
-			counter++;
-		}
-	}
-
-	// Print the page if valid
-	if (inFile.fail()) {
-		inFile.clear();
-		std::cout << "The page you requested does not exist!" << std::endl;
-		return -1;
-	}
-	else {
-		int counter = 0;
-		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-			counter < MAX_READS) {
-			std::cout << std::to_string(counter+1) << ") ";
-			displayRequester(tmpReq);
-			std::cout << std::endl;
-			counter++;
-		}
-		return counter;
-	}
-}
-
 
 // For retrieving a particular product with a particular key
 bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester& requester) {
@@ -110,16 +69,9 @@ bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester
 
 	seekToBeginningOfRequesterFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open requesters file for reading!" << std::endl;
-        return false;
-    }
-
-    while (inFile.read(reinterpret_cast<char*>(&tmpRequester), sizeof(Requester))) {
+    while (requesterFile.read(reinterpret_cast<char*>(&tmpRequester), sizeof(Requester))) {
 		// If in the inFile, there exists an element that matches what we hope to retrieve
         if (std::strcmp(tmpRequester.reqName, reqName) == 0) {
-			inFile.close();
 			
 			// Store the product into the product outside of the function
 			std::strcpy(requester.reqName, tmpRequester.reqName);
@@ -130,8 +82,8 @@ bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester
             return true; // Product found
         }
     }
+	requesterFile.clear();
 
-	inFile.close();
     return false; // Product not found
 }
 
