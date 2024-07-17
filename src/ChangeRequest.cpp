@@ -186,6 +186,10 @@ void queryChangeRequest(const std::string& requesterName, const int changeID) {
 
 // ---------------------------------------------------------
 // Function: updateChangeRequest
+// Updates the priority of a change request identified by requester name and change ID
+// Parameter: requesterName (The name of the requester)
+// Parameter: changeID (The ID of the change request to update)
+// Parameter: newPriority (The new priority to set for the change request)
 void updateChangeRequest(const std::string& requesterName, const int changeID, const std::string& newPriority) {
     ChangeRequest changeRequest;
     std::fstream tempFile("temp.dat", std::ios::out | std::ios::binary);
