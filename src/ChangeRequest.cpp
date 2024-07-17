@@ -12,6 +12,8 @@ extern std::fstream changeRequestFile;
 
 // ---------------------------------------------------------
 // Function: openChangeRequestFile
+// Opens the change request file
+// Exits the program if the file cannot be opened
 void openChangeRequestFile() {
     changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 
@@ -21,6 +23,7 @@ void openChangeRequestFile() {
 
 // ---------------------------------------------------------
 // Function: closeChangeRequestFile
+// Closes the change request file if it is open
 void closeChangeRequestFile() {
     if (changeRequestFile.is_open()) {
         changeRequestFile.close();
@@ -29,6 +32,8 @@ void closeChangeRequestFile() {
 
 // ---------------------------------------------------------
 // Function: writeChangeRequest
+// Writes a change request to the change request file
+// Parameter: changeRequest (The change request to write)
 void writeChangeRequest(const ChangeRequest& changeRequest) {
     if (!changeRequestFile.is_open()) return;
 
@@ -43,6 +48,7 @@ void writeChangeRequest(const ChangeRequest& changeRequest) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfChangeRequestFile
+// Sets the file position to the beginning of the change request file
 void seekToBeginningOfChangeRequestFile() {
     if (!changeRequestFile.is_open()) return;
 
@@ -56,6 +62,9 @@ void seekToBeginningOfChangeRequestFile() {
 
 // ---------------------------------------------------------
 // Function: getNextChangeRequest
+// Retrieves the next change request from the file
+// Parameter: changeRequest (The change request object to store the retrieved data)
+// Returns: bool (true if retrieval was successful, false otherwise)
 bool getNextChangeRequest(ChangeRequest& changeRequest) {
     if (!changeRequestFile.is_open()) return false;
     changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest));
@@ -64,6 +73,12 @@ bool getNextChangeRequest(ChangeRequest& changeRequest) {
 
 // ---------------------------------------------------------
 // Function: retrieveChangeRequestByKey
+// Retrieves a change request by requester name and change ID
+// Parameter: filename (The name of the file to read change requests from)
+// Parameter: reqName (The requester name)
+// Parameter: changeID (The ID of the change request to retrieve)
+// Parameter: changeRequest (The change request object to store the retrieved data)
+// Returns: bool (true if retrieval was successful, false otherwise)
 bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const int changeID, ChangeRequest& changeRequest) {
     ChangeRequest tmpCR;
 
@@ -97,6 +112,12 @@ bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const
 
 // ---------------------------------------------------------
 // Function: createChangeRequest
+// Creates a new change request
+// Parameter: requesterName (The name of the requester)
+// Parameter: changeID (The ID of the change request)
+// Parameter: reportedRelease (The reported release for the change request)
+// Parameter: reportedDate (The reported date for the change request)
+// Parameter: priority (The priority of the change request)
 void createChangeRequest(const char* requesterName,
                          const int changeID,
                          const char* reportedRelease,
@@ -141,6 +162,9 @@ void createChangeRequest(const char* requesterName,
 
 // ---------------------------------------------------------
 // Function: queryChangeRequest
+// Queries a change request by requester name and change ID
+// Parameter: requesterName (The name of the requester)
+// Parameter: changeID (The ID of the change request)
 void queryChangeRequest(const std::string& requesterName, const int changeID) {
     ChangeRequest changeRequest;
     openChangeRequestFile();
