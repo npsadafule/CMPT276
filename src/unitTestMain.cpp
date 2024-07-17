@@ -47,7 +47,7 @@ void testCreateProduct() {
 	// ORIGINAL TEST
 
 	// String we are testing
-	char testString[PRODUCT_NAME_LENGTH] = "arghProd";
+	char testString[PRODUCT_NAME_LENGTH] = "testProduct";
 
 	// Open the file
 	openProductFile();
@@ -78,7 +78,7 @@ void testCreateProduct() {
 	closeProductFile();
 
 	// ==========================================
-	// LOOPING TEST
+	// LOOPING TEST (Kept for future testing)
 
 	// // String we are testing
 	// const char* attributes[5] = {
@@ -122,12 +122,6 @@ void testCreateProduct() {
 
 	// // Close the product file
 	// closeProductFile();
-
-	// ==========================================
-	// CHANGE ITEM TEST
-
-	
-
 }
 
 // ---------------------------------------------------------
@@ -372,12 +366,7 @@ void testUpdateChangeItem() {
 // Runs all defined test functions.
 void runAllTests() {
     // testCreateProduct();
-	testCreateChangeItem();
+	// testCreateChangeItem();
 	// testCreateRequester();
 	// testCreateChangeRequest();
-
-    // testCreateMultipleProducts();
-    // testCreateChangeRequest();
-    // testQueryChangeItem();
-    // testUpdateChangeItem();
 }

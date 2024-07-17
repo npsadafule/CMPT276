@@ -137,22 +137,13 @@ void createProduct(const char* namePtr) {
 	Product tmpProduct;
 
 	seekToBeginningOfProductFile();
-	
-    if (!productFile.is_open()) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        exit(1);
-    }
 
 	while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, namePtr) == 0) {
 			productExists = true;
         }
     }
-
-	// Clear flags if we didn't find the product
-	if (!productFile.good()) {
-		productFile.clear();
-	}
+	productFile.clear();
 
 	// If the product doesn't exist, append it to the end of the file
     if (!productExists) {
@@ -270,6 +261,7 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
             return true; // Product found
         }
     }
+	productReleaseFile.clear();
 
     return false; // Product not found
 }

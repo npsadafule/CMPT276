@@ -38,8 +38,13 @@ void writeChangeRequest(const ChangeRequest& changeRequest);
 
 // Seeks to the beginning of the ChangeRequest file
 void seekToBeginningOfChangeRequestFile();
-// bool getNextChangeRequest(ChangeRequest& changeRequest);
-// No display functions (display functions would go here based on other modules).
+
+// ---------------------------------------------------------
+// Function: getNextChangeRequest
+// Retrieves the next change request from the file
+// Parameter: changeRequest (The change request object to store the retrieved data)
+// Returns: bool (true if retrieval was successful, false otherwise)
+bool getNextChangeRequest(ChangeRequest& changeRequest);
 
 // Retrieves a ChangeRequest by its primary key
 // Parameter: filename (The name of the file to retrieve the ChangeRequest from)
