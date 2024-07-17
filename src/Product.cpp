@@ -257,18 +257,13 @@ void productReleaseFileDisplay20OrLess(const char* filename) {
 
 	ProductRelease tmpPR;
 
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return;
-    }
-
 	int counter = 0;
-    while (inFile.read(reinterpret_cast<char*>(&tmpPR), sizeof(ProductRelease)) &&
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpPR), sizeof(ProductRelease)) &&
 		   counter < MAX_READS) {
 		displayProductRelease(tmpPR);
 		counter++;
     }
+	productReleaseFile.clear();
 }
 
 
@@ -335,20 +330,14 @@ bool determineReleaseIDExistence(const char* releaseID) {
 
 	seekToBeginningOfProductReleaseFile();
 
-	std::ifstream inFile("productReleases.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open product releases file for reading!" << std::endl;
-        return false;
-    }
-
 	// Determine if the release exists
-    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
 		// If in the inFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
-			inFile.close();
             return true; // release ID found
         }
     }
-	inFile.close();
+	productReleaseFile.clear();
+
     return false; // release ID not found
 }
