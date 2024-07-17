@@ -5,6 +5,11 @@
 // Rev. 1 - 2024/07/01 - Group 7
 // ============================================
 
+// Memory/Speed/Complexity Trade-offs: 
+// Memory use is optimized by handling file I/O operations directly, which can be slower but avoids loading large data sets into memory.
+// Representation Choices: Using fixed-size structs to handle ChangeItem data for predictable file I/O operations.
+// Alternatives: Could use dynamic memory allocation for more flexible data handling, but with added complexity and potential memory leaks.
+
 #include "ChangeItem.h"
 #include "Product.h"
 #include <iostream>
