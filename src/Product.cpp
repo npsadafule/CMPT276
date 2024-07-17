@@ -173,6 +173,8 @@ void createProduct(const char* namePtr) {
 
 // ---------------------------------------------------------
 // Function: openProductReleaseFile
+// Opens the product release file for reading and writing in binary append mode
+// Exits the program if the file fails to open
 void openProductReleaseFile() {
     productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
@@ -182,6 +184,7 @@ void openProductReleaseFile() {
 
 // ---------------------------------------------------------
 // Function: closeProductReleaseFile
+// Closes the product release file if it is open
 void closeProductReleaseFile() {
     if (productReleaseFile.is_open()) {
         productReleaseFile.close();
@@ -190,6 +193,8 @@ void closeProductReleaseFile() {
 
 // ---------------------------------------------------------
 // Function: writeProductRelease
+// Writes a ProductRelease object to the product release file
+// Exits the program if there is a failure while writing
 void writeProductRelease(const ProductRelease& productRelease) {
     if (!productReleaseFile.is_open()) return;
 
@@ -204,6 +209,7 @@ void writeProductRelease(const ProductRelease& productRelease) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductReleaseFile
+// Seeks to the beginning of the product release file
 void seekToBeginningOfProductReleaseFile() {
     if (!productReleaseFile.is_open()) return;
 
@@ -215,12 +221,19 @@ void seekToBeginningOfProductReleaseFile() {
     productReleaseFile.seekg(0, std::ios::beg);
 }
 
+// ---------------------------------------------------------
+// Function: displayProductRelease
+// Displays details of a product release to the standard output
 void displayProductRelease(const ProductRelease& productRelease) {
 	std::cout << productRelease.productName <<
 				 ", " << productRelease.releaseID <<
 				 ", " << productRelease.releaseDate << std::endl;
 }
 
+// ---------------------------------------------------------
+// Function: productReleaseFileDisplay20OrLess
+// Displays up to 20 product releases from the product release file
+// Parameter: filename (The name of the file to read product releases from)
 void productReleaseFileDisplay20OrLess(const char* filename) {
 	const int MAX_READS = 20;
 
@@ -241,7 +254,16 @@ void productReleaseFileDisplay20OrLess(const char* filename) {
 }
 
 
-// For retrieving a particular product with a particular key
+// ---------------------------------------------------------
+// Function: retrieveProductReleaseByKey
+// Retrieves a product release from the product release file by its product name and release ID
+// Parameters:
+//   filename (The name of the file to retrieve the product release from)
+//   productReleaseName (The name of the product in the release)
+//   releaseID (The release ID of the product release)
+//   productRelease (The ProductRelease object to store the retrieved data)
+// Returns:
+//   bool (true if retrieval was successful, false otherwise)
 bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease) {
 	ProductRelease tmpProductRelease;
 
@@ -274,6 +296,11 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
 // ---------------------------------------------------------
 // Function: createProductRelease
+// Creates a new product release with the given details and writes it to the product release file if it doesn't already exist
+// Parameters:
+//   productName (The name of the product in the release)
+//   releaseID (The release ID of the product release)
+//   releaseDate (The date of the product release)
 void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate) {	// Variables
 	// Create the product release
 	ProductRelease productRelease = {};
@@ -312,7 +339,14 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 	}	
 }
 
-// Function: getNextChangeRequest
+
+// ---------------------------------------------------------
+// Function: determineReleaseIDExistence
+// Checks if a given release ID exists in the product release file
+// Parameter:
+//   releaseID (The release ID to check for existence)
+// Returns:
+//   bool (true if the release ID exists, false otherwise)
 bool determineReleaseIDExistence(const char* releaseID) {
     ProductRelease tmpProductRelease;
 
