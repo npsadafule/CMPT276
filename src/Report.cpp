@@ -16,8 +16,11 @@ extern std::fstream changeRequestFile;
 // Function Implementations
 // ============================================
 
+
 // ---------------------------------------------------------
 // Function: openReportFile
+// Opens the report file for reading and writing in binary mode
+// Prints an error message to standard error if the file fails to open
 void openReportFile() {
     reportFile.open("reports.dat", std::ios::in | std::ios::out | std::ios::binary);
     if (!reportFile.is_open()) {
@@ -27,6 +30,7 @@ void openReportFile() {
 
 // ---------------------------------------------------------
 // Function: closeReportFile
+// Closes the report file if it is open
 void closeReportFile() {
     if (reportFile.is_open()) {
         reportFile.close();
@@ -35,6 +39,8 @@ void closeReportFile() {
 
 // ---------------------------------------------------------
 // Function: writeReport
+// Writes a Report object to the report file
+// Returns immediately if the file is not open
 void writeReport(const Report& report) {
     if (!reportFile.is_open()) return;
     reportFile.write(reinterpret_cast<const char*>(&report), sizeof(Report));
@@ -42,6 +48,8 @@ void writeReport(const Report& report) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfReportFile
+// Seeks to the beginning of the report file
+// Returns immediately if the file is not open
 void seekToBeginningOfReportFile() {
     if (!reportFile.is_open()) return;
     reportFile.clear();
@@ -50,6 +58,9 @@ void seekToBeginningOfReportFile() {
 
 // ---------------------------------------------------------
 // Function: getNextReport
+// Reads the next Report object from the report file
+// Returns true if the read operation is successful, false otherwise
+// Returns false immediately if the file is not open
 bool getNextReport(Report& report) {
     if (!reportFile.is_open()) return false;
     return reportFile.read(reinterpret_cast<char*>(&report), sizeof(Report)).good();
@@ -57,6 +68,8 @@ bool getNextReport(Report& report) {
 
 // ---------------------------------------------------------
 // Function: generateReport1
+// Generates a report listing all change items for a specific product that are not done and not cancelled
+// Prints the report to standard output
 void generateReport1(const std::string& productName) {
     ChangeItem changeItem;
     openChangeItemFile();
@@ -83,6 +96,8 @@ void generateReport1(const std::string& productName) {
 
 // ---------------------------------------------------------
 // Function: generateReport2
+// Generates a report listing customers/staff who need to be informed when a particular change has been implemented
+// Prints the report to standard output
 void generateReport2(const std::string& changeID) {
     ChangeItem changeItem;
     Requester requester;
