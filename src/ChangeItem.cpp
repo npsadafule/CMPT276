@@ -52,7 +52,7 @@ void writeChangeItem(const ChangeItem& changeItem) {
 	// Get the character address of the product struct, write it a byte at a time (char),
 	// writing "sizeof(Product)" amount of bytes  
 	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
-	u
+	changeItemFile.seekp(0, std::ios::end);
     changeItemFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
 
 	// Check if we ran out of disk space; exit if we have
