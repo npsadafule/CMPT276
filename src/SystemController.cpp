@@ -90,13 +90,13 @@ void initHighestCID() {
 // ---------------------------------------------------------
 // Function: start
 void start() {
-	storeHighestCID();
 	initRequester();
     initProduct();
     initChangeRequest();
     initChangeItem();
     initReportGen();
 	initHighestCID();
+	storeHighestCID();
 }
 
 // ---------------------------------------------------------
