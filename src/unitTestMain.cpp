@@ -27,6 +27,8 @@ void runAllTests();
 // Main Function
 // ============================================
 // Function: main
+// Entry point of the program. Runs all test functions and prints end message.
+// Returns: int (Exit status, 0 indicates successful execution)
 int main() {
     runAllTests();
     // std::cout << "All unit tests passed.\n";
@@ -40,6 +42,7 @@ int main() {
 
 // ---------------------------------------------------------
 // Function: testCreateProduct
+// Test function for creating a product and verifying its storage and retrieval.
 void testCreateProduct() {
 	// ORIGINAL TEST
 
@@ -127,6 +130,10 @@ void testCreateProduct() {
 
 }
 
+// ---------------------------------------------------------
+// Function: testCreateChangeItem
+// Test function for creating change items and verifying their storage and retrieval.
+
 void testCreateChangeItem() {
 	// Test data
 	const ChangeItem CITest[3] {
@@ -192,7 +199,9 @@ void testCreateChangeItem() {
 	// Close the change item file
 	closeChangeItemFile();
 }
-
+// ---------------------------------------------------------
+// Function: testCreateRequester
+// Test function for creating requesters and verifying their storage and retrieval.
 void testCreateRequester() {
 	// Test data
 	const Requester reqTest[2] {
@@ -252,6 +261,9 @@ void testCreateRequester() {
 	closeRequesterFile();
 }
 
+// ---------------------------------------------------------
+// Function: testCreateChangeRequest
+// Test function for creating change requests and verifying their storage and retrieval.
 void testCreateChangeRequest() {
 	// Test data
 	const ChangeRequest CRTest[2] {
@@ -322,6 +334,7 @@ void testCreateChangeRequest() {
 
 // ---------------------------------------------------------
 // Function: testCreateMultipleProducts
+// Test function for creating multiple products and verifying their creation.
 void testCreateMultipleProducts() {
     // products.clear();
     // for (int i = 1; i <= 1000; ++i) {
@@ -333,6 +346,7 @@ void testCreateMultipleProducts() {
 
 // ---------------------------------------------------------
 // Function: testQueryChangeItem
+// Test function for querying change items and verifying the query results.
 void testQueryChangeItem() {
     // products.clear();
     // createProduct("TestProduct");
@@ -343,6 +357,7 @@ void testQueryChangeItem() {
 
 // ---------------------------------------------------------
 // Function: testUpdateChangeItem
+// Test function for updating change items and verifying the update results.
 void testUpdateChangeItem() {
     // products.clear();
     // createProduct("TestProduct");
@@ -354,6 +369,7 @@ void testUpdateChangeItem() {
 
 // ---------------------------------------------------------
 // Function: runAllTests
+// Runs all defined test functions.
 void runAllTests() {
     testCreateProduct();
 	// testCreateChangeItem();
