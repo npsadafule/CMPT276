@@ -264,7 +264,7 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 	seekToBeginningOfProductReleaseFile();
 
     while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
-		// If in the inFile, there exists an element that matches what we hope to retrieve
+		// If in the productReleaseFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.productName, productReleaseName) == 0) &&
 			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
 			
@@ -322,7 +322,7 @@ bool determineReleaseIDExistence(const char* releaseID) {
 
 	// Determine if the release exists
     while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
-		// If in the inFile, there exists an element that matches what we hope to retrieve
+		// If in the productReleaseFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
             return true; // release ID found
         }

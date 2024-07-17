@@ -70,7 +70,7 @@ bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const
     seekToBeginningOfChangeRequestFile();
 
     while (changeRequestFile.read(reinterpret_cast<char*>(&tmpCR), sizeof(ChangeRequest))) {
-        // If in the inFile, there exists an element that matches what we hope to retrieve
+        // If in the changeRequestFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpCR.requesterName, reqName) == 0) && (tmpCR.changeID == changeID)) {
 
             // Store the change request into the change request outside of the function

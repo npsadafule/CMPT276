@@ -70,7 +70,7 @@ bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester
 	seekToBeginningOfRequesterFile();
 
     while (requesterFile.read(reinterpret_cast<char*>(&tmpRequester), sizeof(Requester))) {
-		// If in the inFile, there exists an element that matches what we hope to retrieve
+		// If in the requesterFile, there exists an element that matches what we hope to retrieve
         if (std::strcmp(tmpRequester.reqName, reqName) == 0) {
 			
 			// Store the product into the product outside of the function
