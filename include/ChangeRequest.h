@@ -37,7 +37,6 @@ void createChangeRequest(const char* requesterName,
 						 const char* reportedDate,
 						 const char* priority);
 
-// For case scenarios NOT DONE
 void queryChangeRequest(const std::string& productName, const std::string& changeID);
 void updateChangeRequest(const std::string& productName, const std::string& changeID, const std::string& newState);
 

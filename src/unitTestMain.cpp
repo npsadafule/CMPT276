@@ -255,8 +255,8 @@ void testCreateRequester() {
 void testCreateChangeRequest() {
 	// Test data
 	const ChangeRequest CRTest[2] {
-		{"joe", 1234, "A1CD", "20040923", "Top"},
-		{"mama", 5678, "MA34", "20240913", "Bottom"}
+		{"YOLO", 1234, "A1CD", "20040923", "Top"},
+		{"SWAG", 5678, "MA34", "20240913", "Bottom"}
 	};
 
 	// Open the file
@@ -356,9 +356,9 @@ void testUpdateChangeItem() {
 // Function: runAllTests
 void runAllTests() {
     // testCreateProduct();
-	testCreateChangeItem();
+	// testCreateChangeItem();
 	// testCreateRequester();
-	// testCreateChangeRequest();
+	testCreateChangeRequest();
 
     // testCreateMultipleProducts();
     // testCreateChangeRequest();

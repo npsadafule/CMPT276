@@ -69,16 +69,9 @@ bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const
 
     seekToBeginningOfChangeRequestFile();
 
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open change requests file for reading!" << std::endl;
-        return false;
-    }
-
-    while (inFile.read(reinterpret_cast<char*>(&tmpCR), sizeof(ChangeRequest))) {
+    while (changeRequestFile.read(reinterpret_cast<char*>(&tmpCR), sizeof(ChangeRequest))) {
         // If in the inFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpCR.requesterName, reqName) == 0) && (tmpCR.changeID == changeID)) {
-            inFile.close();
 
             // Store the change request into the change request outside of the function
             std::strcpy(changeRequest.requesterName, tmpCR.requesterName);
@@ -90,8 +83,8 @@ bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const
             return true; // Change request found
         }
     }
+	changeRequestFile.clear();
 
-    inFile.close();
     return false; // Product not found
 }
 
@@ -119,19 +112,13 @@ void createChangeRequest(const char* requesterName,
 
     seekToBeginningOfChangeRequestFile();
 
-    std::ifstream inFile("changeRequests.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open change requests file for reading!" << std::endl;
-        exit(1);
-    }
-
     // Read each requester from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&tmpReadCR), sizeof(ChangeRequest))) {
+    while (changeRequestFile.read(reinterpret_cast<char*>(&tmpReadCR), sizeof(ChangeRequest))) {
         if ((std::strcmp(tmpReadCR.requesterName, requesterName) == 0) && (tmpReadCR.changeID == changeID)) {
             CRExists = true;
         }
     }
-    inFile.close();
+    changeRequestFile.clear();
 
     // If the requester doesn't exist, append it to the end of the file
     if (!CRExists) {
