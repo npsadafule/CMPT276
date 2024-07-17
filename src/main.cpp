@@ -2,13 +2,16 @@
 #include "UserInterface.h"
 #include "SystemController.h"
 
+// ============================================
 // Main Function
 // ============================================
 // Function: main
+// Entry point of the program. Starts the system and activates the user interface.
+// Returns: int (Exit status, 0 indicates successful execution)
 int main() {
-    start();
-    activateUI();
-    return 0;
+    start();         // Initialize system components
+    activateUI();    // Start user interface
+    return 0;        // Exit program successfully
 }
 
 /*
@@ -18,7 +21,7 @@ Coding Conventions:
     - Each .cpp file starts with a comment stating the file's name and a revision history.
     - Use bold dividers for major sections: // ============================================
 
-2. Function and Parameter Commenting:a
+2. Function and Parameter Commenting:
     - Each function must have a comment describing its purpose, parameters, and any exceptions it might throw.
     - Use a thin horizontal dividing line before function prototypes in header files.
     - Place specific comments regarding a whole function after the signature but before the first statement.
@@ -41,8 +44,10 @@ Example Function Comment:
 
 // ---------------------------------------------------------
 // Function: exampleFunction
+// This function serves as an example.
+// Parameter: param1 (Description of param1)
+// Parameter: param2 (Description of param2)
 void exampleFunction(const std::string& param1, int param2) {
-    // This function serves as an example.
     // It does something useful.
 }
 
