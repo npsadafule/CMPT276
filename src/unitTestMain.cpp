@@ -186,8 +186,8 @@ void testCreateChangeItem() {
 	}
 
 	// Test sequential reading
-	seekToBeginningOfChangeItemFile();
-	changeItemFileDisplay20OrLess("changeItems.dat");
+	// seekToBeginningOfChangeItemFile();
+	// changeItemFileDisplay20OrLess("changeItems.dat");
 
 	// Close the change item file
 	closeChangeItemFile();
@@ -356,8 +356,8 @@ void testUpdateChangeItem() {
 // Function: runAllTests
 void runAllTests() {
     // testCreateProduct();
-	// testCreateChangeItem();
-	testCreateRequester();
+	testCreateChangeItem();
+	// testCreateRequester();
 	// testCreateChangeRequest();
 
     // testCreateMultipleProducts();

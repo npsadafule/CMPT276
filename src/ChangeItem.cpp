@@ -296,9 +296,7 @@ void storeHighestCID() {
 	// Store highest CID
 	inHighCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
 
-	// // Validate what we inserted
-	// std::streampos position = inFile.tellg(); // Get current position
-	// // Print the highest CID
+	// Print the highest CID
 	// std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
 
 	inFile.close();
