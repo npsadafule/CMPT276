@@ -1,8 +1,4 @@
 #include "UserInterface.h"
-#include "Product.h"
-#include "ChangeRequest.h"
-#include "Report.h"
-#include "Requester.h"
 #include "ProcessCoordinator.h"
 #include "SystemController.h"
 #include <iostream>
