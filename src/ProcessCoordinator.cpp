@@ -9,7 +9,7 @@
 #include <ctime>
 #include <cstdio>  // For sprintf
 
-// Constants for repeating a scneario
+// Constants for repeating a scenario
 static const int YES = 1;
 static const int NO = 0;
 
@@ -23,6 +23,11 @@ int entryCount;
 // ============================================
 
 // General functions
+// ---------------------------------------------------------
+// Function: getTodaysDate
+// Retrieves the current date in the format YYYYMMDD
+// Parameter: dateStr (Buffer to store the formatted date)
+// Parameter: size (Size of the buffer)
 void getTodaysDate(char* dateStr, size_t size) {
     // Get the current time
     std::time_t t = std::time(nullptr);
@@ -35,12 +40,15 @@ void getTodaysDate(char* dateStr, size_t size) {
 // Display functions for Scenario 4.1
 // ============================================
 // ---------------------------------------------------------
-// Function: verifyAddingProduct
+// Function: confirmAddingProduct
+// Prompts the user to confirm adding a product
 void confirmAddingProduct() {
 	std::cout << "\nAre you sure you want to add the product (1 for Y, 0 for N)?\n";
 }
 
+// ---------------------------------------------------------
 // Function: doYouWantAnotherProduct
+// Prompts the user to confirm adding another product
 void doYouWantAnotherProduct() {
 	std::cout << "\nDo you wish to add another product (1 for Y, 0 for N)?\n";
 }
@@ -48,11 +56,16 @@ void doYouWantAnotherProduct() {
 // Display functions for Scenario 4.2
 // ============================================
 // ---------------------------------------------------------
+// Function: confirmAddingProdRel
+// Prompts the user to confirm adding a product release
 void confirmAddingProdRel() {
 	std::cout << "\nAre you sure you want to add this product release (1 for Y, 0 for N)?\n" <<
 	std::endl;
 }
 
+// ---------------------------------------------------------
+// Function: doYouWantAnotherProdRel
+// Prompts the user to confirm adding another product release
 void doYouWantAnotherProdRel() {
 	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n" << std::endl;
 }
@@ -60,41 +73,63 @@ void doYouWantAnotherProdRel() {
 // Display functions for Scenario 4.3
 // ============================================
 // ---------------------------------------------------------
-// For use for A5 release.
+// Function: requesterOptions
+// Displays the options for navigating requesters
 void requesterOptions() {
 	std::cout << "=== Enter '" << std::to_string(entryCount+1) << "' for previous 20 items, '" <<
 				 std::to_string(entryCount+2) << "' for next 20 items ===" << std::endl <<
 				 "=== 0 (zero) for exiting the list ===" << std::endl;
 }
 
+// ---------------------------------------------------------
+// Function: reqSearchChoice
+// Prompts the user to enter an existing requester or create a new one
 void reqSearchChoice() {
 	std::cout << "\nEnter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
 }
 
+// ---------------------------------------------------------
+// Function: CIChoiceDisplay
+// Prompts the user to enter an existing change ID or create a new one
 void CIChoiceDisplay() {
 	std::cout << "\nEnter '1' to enter an existing change ID; enter '2' to create a new change ID: " << std::endl;
 }
 
+// ---------------------------------------------------------
+// Function: CIPrompt
+// Prompts the user to enter a change ID
 void CIPrompt() {
 	std::cout << "\nEnter a change ID (max 6 digits, i.e., 0 to 999999):\n";
 }
 
+// ---------------------------------------------------------
+// Function: confirmAddCR
+// Prompts the user to confirm adding a customer request
 void confirmAddCR() {
 	std::cout << "\nAre you sure you want to add a customer request?\n";
 }
 
+// ---------------------------------------------------------
+// Function: repeatChangeCR
+// Prompts the user to confirm creating another change request
 void repeatChangeCR() {
 	std::cout << "\nDo you wish to create another Change Request? (1 for Y, 0 for N)?\n";
 }
 
 // Display functions for Scenario 4.4
 // ============================================
+// ---------------------------------------------------------
+// Function: repeatCIQuery
+// Prompts the user to confirm querying another change item
 void repeatCIQuery() {
 	std::cout << "\nDo you wish to query for another Change Item (1 for Y, 0 for N)?\n";
 }
 
 // Display functions for Scenario 4.5
 // ============================================
+// ---------------------------------------------------------
+// Function: choiceUpdateDisp
+// Displays the update options for a change item
 void choiceUpdateDisp() {
 	std::cout << "\nSelect what update to make to this change item of Product A:\n"
 				 "1) Update Description\n"
@@ -103,10 +138,16 @@ void choiceUpdateDisp() {
 				 "0) Save updates made to the chosen Change Item\n";
 }
 
+// ---------------------------------------------------------
+// Function: choiceSaveUpdDisp
+// Prompts the user to confirm saving the updates made to a change item
 void choiceSaveUpdDisp() {
 	std::cout << "\nSave the changes made to the Change Item (1 for Y, 0 for N)?" << std::endl;
 }
 
+// ---------------------------------------------------------
+// Function: repeatUpdate
+// Prompts the user to confirm updating another change item
 void repeatUpdate() {
 	std::cout << "\nDo you wish to update another Change Item? (1 for Y, 0 for N)?\n";
 }
@@ -115,6 +156,8 @@ void repeatUpdate() {
 // ============================================
 // ---------------------------------------------------------
 // Function: handleProductMaintenance
+// Handles the product maintenance scenarios
+// Parameter: choice (The chosen scenario for product maintenance)
 void handleProductMaintenance(int choice) {
     int choiceConfirmAdd;
 	int choiceRepeat;
@@ -275,6 +318,8 @@ void handleProductMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
+// Handles the change request maintenance scenarios
+// Parameter: choice (The chosen scenario for change request maintenance)
 void handleChangeRequestMaintenance(int choice) {
     // std::vector<User> users; // Declare the 'users' variable
 	static const int ENTER_REQ = 1;
@@ -531,7 +576,7 @@ void handleChangeRequestMaintenance(int choice) {
 
 						} else {
 							CInotProperLen = false;
-							// Aftere verifying the input length, check if this release ID exists
+							// After verifying the input length, check if this release ID exists
 							releaseIDExists = determineReleaseIDExistence(anticipatedReleaseID);
 							if (!releaseIDExists)
 							{
@@ -568,6 +613,8 @@ void handleChangeRequestMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleChangeItemMaintenance
+// Handles the change item maintenance scenarios
+// Parameter: choice (The chosen scenario for change item maintenance)
 void handleChangeItemMaintenance(int choice) {
     switch (choice) {
         case 1: {
@@ -806,7 +853,7 @@ void handleChangeItemMaintenance(int choice) {
 
 								} else {
 									CInotProperLen = false;
-									// Aftere verifying the input length, check if this release ID exists
+									// After verifying the input length, check if this release ID exists
 									releaseIDExists = determineReleaseIDExistence(anticipatedReleaseID);
 									if (!releaseIDExists)
 									{
@@ -849,6 +896,8 @@ void handleChangeItemMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleReportGeneration
+// Handles the report generation scenarios
+// Parameter: choice (The chosen scenario for report generation)
 void handleReportGeneration(int choice) {
     switch (choice) {
         case 1: {
@@ -876,6 +925,7 @@ void handleReportGeneration(int choice) {
 
 // ---------------------------------------------------------
 // Function: displayHelp
+// Displays help information for using the system
 void displayHelp() {
     std::cout << "Help: This system is designed to manage and track issues, such as bugs and feature requests, within a software development environment.\n";
     std::cout << "At any point, type 'Help' to receive guidance on the available options and how to use them.\n";
