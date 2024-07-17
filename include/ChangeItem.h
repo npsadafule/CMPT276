@@ -78,11 +78,27 @@ void createChangeItem(int changeID,
 					  const char* anticipatedReleaseID,
 					  const char* state);
 
-
+// Retrieves a ChangeItem by its primary key and product
+// Parameter: filename (The name of the file to retrieve the ChangeItem from)
+// Parameter: changeID (The primary key of the ChangeItem)
+// Parameter: changeItem (The ChangeItem object to store the retrieved data)
+// Parameter: product (The product associated with the ChangeItem)
+// Returns: bool (true if retrieval was successful, false otherwise)
 bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product);
+
+// Updates an existing ChangeItem
+// Parameter: origChangeID (The original ID of the ChangeItem)
+// Parameter: changeItem (The ChangeItem with updated information)
+// Returns: bool (true if update was successful, false otherwise)
 bool updateChangeItem(int origChangeID, ChangeItem& changeItem);
+
+// Closes the file storing the highest ChangeItem ID
 void closeHighestCID();
+
+// Seeks to the beginning of the file storing the highest ChangeItem ID
 void seekToBeginningOfHighestCIDFile();
+
+// Stores the highest ChangeItem ID
 void storeHighestCID();
 
 #endif // CHANGEITEM_H
