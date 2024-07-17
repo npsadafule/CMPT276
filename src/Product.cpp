@@ -64,11 +64,6 @@ void productFileDisplay20OrLess(const char* filename) {
 
 	Product tmpProduct;
 
-	if (!productFile.is_open()) {
-        std::cerr << "Failed to open product file for reading!" << std::endl;
-        exit(1);
-    }
-
 	int counter = 0;
     while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product)) &&
 		   counter < MAX_READS) {
@@ -84,11 +79,6 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
     Product tmpProduct;
 
 	seekToBeginningOfProductFile();
-
-    if (!productFile.is_open()) {
-        std::cerr << "Failed to open product file for reading!" << std::endl;
-        return false;
-    }
 
     // Read each product from the file and compare its name with the target name
     while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {

@@ -105,16 +105,9 @@ bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& cha
 
 	seekToBeginningOfChangeItemFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return false;
-    }
-
     // Read each product from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&tmpChangeItem), sizeof(ChangeItem))) {
+    while (changeItemFile.read(reinterpret_cast<char*>(&tmpChangeItem), sizeof(ChangeItem))) {
         if (tmpChangeItem.changeID == changeID) {
-            inFile.close();
 			
 			// Store the product into the product outside of the function
 			changeItem.changeID = tmpChangeItem.changeID;
@@ -126,8 +119,8 @@ bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& cha
             return true; // Product found
         }
     }
+	changeItemFile.clear();
 
-    inFile.close();
     return false; // Product not found
 }
 
@@ -156,19 +149,13 @@ void createChangeItem(int changeID,
 	ChangeItem tmpReadCI;
 
 	seekToBeginningOfChangeItemFile();
-	
-	std::ifstream inFile("changeItems.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open change item file for reading!" << std::endl;
-        exit(1);
-    }
 
-	while (inFile.read(reinterpret_cast<char*>(&tmpReadCI), sizeof(ChangeItem))) {
+	while (changeItemFile.read(reinterpret_cast<char*>(&tmpReadCI), sizeof(ChangeItem))) {
         if (tmpReadCI.changeID == tmpCI.changeID) {
 			changeItemExists = true;
         }
     }
-	inFile.close();
+	changeItemFile.clear();
 
 	// If the change item doesn't exist, append it to the end of the file
     if (!changeItemExists) {
@@ -183,23 +170,16 @@ void createChangeItem(int changeID,
 bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product) {
 	seekToBeginningOfChangeItemFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return false;
-    }
-
     // Read each product from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
+    while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
         // If in the inFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(changeItem.productName, product) == 0) &&
 			(changeItem.changeID == changeID)) {
-			inFile.close();
 			
             return true; // release ID found
         }
     }
-    inFile.close();
+    changeItemFile.clear();
     return false; // Product not found
 }
 
