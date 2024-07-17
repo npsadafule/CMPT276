@@ -319,23 +319,17 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 
     ProductRelease tmpProductRelease;
 
-	seekToBeginningOfProductFile();
-
-	std::ifstream inFile("productReleases.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open product release file for reading!" << std::endl;
-        exit(1);
-    }
+	seekToBeginningOfProductReleaseFile();
 
     // Read each product from the file and compare its name with the target name
 	// std::cout << "before read loop" << std::endl;
-    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
         if ((std::strcmp(tmpProductRelease.productName, productName) == 0) &&
 			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
 			productReleaseExists = true;
         }
     }
-	inFile.close();
+	productReleaseFile.clear();
 	
 	// If the product release doesn't exist, append it to the end of the file
     if (!productReleaseExists) {
