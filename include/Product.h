@@ -90,8 +90,23 @@ void displayProductRelease(const ProductRelease& productRelease);
 // Parameter: filename (The name of the file to display ProductReleases from)
 void productReleaseFileDisplay20OrLess(const char* filename);
 
+// Retrieves a ProductRelease by its key (product name and release ID)
+// Parameter: filename (The name of the file to retrieve the ProductRelease from)
+// Parameter: productReleaseName (The name of the product associated with the ProductRelease)
+// Parameter: releaseID (The release ID of the ProductRelease)
+// Parameter: productRelease (The ProductRelease object to store the retrieved data)
+// Returns: bool (true if retrieval was successful, false otherwise)
 bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease);
+
+// Creates a new ProductRelease
+// Parameter: productName (The name of the product associated with the ProductRelease)
+// Parameter: releaseID (The release ID of the ProductRelease)
+// Parameter: releaseDate (The release date of the ProductRelease)
 void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate);
+
+// Determines if a given release ID exists
+// Parameter: releaseID (The release ID to check for existence)
+// Returns: bool (true if the release ID exists, false otherwise)
 bool determineReleaseIDExistence(const char* releaseID);
 
 #endif // PRODUCT_H
