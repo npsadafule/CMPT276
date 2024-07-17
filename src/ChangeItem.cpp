@@ -189,6 +189,7 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 
 	seekToBeginningOfChangeItemFile();
 
+	// Opening another stream because I cannot use append mode to update
 	std::fstream inFile("changeItems.dat", std::ios::binary | std::ios::in | std::ios::out);
     if (!inFile) {
         std::cerr << "Failed to open file for reading!" << std::endl;
@@ -218,6 +219,7 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 			}			
         }
     }
+	inFile.clear();
 
 	// Update highest CID on file if needed
 	storeHighestCID();
