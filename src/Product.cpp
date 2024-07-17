@@ -13,6 +13,8 @@ extern std::fstream productReleaseFile;
 
 // ---------------------------------------------------------
 // Function: openProductFile
+// Opens the product file for reading and writing in binary append mode
+// Exits the program if the file fails to open
 void openProductFile() {
     productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
@@ -22,6 +24,7 @@ void openProductFile() {
 
 // ---------------------------------------------------------
 // Function: closeProductFile
+// Closes the product file if it is open
 void closeProductFile() {
     if (productFile.is_open()) {
         productFile.close();
@@ -30,6 +33,8 @@ void closeProductFile() {
 
 // ---------------------------------------------------------
 // Function: writeProduct
+// Writes a Product object to the product file
+// Exits the program if there is a failure while writing
 void writeProduct(const Product& product) {
     if (!productFile.is_open()) return;
 
@@ -44,6 +49,7 @@ void writeProduct(const Product& product) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
+// Seeks to the beginning of the product file
 void seekToBeginningOfProductFile() {
     if (!productFile.is_open()) return;
 
@@ -55,10 +61,17 @@ void seekToBeginningOfProductFile() {
     productFile.seekg(0, std::ios::beg);
 }
 
+// ---------------------------------------------------------
+// Function: displayProduct
+// Displays the name of a product to the standard output
 void displayProduct(const Product& product) {
 	std::cout << product.name << std::endl;
 }
 
+// ---------------------------------------------------------
+// Function: productFileDisplay20OrLess
+// Displays up to 20 products from the product file
+// Parameter: filename (The name of the file to read products from)
 void productFileDisplay20OrLess(const char* filename) {
 	const int MAX_READS = 20;
 
@@ -79,7 +92,15 @@ void productFileDisplay20OrLess(const char* filename) {
 }
 
 
-// For retrieving a particular product with a particular name
+// ---------------------------------------------------------
+// Function: retrieveProductByName
+// Retrieves a product from the product file by its name
+// Parameters:
+//   filename (The name of the file to retrieve the product from)
+//   productName (The name of the product to retrieve)
+//   product (The Product object to store the retrieved data)
+// Returns:
+//   bool (true if retrieval was successful, false otherwise)
 bool retrieveProductByName(const char* filename, const char* productName, Product& product) {
     Product tmpProduct;
 
@@ -109,6 +130,8 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
 
 // ---------------------------------------------------------
 // Function: createProduct
+// Creates a new product with the given name and writes it to the product file if it doesn't already exist
+// Parameter: namePtr (Pointer to the name of the product to create)
 void createProduct(const char* namePtr) { 
 	// Create the product
     Product product = {};
