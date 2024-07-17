@@ -44,7 +44,7 @@ void testCreateProduct() {
 	// ORIGINAL TEST
 
 	// String we are testing
-	char testString[PRODUCT_NAME_LENGTH] = "testProduct";
+	char testString[PRODUCT_NAME_LENGTH] = "arghProd";
 
 	// Open the file
 	openProductFile();

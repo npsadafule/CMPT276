@@ -64,18 +64,18 @@ void productFileDisplay20OrLess(const char* filename) {
 
 	Product tmpProduct;
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return;
+	if (!productFile.is_open()) {
+        std::cerr << "Failed to open product file for reading!" << std::endl;
+        exit(1);
     }
 
 	int counter = 0;
-    while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product)) &&
+    while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product)) &&
 		   counter < MAX_READS) {
 		displayProduct(tmpProduct);
 		counter++;
     }
+	productFile.clear();
 }
 
 
@@ -85,16 +85,14 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
 
 	seekToBeginningOfProductFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
+    if (!productFile.is_open()) {
         std::cerr << "Failed to open product file for reading!" << std::endl;
         return false;
     }
 
     // Read each product from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
+    while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, productName) == 0) {
-            inFile.close();
 			
 			// Store the product into the product outside of the function
 			std::strcpy(product.name, tmpProduct.name);
@@ -102,8 +100,12 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
             return true; // Product found
         }
     }
+	// Clear out flags if we do not find the product
+	if (!productFile.good()) {
+		productFile.clear();
+	}
 
-    inFile.close();
+
     return false; // Product not found
 }
 
@@ -116,8 +118,6 @@ void createProduct(const char* namePtr) {
 	// Store the string into product's name attribute
 	std::strcpy(product.name, namePtr);
 
-	//std::cout << "createProduct: the product we received was named " << product.name << std::endl;
-
 	// Check if the product is on the file
 	bool productExists = false;
 
@@ -125,18 +125,21 @@ void createProduct(const char* namePtr) {
 
 	seekToBeginningOfProductFile();
 	
-	std::ifstream inFile("products.dat", std::ios::binary);
-    if (!inFile) {
+    if (!productFile.is_open()) {
         std::cerr << "Failed to open file for reading!" << std::endl;
         exit(1);
     }
 
-	while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
+	while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, namePtr) == 0) {
 			productExists = true;
         }
     }
-	inFile.close();
+
+	// Clear flags if we didn't find the product
+	if (!productFile.good()) {
+		productFile.clear();
+	}
 
 	// If the product doesn't exist, append it to the end of the file
     if (!productExists) {
