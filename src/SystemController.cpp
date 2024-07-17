@@ -80,7 +80,7 @@ void initReportGen() {
 }
 
 void initHighestCID() {
-    highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary);
     if (!(highestCIDFile.is_open())) {
         std::cerr << "Failed to open highestCID.dat file.\n";
 		exit(1);

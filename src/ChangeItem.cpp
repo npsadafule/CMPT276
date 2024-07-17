@@ -256,11 +256,6 @@ void storeHighestCID() {
 	seekToBeginningOfChangeItemFile();
 	seekToBeginningOfHighestCIDFile();
 
-	std::fstream inHighCIDFile("highestCID.dat", std::ios::binary | std::ios::in | std::ios::out);
-    if (!inHighCIDFile) {
-        std::cerr << "Failed to open highest CID file for reading!" << std::endl;
-        exit(1);
-    }
 	std::fstream inFile("changeItems.dat", std::ios::binary | std::ios::in | std::ios::out);
     if (!inFile) {
         std::cerr << "Failed to open change item file for reading!" << std::endl;
@@ -276,10 +271,10 @@ void storeHighestCID() {
     }
 
 	// Store highest CID
-	inHighCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
+	highestCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
 
 	// Print the highest CID
-	// std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
+	std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
 
 	inFile.close();
 }
