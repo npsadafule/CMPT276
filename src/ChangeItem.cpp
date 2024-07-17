@@ -296,15 +296,8 @@ void storeHighestCID() {
 	// Store highest CID
 	inHighCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
 
-	// // Validate what we inserted
-	// std::streampos position = inFile.tellg(); // Get current position
-	// // Move the inFile pointer back to the beginning of the found item
-	// inFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
-	// inHighCIDFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
-	// inHighCIDFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem));	
 	// // Print the highest CID
 	// std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
-	// std::cout << "The highest Change ID on file is " << std::to_string(readCI.changeID) << std::endl;
 
 	inFile.close();
 }

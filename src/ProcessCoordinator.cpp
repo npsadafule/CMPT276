@@ -526,7 +526,7 @@ void handleChangeRequestMaintenance(int choice) {
 							std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
 							CInotProperLen = true; // Continue the loop
 						} else if (strlen(anticipatedReleaseID) == 0) {
-							std::cout << "\nDescription cannot be empty. Please enter 1 to 8 characters." << std::endl;
+							std::cout << "\nRelease ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
 							CInotProperLen = true; // Continue the loop
 
 						} else {
