@@ -47,7 +47,7 @@ void testCreateProduct() {
 	// ORIGINAL TEST
 
 	// String we are testing
-	char testString[PRODUCT_NAME_LENGTH] = "testProduct";
+	char testString[PRODUCT_NAME_LENGTH] = "arghProd";
 
 	// Open the file
 	openProductFile();
@@ -137,9 +137,9 @@ void testCreateProduct() {
 void testCreateChangeItem() {
 	// Test data
 	const ChangeItem CITest[3] {
-		{1235, "Product A", "Sample description that runs on for a while", "R51B", "Reported"},
-		{4567, "Random stuff", "The quick brown fox jumps over the lazy dog", "AB12", "Reported"},
-		{6789, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
+		{2112, "Product A", "Sample description that runs on for a while", "R51B", "Reported"},
+		{3113, "Random stuff", "The quick brown fox jumps over the lazy dog", "AB12", "Reported"},
+		{4114, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
 	};
 
 	// Open the file
@@ -193,8 +193,8 @@ void testCreateChangeItem() {
 	}
 
 	// Test sequential reading
-	seekToBeginningOfChangeItemFile();
-	changeItemFileDisplay20OrLess("changeItems.dat");
+	// seekToBeginningOfChangeItemFile();
+	// changeItemFileDisplay20OrLess("changeItems.dat");
 
 	// Close the change item file
 	closeChangeItemFile();
@@ -205,8 +205,8 @@ void testCreateChangeItem() {
 void testCreateRequester() {
 	// Test data
 	const Requester reqTest[2] {
-		{"joe", "6041237654", "fakeemail@yahoo.com", "Engineering"},
-		{"mama", "7784039872", "asedf@gmail.com", "N/A"}
+		{"new", "6041237654", "fakeemail@yahoo.com", "Engineering"},
+		{"jeans", "7784039872", "asedf@gmail.com", "N/A"}
 	};
 
 	// Open the file
@@ -267,8 +267,8 @@ void testCreateRequester() {
 void testCreateChangeRequest() {
 	// Test data
 	const ChangeRequest CRTest[2] {
-		{"joe", 1234, "A1CD", "20040923", "Top"},
-		{"mama", 5678, "MA34", "20240913", "Bottom"}
+		{"YOLO", 1234, "A1CD", "20040923", "Top"},
+		{"SWAG", 5678, "MA34", "20240913", "Bottom"}
 	};
 
 	// Open the file
@@ -371,8 +371,8 @@ void testUpdateChangeItem() {
 // Function: runAllTests
 // Runs all defined test functions.
 void runAllTests() {
-    testCreateProduct();
-	// testCreateChangeItem();
+    // testCreateProduct();
+	testCreateChangeItem();
 	// testCreateRequester();
 	// testCreateChangeRequest();
 

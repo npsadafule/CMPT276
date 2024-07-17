@@ -72,53 +72,6 @@ void displayRequester(const Requester& requester) {
 }
 
 // ---------------------------------------------------------
-// Function: requesterFileDisplay20OrLess
-// Displays up to 20 Requester objects from the specified page of the requester file.
-// Returns the number of Requesters displayed or -1 if the file cannot be opened.
-// Parameter: page (The page number to display)
-// Parameter: filename (The name of the requester file)
-int requesterFileDisplay20OrLess(int page, const char* filename) {
-	const int MAX_READS = 20;
-
-	Requester tmpReq;
-
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open requesters file for reading!" << std::endl;
-        return -1;
-    }
-
-	// Get to the page
-	for (int i=0; i<page-1; i++)
-	{		
-		// Read 20 items
-		int counter = 0;
-		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-			counter < MAX_READS) {
-			counter++;
-		}
-	}
-
-	// Print the page if valid
-	if (inFile.fail()) {
-		inFile.clear();
-		std::cout << "The page you requested does not exist!" << std::endl;
-		return -1;
-	}
-	else {
-		int counter = 0;
-		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-			counter < MAX_READS) {
-			std::cout << std::to_string(counter+1) << ") ";
-			displayRequester(tmpReq);
-			std::cout << std::endl;
-			counter++;
-		}
-		return counter;
-	}
-}
-
-// ---------------------------------------------------------
 // Function: retrieveRequesterByKey
 // Retrieves a Requester object from the requester file by matching reqName.
 // Returns true and stores the retrieved Requester in 'requester' if found; otherwise, returns false.
@@ -130,16 +83,9 @@ bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester
 
 	seekToBeginningOfRequesterFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open requesters file for reading!" << std::endl;
-        return false;
-    }
-
-    while (inFile.read(reinterpret_cast<char*>(&tmpRequester), sizeof(Requester))) {
-		// If in the inFile, there exists an element that matches what we hope to retrieve
+    while (requesterFile.read(reinterpret_cast<char*>(&tmpRequester), sizeof(Requester))) {
+		// If in the requesterFile, there exists an element that matches what we hope to retrieve
         if (std::strcmp(tmpRequester.reqName, reqName) == 0) {
-			inFile.close();
 			
 			// Store the product into the product outside of the function
 			std::strcpy(requester.reqName, tmpRequester.reqName);
@@ -150,8 +96,8 @@ bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester
             return true; // Product found
         }
     }
+	requesterFile.clear();
 
-	inFile.close();
     return false; // Product not found
 }
 
@@ -182,20 +128,14 @@ void createRequester(const char* reqName,
 
 	seekToBeginningOfRequesterFile();
 
-	std::ifstream inFile("requestersFile.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open requester file for reading!" << std::endl;
-        exit(1);
-    }
-
     // Read each requester from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&tmpReadReq), sizeof(Requester))) {
+    while (requesterFile.read(reinterpret_cast<char*>(&tmpReadReq), sizeof(Requester))) {
         if (std::strcmp(tmpReadReq.reqName, reqName) == 0) {
 			requesterExists = true;
         }
     }
-	inFile.close();
-	
+	requesterFile.clear();
+
 	// If the requester doesn't exist, append it to the end of the file
     if (!requesterExists) {
 		writeRequester(tmpReq);

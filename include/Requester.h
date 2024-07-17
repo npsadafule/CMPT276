@@ -41,12 +41,6 @@ void seekToBeginningOfRequesterFile();
 // Parameter: requester (The Requester to display)
 void displayRequester(const Requester& requester);
 
-// Displays the first 20 or fewer Requesters in the file
-// Parameter: page (The page number to display)
-// Parameter: filename (The name of the file to display Requesters from)
-// Returns: int (The number of Requesters displayed)
-int requesterFileDisplay20OrLess(int page, const char* filename);
-
 // Retrieves a Requester by its primary key
 // Parameter: filename (The name of the file to retrieve the Requester from)
 // Parameter: reqName (The primary key of the Requester)

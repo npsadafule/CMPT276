@@ -65,6 +65,7 @@ void writeChangeItem(const ChangeItem& changeItem) {
 	// Get the character address of the product struct, write it a byte at a time (char),
 	// writing "sizeof(Product)" amount of bytes  
 	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
+	changeItemFile.seekp(0, std::ios::end);
     changeItemFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
 
 	// Check if we ran out of disk space; exit if we have
@@ -103,18 +104,13 @@ void changeItemFileDisplay20OrLess(const char* filename) {
 
 	ChangeItem tmpCI;
 
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return;
-    }
-
 	int counter = 0;
-    while (inFile.read(reinterpret_cast<char*>(&tmpCI), sizeof(ChangeItem)) &&
+    while (changeItemFile.read(reinterpret_cast<char*>(&tmpCI), sizeof(ChangeItem)) &&
 		   counter < MAX_READS) {
 		displayChangeItem(tmpCI);
 		counter++;
     }
+	changeItemFile.clear();
 }
 
 // For retrieving a particular product with a particular name
@@ -128,16 +124,9 @@ bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& cha
 
 	seekToBeginningOfChangeItemFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return false;
-    }
-
     // Read each product from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&tmpChangeItem), sizeof(ChangeItem))) {
+    while (changeItemFile.read(reinterpret_cast<char*>(&tmpChangeItem), sizeof(ChangeItem))) {
         if (tmpChangeItem.changeID == changeID) {
-            inFile.close();
 			
 			// Store the product into the product outside of the function
 			changeItem.changeID = tmpChangeItem.changeID;
@@ -149,8 +138,8 @@ bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& cha
             return true; // Product found
         }
     }
+	changeItemFile.clear();
 
-    inFile.close();
     return false; // Product not found
 }
 
@@ -185,19 +174,13 @@ void createChangeItem(int changeID,
 	ChangeItem tmpReadCI;
 
 	seekToBeginningOfChangeItemFile();
-	
-	std::ifstream inFile("changeItems.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open change item file for reading!" << std::endl;
-        exit(1);
-    }
 
-	while (inFile.read(reinterpret_cast<char*>(&tmpReadCI), sizeof(ChangeItem))) {
+	while (changeItemFile.read(reinterpret_cast<char*>(&tmpReadCI), sizeof(ChangeItem))) {
         if (tmpReadCI.changeID == tmpCI.changeID) {
 			changeItemExists = true;
         }
     }
-	inFile.close();
+	changeItemFile.clear();
 
 	// If the change item doesn't exist, append it to the end of the file
     if (!changeItemExists) {
@@ -218,23 +201,16 @@ void createChangeItem(int changeID,
 bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product) {
 	seekToBeginningOfChangeItemFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return false;
-    }
-
     // Read each product from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
-        // If in the inFile, there exists an element that matches what we hope to retrieve
+    while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
+        // If in the changeItemFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(changeItem.productName, product) == 0) &&
 			(changeItem.changeID == changeID)) {
-			inFile.close();
 			
             return true; // release ID found
         }
     }
-    inFile.close();
+    changeItemFile.clear();
     return false; // Product not found
 }
 
@@ -248,41 +224,35 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 
 	seekToBeginningOfChangeItemFile();
 
-	std::fstream inFile("changeItems.dat", std::ios::binary | std::ios::in | std::ios::out);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return false;
-    }
-
     // Find the position of the change item in the file
-    while (inFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
+    while (changeItemFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
         if (readCI.changeID == origChangeID) {
-			std::streampos position = inFile.tellg(); // Get current position
+			std::streampos position = changeItemFile.tellg(); // Get current position
 
-			// Move the inFile pointer back to the beginning of the found item
-			inFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
+			// Move the changeItemFile pointer back to the beginning of the found item
+			changeItemFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
 
-			// Write the updated ChangeItem back to the inFile
-			inFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
+			// Write the updated ChangeItem back to the changeItemFile
+			changeItemFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
 
 			// Validate what we inserted
-			inFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
-			inFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem));
+			changeItemFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
+			changeItemFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem));
 
 			// Check if write was successful
-			if (!inFile) {
+			if (!changeItemFile) {
 				std::cerr << "Failed to write updated ChangeItem!" << std::endl;
-				inFile.close();
+				changeItemFile.close();
 				return false;
 			}			
         }
     }
+	changeItemFile.clear();
 
 	// Update highest CID on file if needed
 	storeHighestCID();
 
 	// Write was successful
-	inFile.close();
 	return true;
 }
 
@@ -316,30 +286,18 @@ void storeHighestCID() {
 	seekToBeginningOfChangeItemFile();
 	seekToBeginningOfHighestCIDFile();
 
-	std::fstream inHighCIDFile("highestCID.dat", std::ios::binary | std::ios::in | std::ios::out);
-    if (!inHighCIDFile) {
-        std::cerr << "Failed to open highest CID file for reading!" << std::endl;
-        exit(1);
-    }
-	std::fstream inFile("changeItems.dat", std::ios::binary | std::ios::in | std::ios::out);
-    if (!inFile) {
-        std::cerr << "Failed to open change item file for reading!" << std::endl;
-        exit(1);
-    }
-
     // Find the position of the change item in the file
-    while (inFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
+    while (changeItemFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
         // Store the highest 
 		if (readCI.changeID > highestCID.changeID) {	
 			highestCID.changeID = readCI.changeID;
         }
     }
+	changeItemFile.clear();
 
 	// Store highest CID
-	inHighCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
+	highestCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
 
 	// // Print the highest CID
 	// std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
-
-	inFile.close();
 }

@@ -71,10 +71,10 @@ void initChangeRequest() {
 // Initializes the change item file stream for reading and writing change items.
 // Ensures the changeItemFile stream is opened in binary append mode.
 void initChangeItem() {
-    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
-    if (!changeItemFile.is_open()) {
-        std::cerr << "Failed to open changeItems.dat file.\n";
-        exit(1);
+    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
+    if (!(changeItemFile.is_open())) {
+        std::cerr << "Failed to open changeItem.dat file.\n";
+		exit(1);
     }
 }
 
@@ -91,8 +91,8 @@ void initReportGen() {
 // Initializes the highest change ID file stream for reading and writing.
 // Ensures the highestCIDFile stream is opened in binary append mode.
 void initHighestCID() {
-    highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
-    if (!highestCIDFile.is_open()) {
+    highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary);
+    if (!(highestCIDFile.is_open())) {
         std::cerr << "Failed to open highestCID.dat file.\n";
         exit(1);
     }
@@ -104,13 +104,13 @@ void initHighestCID() {
 // Calls functions to initialize requester, product, change request, change item,
 // report generation, and highest change ID functionalities.
 void start() {
-    storeHighestCID(); // Function call to store highest change ID (not defined here)
-    initRequester();
+	initRequester();
     initProduct();
     initChangeRequest();
     initChangeItem();
     initReportGen();
-    initHighestCID();
+	initHighestCID();
+	storeHighestCID();
 }
 
 // ---------------------------------------------------------

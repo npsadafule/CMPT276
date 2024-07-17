@@ -77,18 +77,13 @@ void productFileDisplay20OrLess(const char* filename) {
 
 	Product tmpProduct;
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return;
-    }
-
 	int counter = 0;
-    while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product)) &&
+    while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product)) &&
 		   counter < MAX_READS) {
 		displayProduct(tmpProduct);
 		counter++;
     }
+	productFile.clear();
 }
 
 
@@ -106,16 +101,9 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
 
 	seekToBeginningOfProductFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open product file for reading!" << std::endl;
-        return false;
-    }
-
     // Read each product from the file and compare its name with the target name
-    while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
+    while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, productName) == 0) {
-            inFile.close();
 			
 			// Store the product into the product outside of the function
 			std::strcpy(product.name, tmpProduct.name);
@@ -123,8 +111,12 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
             return true; // Product found
         }
     }
+	// Clear out flags if we do not find the product
+	if (!productFile.good()) {
+		productFile.clear();
+	}
 
-    inFile.close();
+
     return false; // Product not found
 }
 
@@ -139,8 +131,6 @@ void createProduct(const char* namePtr) {
 	// Store the string into product's name attribute
 	std::strcpy(product.name, namePtr);
 
-	//std::cout << "createProduct: the product we received was named " << product.name << std::endl;
-
 	// Check if the product is on the file
 	bool productExists = false;
 
@@ -148,18 +138,21 @@ void createProduct(const char* namePtr) {
 
 	seekToBeginningOfProductFile();
 	
-	std::ifstream inFile("products.dat", std::ios::binary);
-    if (!inFile) {
+    if (!productFile.is_open()) {
         std::cerr << "Failed to open file for reading!" << std::endl;
         exit(1);
     }
 
-	while (inFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
+	while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, namePtr) == 0) {
 			productExists = true;
         }
     }
-	inFile.close();
+
+	// Clear flags if we didn't find the product
+	if (!productFile.good()) {
+		productFile.clear();
+	}
 
 	// If the product doesn't exist, append it to the end of the file
     if (!productExists) {
@@ -239,18 +232,13 @@ void productReleaseFileDisplay20OrLess(const char* filename) {
 
 	ProductRelease tmpPR;
 
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return;
-    }
-
 	int counter = 0;
-    while (inFile.read(reinterpret_cast<char*>(&tmpPR), sizeof(ProductRelease)) &&
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpPR), sizeof(ProductRelease)) &&
 		   counter < MAX_READS) {
 		displayProductRelease(tmpPR);
 		counter++;
     }
+	productReleaseFile.clear();
 }
 
 
@@ -269,17 +257,10 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
 	seekToBeginningOfProductReleaseFile();
 
-	std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open file for reading!" << std::endl;
-        return false;
-    }
-
-    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
-		// If in the inFile, there exists an element that matches what we hope to retrieve
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+		// If in the productReleaseFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.productName, productReleaseName) == 0) &&
 			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
-			inFile.close();
 			
 			// Store the product into the product outside of the function
 			std::strcpy(productRelease.productName, tmpProductRelease.productName);
@@ -290,7 +271,6 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
         }
     }
 
-	inFile.close();
     return false; // Product not found
 }
 
@@ -315,23 +295,17 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 
     ProductRelease tmpProductRelease;
 
-	seekToBeginningOfProductFile();
-
-	std::ifstream inFile("productReleases.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open product release file for reading!" << std::endl;
-        exit(1);
-    }
+	seekToBeginningOfProductReleaseFile();
 
     // Read each product from the file and compare its name with the target name
 	// std::cout << "before read loop" << std::endl;
-    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
         if ((std::strcmp(tmpProductRelease.productName, productName) == 0) &&
 			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
 			productReleaseExists = true;
         }
     }
-	inFile.close();
+	productReleaseFile.clear();
 	
 	// If the product release doesn't exist, append it to the end of the file
     if (!productReleaseExists) {
@@ -352,20 +326,14 @@ bool determineReleaseIDExistence(const char* releaseID) {
 
 	seekToBeginningOfProductReleaseFile();
 
-	std::ifstream inFile("productReleases.dat", std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open product releases file for reading!" << std::endl;
-        return false;
-    }
-
 	// Determine if the release exists
-    while (inFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
-		// If in the inFile, there exists an element that matches what we hope to retrieve
+    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
+		// If in the productReleaseFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
-			inFile.close();
             return true; // release ID found
         }
     }
-	inFile.close();
+	productReleaseFile.clear();
+
     return false; // release ID not found
 }
