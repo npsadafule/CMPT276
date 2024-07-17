@@ -17,17 +17,18 @@ static const int NUM_TEST_PR = 5;
 // ============================================
 // Function Declarations
 // ============================================
-void testCreateProduct();
+void testCreateProductRelease();
 void runAllTests();
 
 // Main Function
 // ============================================
 // Function: main
+// Entry point of the program. Runs all test functions and prints end message.
+// Returns: int (Exit status, 0 indicates successful execution)
 int main() {
-    runAllTests();
-    // std::cout << "All unit tests passed.\n";
-	std::cout << "End of testFileOps" << std::endl;
-    return 0;
+    runAllTests();  // Run all defined test functions
+    std::cout << "End of testFileOps" << std::endl;  // Print end of tests message
+    return 0;  // Exit program successfully
 }
 
 // ============================================
@@ -35,10 +36,13 @@ int main() {
 // ============================================
 
 // ---------------------------------------------------------
-// Function: testCreateProduct
+// Function: testCreateProductRelease
+// Test function for creating product releases and verifying their storage and retrieval.
+// This function initializes product releases with predetermined attribute data,
+// stores them in a file, retrieves them, and checks for correctness.
 void testCreateProductRelease() {
-	// Define a 3x5 array of C-style strings contianing the attribute test data
-    const char* attributes[5][3] = {
+    // Define a 2D array of C-style strings containing the attribute test data
+    const char* attributes[NUM_TEST_PR][3] = {
         {"A", "11", "20240611"},
         {"B", "12", "20240612"},
         {"C", "13", "20240613"},
@@ -46,57 +50,55 @@ void testCreateProductRelease() {
         {"E", "15", "20240615"}
     };
 
-	// Open the file
-	openProductReleaseFile();
+    // Open the product release file for writing
+    openProductReleaseFile();
 
-	// Pre-test initialization and output
-	ProductRelease productRelease = {"tmpName","tmpRelID","tmpRelDate"};
-	std::cout << "BEFORE TEST: Our 'empty' product on RAM has the name " << '"' << productRelease.productName << '"' << ',' <<
-				 " the releaseID " << '"' << productRelease.releaseID << '"' << ',' << " and releaseDate " << 
-				 '"' << productRelease.releaseDate << '"' << std::endl;
+    // Pre-test initialization and output
+    ProductRelease productRelease = {"tmpName", "tmpRelID", "tmpRelDate"};
+    std::cout << "BEFORE TEST: Our 'empty' product release has the name \"" << productRelease.productName << "\", "
+              << "the release ID \"" << productRelease.releaseID << "\", and the release date \"" << productRelease.releaseDate << "\"" << std::endl;
 
-	// // Run the function
-	std::cout << "Running createProductRelease()..." << std::endl;
-    // Store the attribute test data as product releases
-    for (int i=0; i<NUM_TEST_PR; i++) {
-		//std::cout << attributes[i][PR_NAME] << " " << attributes[i][PR_RELEASE_ID] << " " << attributes[i][PR_RELEASE_DATE] << std::endl;
-        createProductRelease(attributes[i][PR_NAME],attributes[i][PR_RELEASE_ID],attributes[i][PR_RELEASE_DATE]);
+    // Run the function to create product releases from the attribute data
+    std::cout << "Running createProductRelease()..." << std::endl;
+    for (int i = 0; i < NUM_TEST_PR; ++i) {
+        createProductRelease(attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], attributes[i][PR_RELEASE_DATE]);
     }
-	
-	// Read entries out of file, and tally correct outputs
-	std::cout << "AFTER TEST: The product releases we retrieved and stored into our empty product are the following:" << std::endl;
 
-	// Initialize tally
-	int correctTally = 0;
-    for (int i=0; i<NUM_TEST_PR; i++) {
-		// Perform the retrieval
-		retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
-		
-		// Count if desired product release was retrieved
-		if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == STRCMP_TRUE) &&
-			(std::strcmp(productRelease.releaseID, attributes[i][PR_RELEASE_ID]) == STRCMP_TRUE)) {
-			correctTally++;
-		}
+    // Read entries from the file, retrieve them, and tally correct outputs
+    std::cout << "AFTER TEST: The product releases retrieved and stored into our 'empty' product release are:" << std::endl;
 
-		// Display to the user
-		std::cout << productRelease.productName << ", " << productRelease.releaseID << 
-					 ", " << productRelease.releaseDate << std::endl;
-	}
+    // Initialize tally of correct retrievals
+    int correctTally = 0;
+    for (int i = 0; i < NUM_TEST_PR; ++i) {
+        // Retrieve product release from file
+        retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
 
-	// Final evaluation
-	std::cout << "Test evaluation: ";
-	if (correctTally == 5) {
-		std::cout << "passed" << std::endl;
-	} else {
-		std::cout << "failed" << std::endl;
-	}
+        // Check if the retrieved product release matches the expected attributes
+        if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == STRCMP_TRUE) &&
+            (std::strcmp(productRelease.releaseID, attributes[i][PR_RELEASE_ID]) == STRCMP_TRUE)) {
+            correctTally++;
+        }
 
-	// Close the product release file
-	closeProductReleaseFile();
+        // Display retrieved product release information
+        std::cout << productRelease.productName << ", " << productRelease.releaseID
+                  << ", " << productRelease.releaseDate << std::endl;
+    }
+
+    // Final evaluation of the test
+    std::cout << "Test evaluation: ";
+    if (correctTally == NUM_TEST_PR) {
+        std::cout << "passed" << std::endl;
+    } else {
+        std::cout << "failed" << std::endl;
+    }
+
+    // Close the product release file
+    closeProductReleaseFile();
 }
 
 // ---------------------------------------------------------
 // Function: runAllTests
+// Function to run all defined test functions.
 void runAllTests() {
-    testCreateProductRelease();
+    testCreateProductRelease();  // Run test for creating and retrieving product releases
 }
