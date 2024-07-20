@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: ChangeRequest.h
+// ============================================
+// Version History:
+// Rev. 2 - 2024/07/17 - Group 7
+// ============================================
+
 #ifndef CHANGEREQUEST_H
 #define CHANGEREQUEST_H
 
@@ -24,58 +31,79 @@ struct ChangeRequest {
 // ============================================
 // Function Declarations
 // ============================================
-
+// ---------------------------------------------------------
 // Opens the ChangeRequest file
 void openChangeRequestFile();
 
-
+// ---------------------------------------------------------
 // Closes the ChangeRequest file
 void closeChangeRequestFile();
 
+// ---------------------------------------------------------
 // Writes a ChangeRequest to the file
-// Parameter: changeRequest (The ChangeRequest to write)
-void writeChangeRequest(const ChangeRequest& changeRequest);
+void writeChangeRequest(
+    // Parameter: changeRequest (The ChangeRequest to write)
+    const ChangeRequest& changeRequest  // in
+);
 
+// ---------------------------------------------------------
 // Seeks to the beginning of the ChangeRequest file
 void seekToBeginningOfChangeRequestFile();
 
 // ---------------------------------------------------------
-// Function: getNextChangeRequest
-// Retrieves the next change request from the file
-// Parameter: changeRequest (The change request object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
-bool getNextChangeRequest(ChangeRequest& changeRequest);
+// Retrieves the next ChangeRequest from file
+bool getNextChangeRequest(
+    ChangeRequest& changeRequest
+);
 
-// Retrieves a ChangeRequest by its primary key
-// Parameter: filename (The name of the file to retrieve the ChangeRequest from)
-// Parameter: reqName (The primary key of the requester)
-// Parameter: changeID (The primary key of the ChangeItem)
-// Parameter: changeRequest (The ChangeRequest object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const int changeID, ChangeRequest& changeRequest);
+// No display functions (display functions would go here based on other modules).
 
-// Creates a new ChangeRequest
-// Parameter: requesterName (The name of the requester)
-// Parameter: changeID (The ID of the ChangeItem)
-// Parameter: reportedRelease (The reported release ID)
-// Parameter: reportedDate (The date the request was reported)
-// Parameter: priority (The priority of the request)
+// ---------------------------------------------------------
+bool retrieveChangeRequestByKey(
+    // Retrieves a ChangeRequest by its primary key
+    // Parameter: filename (The name of the file to retrieve the ChangeRequest from)
+    // Parameter: reqName (The primary key of the requester)
+    // Parameter: changeID (The primary key of the ChangeItem)
+    // Parameter: changeRequest (The ChangeRequest object to store the retrieved data)
+    // Returns: bool (true if retrieval was successful, false otherwise)
+    const char* filename,    // in
+    const char* reqName,    // in
+    const int changeID,    // in
+    ChangeRequest& changeRequest    // out
+);
+
+// ---------------------------------------------------------
 void createChangeRequest(const char* requesterName,
-						 const int changeID,
-						 const char* reportedRelease,
-						 const char* reportedDate,
-						 const char* priority);
+                        // Creates a new ChangeRequest
+                        // Parameter: requesterName (The name of the requester)
+                        // Parameter: changeID (The ID of the ChangeItem)
+                        // Parameter: reportedRelease (The reported release ID)
+                        // Parameter: reportedDate (The date the request was reported)
+                        // Parameter: priority (The priority of the request)
+						 const int changeID,    // in
+						 const char* reportedRelease,    // in
+						 const char* reportedDate,    // in
+						 const char* priority    // in
+);
 
-// For case scenarios NOT DONE
-// Queries a ChangeRequest
-// Parameter: productName (The name of the product)
-// Parameter: changeID (The ID of the ChangeItem)
-void queryChangeRequest(const std::string& productName, const std::string& changeID);
+// ---------------------------------------------------------
+void queryChangeRequest(
+    // Queries a ChangeRequest
+    // Parameter: productName (The name of the product)
+    // Parameter: changeID (The ID of the ChangeItem)
+    const std::string& productName,    // in
+    const std::string& changeID    // in
+);
 
-// Updates the state of a ChangeRequest
-// Parameter: productName (The name of the product)
-// Parameter: changeID (The ID of the ChangeItem)
-// Parameter: newState (The new state of the ChangeRequest)
-void updateChangeRequest(const std::string& productName, const std::string& changeID, const std::string& newState);
+// ---------------------------------------------------------
+void updateChangeRequest(
+    // Updates the state of a ChangeRequest
+    // Parameter: productName (The name of the product)
+    // Parameter: changeID (The ID of the ChangeItem)
+    // Parameter: newState (The new state of the ChangeRequest)
+    const std::string& productName,    // in
+    const std::string& changeID,    // in
+    const std::string& newState    // in
+);
 
 #endif // CHANGEREQUEST_H

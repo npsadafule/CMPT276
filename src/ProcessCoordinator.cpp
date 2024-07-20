@@ -1,3 +1,13 @@
+// ============================================
+// Module Name: ProcessCoordinator.cpp
+// ============================================
+// Version History:
+// Rev. 2 - 2024/07/17 - Group 7
+// ============================================
+
+// Overall internal design issues:
+// This module implements ProcessCoordinator.h, following our central control design from our Architectural Design Document. Specifically, it houses the implementation of scenario execution as cases of a particular submenu. For example, handleProductMaintenance has a case for executing Product creation and Product Release creation. Hence, it uses structures exported by each of the lower-level modules (e.g., Product). Also, do-while loops are used freqeuntly to ensure proper user input.
+
 #include "ProcessCoordinator.h"
 #include "Product.h"
 #include "ChangeRequest.h"
@@ -9,18 +19,15 @@
 #include <ctime>
 #include <cstdio>  // For sprintf
 
-// Constants for repeating a scenario
-static const int YES = 1;
+// Non-exported module scope constants for repeating a scenario
+static const int YES = 1;   
 static const int NO = 0;
 
 // Files
 extern std::fstream productReleaseFile;
 
 // Variables for navigation options
-static int entryCount;
-
-// Global variables externed
-extern int globalHighestCID;
+int entryCount;
 
 // Function Implementations
 // ============================================
@@ -28,10 +35,10 @@ extern int globalHighestCID;
 // General functions
 // ---------------------------------------------------------
 // Function: getTodaysDate
-// Retrieves the current date in the format YYYYMMDD
-// Parameter: dateStr (Buffer to store the formatted date)
-// Parameter: size (Size of the buffer)
 void getTodaysDate(char* dateStr, size_t size) {
+    // Retrieves the current date in the format YYYYMMDD
+    // Parameter: dateStr (Buffer to store the formatted date)
+    // Parameter: size (Size of the buffer)
     // Get the current time
     std::time_t t = std::time(nullptr);
     std::tm* now = std::localtime(&t);
@@ -44,15 +51,15 @@ void getTodaysDate(char* dateStr, size_t size) {
 // ============================================
 // ---------------------------------------------------------
 // Function: confirmAddingProduct
-// Prompts the user to confirm adding a product
 void confirmAddingProduct() {
+    // Prompts the user to confirm adding a product
 	std::cout << "\nAre you sure you want to add the product (1 for Y, 0 for N)?\n";
 }
 
 // ---------------------------------------------------------
 // Function: doYouWantAnotherProduct
-// Prompts the user to confirm adding another product
 void doYouWantAnotherProduct() {
+    // Prompts the user to confirm adding another product
 	std::cout << "\nDo you wish to add another product (1 for Y, 0 for N)?\n";
 }
 
@@ -60,16 +67,16 @@ void doYouWantAnotherProduct() {
 // ============================================
 // ---------------------------------------------------------
 // Function: confirmAddingProdRel
-// Prompts the user to confirm adding a product release
 void confirmAddingProdRel() {
+    // Prompts the user to confirm adding a product release
 	std::cout << "\nAre you sure you want to add this product release (1 for Y, 0 for N)?\n" <<
 	std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: doYouWantAnotherProdRel
-// Prompts the user to confirm adding another product release
 void doYouWantAnotherProdRel() {
+    // Prompts the user to confirm adding another product release
 	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n" << std::endl;
 }
 
@@ -77,8 +84,8 @@ void doYouWantAnotherProdRel() {
 // ============================================
 // ---------------------------------------------------------
 // Function: requesterOptions
-// Displays the options for navigating requesters
 void requesterOptions() {
+    // Displays the options for navigating requesters
 	std::cout << "=== Enter '" << std::to_string(entryCount+1) << "' for previous 20 items, '" <<
 				 std::to_string(entryCount+2) << "' for next 20 items ===" << std::endl <<
 				 "=== 0 (zero) for exiting the list ===" << std::endl;
@@ -86,36 +93,36 @@ void requesterOptions() {
 
 // ---------------------------------------------------------
 // Function: reqSearchChoice
-// Prompts the user to enter an existing requester or create a new one
 void reqSearchChoice() {
+    // Prompts the user to enter an existing requester or create a new one
 	std::cout << "\nEnter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: CIChoiceDisplay
-// Prompts the user to enter an existing change ID or create a new one
 void CIChoiceDisplay() {
+    // Prompts the user to enter an existing change ID or create a new one
 	std::cout << "\nEnter '1' to enter an existing change ID; enter '2' to create a new change ID: " << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: CIPrompt
-// Prompts the user to enter a change ID
 void CIPrompt() {
+    // Prompts the user to enter a change ID
 	std::cout << "\nEnter a change ID (max 6 digits, i.e., 0 to 999999):\n";
 }
 
 // ---------------------------------------------------------
 // Function: confirmAddCR
-// Prompts the user to confirm adding a customer request
 void confirmAddCR() {
+    // Prompts the user to confirm adding a customer request
 	std::cout << "\nAre you sure you want to add a customer request?\n";
 }
 
 // ---------------------------------------------------------
 // Function: repeatChangeCR
-// Prompts the user to confirm creating another change request
 void repeatChangeCR() {
+    // Prompts the user to confirm creating another change request
 	std::cout << "\nDo you wish to create another Change Request? (1 for Y, 0 for N)?\n";
 }
 
@@ -123,8 +130,8 @@ void repeatChangeCR() {
 // ============================================
 // ---------------------------------------------------------
 // Function: repeatCIQuery
-// Prompts the user to confirm querying another change item
 void repeatCIQuery() {
+    // Prompts the user to confirm querying another change item
 	std::cout << "\nDo you wish to query for another Change Item (1 for Y, 0 for N)?\n";
 }
 
@@ -132,8 +139,8 @@ void repeatCIQuery() {
 // ============================================
 // ---------------------------------------------------------
 // Function: choiceUpdateDisp
-// Displays the update options for a change item
 void choiceUpdateDisp() {
+    // Displays the update options for a change item
 	std::cout << "\nSelect what update to make to this change item of Product A:\n"
 				 "1) Update Description\n"
 				 "2) Update State\n"
@@ -143,15 +150,15 @@ void choiceUpdateDisp() {
 
 // ---------------------------------------------------------
 // Function: choiceSaveUpdDisp
-// Prompts the user to confirm saving the updates made to a change item
 void choiceSaveUpdDisp() {
+    // Prompts the user to confirm saving the updates made to a change item
 	std::cout << "\nSave the changes made to the Change Item (1 for Y, 0 for N)?" << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: repeatUpdate
-// Prompts the user to confirm updating another change item
 void repeatUpdate() {
+    // Prompts the user to confirm updating another change item
 	std::cout << "\nDo you wish to update another Change Item? (1 for Y, 0 for N)?\n";
 }
 
@@ -159,16 +166,17 @@ void repeatUpdate() {
 // ============================================
 // ---------------------------------------------------------
 // Function: handleProductMaintenance
-// Handles the product maintenance scenarios
-// Parameter: choice (The chosen scenario for product maintenance)
 void handleProductMaintenance(int choice) {
+    // Handles the product maintenance scenarios
+    // Parameter: choice (The chosen scenario for product maintenance)
     int choiceConfirmAdd;
 	int choiceRepeat;
     switch (choice) {
         case 1: {
 			bool repeat = false;
-			do
+			do 
 			{
+                    // Keep repeating the "create Product" scenario so long as the user inputs 'YES'
 				// Scenario 4.1: Creating a Product - duplication prevention logic not implemented
 				char productName[PRODUCT_NAME_LENGTH];
 				Product tmpProd;
@@ -177,6 +185,7 @@ void handleProductMaintenance(int choice) {
 
 				// Product name read
 				do {
+                    // Keep looping based on whether user input is not of the proper length or encounters a key uniquness issue. If both of these conditions are false, we have valid input.
 					std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
@@ -199,7 +208,7 @@ void handleProductMaintenance(int choice) {
 						}
 						notProperLen = false; // Exit the loop if both conditions are false
 					}
-				} while (notProperLen || exists);
+				} while (notProperLen || exists); 
 
 				// Final choices
 				choiceConfirmAdd = readIntegerInput(confirmAddingProduct,NO,YES);
@@ -214,7 +223,7 @@ void handleProductMaintenance(int choice) {
 				} else {
 					break;
 				}
-			} while (repeat);
+			} while (repeat); 
 			break;
         }
         case 2: {
@@ -222,7 +231,7 @@ void handleProductMaintenance(int choice) {
             char productName[PRODUCT_NAME_LENGTH], releaseID[RELEASE_ID_LENGTH], releaseDate[RELEASE_DATE_LENGTH];
             
 			bool repeat = false;
-			do
+			do   // Keep repeating the "create Product Release" scenario so long as the user inputs 'YES'
 			{
 				Product tmpProd;
 				ProductRelease tmpRel;
@@ -230,8 +239,10 @@ void handleProductMaintenance(int choice) {
 				int notExists;
 				bool ifUniqueProdRel;
 				
-				do {
+				do {    
+                            // Keep looping so long as we run into a key uniqueness issue for product releases (i.e., entering an existing name and release ID).
 					do {
+                             // Keep looping based on whether user input is not of the proper length or encounters a referential integrity issue. If both of these conditions are false, we have valid input.
 						std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n";
 						std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
@@ -257,7 +268,8 @@ void handleProductMaintenance(int choice) {
 					} while (notProperLen || notExists);
 
 					// Get a product release ID
-					do {
+					do {   
+                        // Keep looping for input from the user for a product release ID that is of the proper length
 						std::cout << "\nEnter the Release ID (max 8 char following your organization's format): \n";
 						std::cin.getline(releaseID, RELEASE_ID_LENGTH);
 
@@ -287,6 +299,7 @@ void handleProductMaintenance(int choice) {
 
 				// Get a release date
 				do {
+                    // Loop forward until a release date of the proper length is entered
 					std::cout << "\nEnter the release date (YYYYMMDD)): \n \n";
 					std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
 
@@ -321,9 +334,9 @@ void handleProductMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
-// Handles the change request maintenance scenarios
-// Parameter: choice (The chosen scenario for change request maintenance)
 void handleChangeRequestMaintenance(int choice) {
+    // Handles the change request maintenance scenarios
+    // Parameter: choice (The chosen scenario for change request maintenance)
     // std::vector<User> users; // Declare the 'users' variable
 	static const int ENTER_REQ = 1;
 	static const int CREATE_REQ = 2;
@@ -344,13 +357,12 @@ void handleChangeRequestMaintenance(int choice) {
 			int choiceRepeat;
 			
 			// User input storage
-			// New requester (requester used for change request)
 			char requester[REQ_NAME_LENGTH], phoneNum[PHONE_NUMBER_LENGTH], email[EMAIL_LENGTH], department[DEPARTMENT_LENGTH];
-			// New change item (change ID used for change request)
-			int changeID;	
-			char productName[PRODUCT_NAME_LENGTH], description[CHANGE_DESC_LENGTH], anticipatedReleaseID[RELEASE_ID_LENGTH], state[STATE_LENGTH];
-			// New change request
-			char date[REP_DATE_LENGTH], reportedRelease[RELEASE_ID_LENGTH], priority[PRIORITY_LENGTH];
+			char productName[PRODUCT_NAME_LENGTH], description[CHANGE_DESC_LENGTH], anticipatedReleaseID[RELEASE_ID_LENGTH];
+			char state[STATE_LENGTH] = "Reported";
+			char date[REP_DATE_LENGTH];
+			int changeID;		
+			char reportedRelease[RELEASE_ID_LENGTH] = "TBD";	
 
 			// Requester selection
 			int reqChoice;
@@ -373,22 +385,16 @@ void handleChangeRequestMaintenance(int choice) {
 			int CInotExists;
 			int CInotProperLen;
 			int releaseIDExists;
-			int CIOfProductExists;
-
-			// Release ID selection
-			int RIDExists;
-			int RIDnotProperLen;
-
-			// Priority selection
-			int PriorityNotProperLen;
 
 		
 			// For repeat choice
 			do {
+                    // Keep looping if the user chooses that they want to create another change request
 				// Get a requester name
 				reqChoice = readIntegerInput(reqSearchChoice,1,2);
 				if (reqChoice == ENTER_REQ) {
 					do {
+                            // Keep looping for a requester name until it has the proper length and the requester is unique
 						std::cout << "\nEnter the Requester name (max 30 char, must pre-exist): \n";
 						std::cin.getline(requester, REQ_NAME_LENGTH);
 
@@ -413,7 +419,7 @@ void handleChangeRequestMaintenance(int choice) {
 						}
 					} while (ERnotProperLen || ERnotExists);
 				} else if (reqChoice == CREATE_REQ) {
-					// Get requester name
+					// Keep looping for a requester name until it has the proper length and the requester does not have a key uniqueness issue
 					do {
 						std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
 						std::cin.getline(requester, REQ_NAME_LENGTH);
@@ -440,6 +446,7 @@ void handleChangeRequestMaintenance(int choice) {
 					} while (CRnotProperLen || CRexists);
 
 					// Get phone number
+                    // Keep looping as long as the entered phone number is not of the proper length
 					do {
 						std::cout << "\nEnter your phone number (10 digits in the format DDDDDDDDDD): \n";
 						std::cin.getline(phoneNum, PHONE_NUMBER_LENGTH);
@@ -459,10 +466,11 @@ void handleChangeRequestMaintenance(int choice) {
 					} while (CRnotProperLen);
 
 					// Get email
+                    // Keep looping as long as the email entered is not the proper length
 					do {
 						std::cout << "\nEnter the email of the customer (max 24 char in the format "
 									"username@email_provider.domain_type):\n";
-						std::cin.getline(email, EMAIL_LENGTH);
+						std::cin.getline(email, PHONE_NUMBER_LENGTH);
 
 						// Check if input length is valid
 						if (std::cin.fail()) {
@@ -479,6 +487,7 @@ void handleChangeRequestMaintenance(int choice) {
 					} while (CRnotProperLen);
 
 					// Get department
+                    // Keep looping as long as the department entered is not the proper length
 					do {
 						std::cout << "\nIf you are an employee, enter your department (max 12 char). If this is not "
 									"applicable to you, enter 'N/A':\n";
@@ -500,10 +509,10 @@ void handleChangeRequestMaintenance(int choice) {
 
 					// Create new requester
 					createRequester(requester,phoneNum,email,department);
-					std::cout << "Requester successfully created" << std::endl;
 				}
 
 				// Select a product
+                    // Keep looping so long as the product name entered is not the proper length and runs into a referential integrity issue
 				do {
 					std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
@@ -534,7 +543,7 @@ void handleChangeRequestMaintenance(int choice) {
 
 				if (CIChoice == ENTER_CI) // Enter existing change ID
 				{
-					// Get the change ID based on product choice
+                    // Keep loooping so long as the change ID entered does not exist
 					do {
 						changeID = readIntegerInput(CIPrompt,0,999999);
 
@@ -542,32 +551,33 @@ void handleChangeRequestMaintenance(int choice) {
 						if (CInotExists) {
 							std::cout << "\nThe change item must exist!\n";
 						}
-						else {
-							CInotExists = false;
-							CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
-							if (!CIOfProductExists)
-							{
-								std::cout << "The change item must have your selected change ID 'and' product name.\n";
-							}
-						}
-					} while (CInotExists || (!CIOfProductExists));
+					} while (CInotExists);
 				} else if (CIChoice == CREATE_CI) { // Create change ID
-					// Store new change ID
-					changeID = globalHighestCID + 1;
+					// Enter new change ID
+                    // Keep looping so long as the change ID entered runs into a key uniqueness issue
+					do {
+						changeID = readIntegerInput(CIPrompt,0,999999);
+
+						CInotExists = retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+						if (CInotExists) {
+							std::cout << "\nThe change item must not exist!\n";
+						}
+					} while (CInotExists);
 
 					// Enter description for change item
+                    // Keep looping so long as the entered description has an improper length
 					do {
-						std::cout << "\nEnter the description for the change item (max 30 char): \n";
+						std::cout << "\nEnter the description for the change item (max 150 char): \n";
 						std::cin.getline(description, CHANGE_DESC_LENGTH);
 
 						// Check if input length is valid
 						if (std::cin.fail()) {
 							std::cin.clear(); // Clear the fail state
 							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+							std::cout << "\nInvalid input. Please enter 1 to 150 characters." << std::endl;
 							CInotProperLen = true; // Continue the loop
 						} else if (strlen(description) == 0) {
-							std::cout << "\nDescription cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							std::cout << "\nDescription cannot be empty. Please enter 1 to 150 characters." << std::endl;
 							CInotProperLen = true; // Continue the loop
 						} else {
 							CInotProperLen = false;
@@ -575,6 +585,7 @@ void handleChangeRequestMaintenance(int choice) {
 					} while (CInotProperLen);
 
 					// Enter an anticipated release ID
+                    // Keep looping as long a the entered release ID does not have the proper length or the release ID encounters a referential integrity issue
 					do {
 						std::cout << "\nEnter the anticipated release ID for the change item (max 8 char): \n";
 						std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
@@ -600,80 +611,15 @@ void handleChangeRequestMaintenance(int choice) {
 						}
 					} while (CInotProperLen || (!releaseIDExists));
 
-					// Enter state for Change Item
-					do {
-						std::cout << "\nEnter the Change Item's state (max 10 char):\n";
-						std::cin.getline(state, STATE_LENGTH);
-
-						// Check if input length is valid
-						if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 10 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-						} else if (strlen(state) == 0) {
-							std::cout << "\nState cannot be empty. Please enter 1 to 10 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-						} else {
-							CInotProperLen = false;
-						}
-					} while (CInotProperLen);	
-
 					// Create the new change ID
 					createChangeItem(changeID,productName,description,anticipatedReleaseID,state);
-					std::cout << "Change item successfully created" << std::endl;
 				}
-
-				// Ask for a release ID
-				do {
-					std::cout << "\nEnter the reported release ID for the change request (max 8 char): \n";
-					std::cin.getline(reportedRelease, RELEASE_ID_LENGTH);
-
-					// Check if input length is valid
-					if (std::cin.fail()) {
-						std::cin.clear(); // Clear the fail state
-						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
-						RIDnotProperLen = true; // Continue the loop
-					} else if (strlen(reportedRelease) == 0) {
-						std::cout << "\nReported release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
-						RIDnotProperLen = true; // Continue the loop
-
-					} else {
-						RIDnotProperLen = false;
-						// After verifying the input length, check if this release ID exists
-						RIDExists = determineReleaseIDExistence(reportedRelease);
-						if (!RIDExists)
-						{
-							std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
-						}
-					}
-				} while (RIDnotProperLen || (!RIDExists));
-			
-				// Ask for a Priority
-				do {
-					std::cout << "\nEnter the change request's priority (max 10 char):\n";
-					std::cin.getline(priority, PRIORITY_LENGTH);
-
-					// Check if input length is valid
-					if (std::cin.fail()) {
-						std::cin.clear(); // Clear the fail priority
-						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nInvalid input. Please enter 1 to 10 characters." << std::endl;
-						PriorityNotProperLen = true; // Continue the loop
-					} else if (strlen(priority) == 0) {
-						std::cout << "\nPriority cannot be empty. Please enter 1 to 10 characters." << std::endl;
-						PriorityNotProperLen = true; // Continue the loop
-					} else {
-						PriorityNotProperLen = false;
-					}
-				} while (PriorityNotProperLen);
 
 				// Final choices
 				choiceConfirmAdd = readIntegerInput(confirmAddCR,NO,YES);
 				if (choiceConfirmAdd == YES) {
 					getTodaysDate(date, sizeof(date));
-					createChangeRequest(requester,changeID,reportedRelease,date,priority);
+					createChangeRequest(requester,changeID,reportedRelease,date,"Low");
 					choiceRepeat = readIntegerInput(repeatChangeCR,NO,YES);
 					if (choiceRepeat == YES) {
 						repeat = true;
@@ -693,9 +639,9 @@ void handleChangeRequestMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleChangeItemMaintenance
-// Handles the change item maintenance scenarios
-// Parameter: choice (The chosen scenario for change item maintenance)
 void handleChangeItemMaintenance(int choice) {
+    // Handles the change item maintenance scenarios
+    // Parameter: choice (The chosen scenario for change item maintenance)
     switch (choice) {
         case 1: {
 			// Scenario 4.4: Querying Change Items
@@ -717,7 +663,9 @@ void handleChangeItemMaintenance(int choice) {
 			int CIOfProductExists;
 
 			// For repeating the scenario
+                // Keep looping so long as the user enters 'YES' to querying for another change item
 			do {
+                    // Keep looping so long as the entered product name is not the proper length or does not exist
 				do {
 					std::cout << "\nSelect a product name (max 30 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
@@ -744,6 +692,7 @@ void handleChangeItemMaintenance(int choice) {
 				} while (notProperLen || notExists);
 			
 				// Get the change ID based on product choice
+                    // Keep looping so long as the entered change ID encounters a referential integrity issue or there are no change items with the change ID and product name specified
 				do {
 					changeID = readIntegerInput(CIPrompt,0,999999);
 
@@ -814,7 +763,9 @@ void handleChangeItemMaintenance(int choice) {
 			int origChangeID;
 
 			// For repeating the scenario
+                // Keep looping so long as the user says 'YES' to updating another change item
 			do {
+                    // Keep looping so long as the entered product name is not the proper length or does not exist
 				do {
 					std::cout << "\nSelect a product name (max 30 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
@@ -841,6 +792,7 @@ void handleChangeItemMaintenance(int choice) {
 				} while (notProperLen || notExists);
 			
 				// Get the change ID based on product choice
+                    // Keep looping so long as the entered change ID encounters a referential integrity issue or there are no change items with the change ID and product name specified
 				do {
 					changeID = readIntegerInput(CIPrompt,0,999999);
 
@@ -976,9 +928,9 @@ void handleChangeItemMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleReportGeneration
-// Handles the report generation scenarios
-// Parameter: choice (The chosen scenario for report generation)
 void handleReportGeneration(int choice) {
+    // Handles the report generation scenarios
+    // Parameter: choice (The chosen scenario for report generation)
     switch (choice) {
         case 1: {
 		// Scenario 4.6: Report #1: List of All Change Items for a 

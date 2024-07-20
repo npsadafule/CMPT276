@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: Requester.h
+// ============================================
+// Version History:
+// Rev. 1 - 2024/07/17 - Group 7
+// ============================================
+
 #ifndef REQUESTER_H
 #define REQUESTER_H
 
@@ -24,37 +31,62 @@ struct Requester {
 // Function Declarations: Product Release
 // ============================================
 
+// ---------------------------------------------------------
 // Opens the Requester file
 void openRequesterFile();
 
+// ---------------------------------------------------------
 // Closes the Requester file
 void closeRequesterFile();
 
+// ---------------------------------------------------------
 // Writes a Requester to the file
-// Parameter: requester (The Requester to write)
-void writeRequester(const Requester& requester);
+void writeRequester(
+    // Parameter: requester (The Requester to write)
+    const Requester& requester  // in
+);
 
+// ---------------------------------------------------------
 // Seeks to the beginning of the Requester file
-void seekToBeginningOfRequesterFile();
+void seekToBeginningOfRequesterFile();  // in
 
+// ---------------------------------------------------------
 // Displays a Requester
-// Parameter: requester (The Requester to display)
-void displayRequester(const Requester& requester);
+void displayRequester(
+    // Parameter: requester (The Requester to display)
+    const Requester& requester  // in
+);
 
-// Retrieves a Requester by its primary key
-// Parameter: filename (The name of the file to retrieve the Requester from)
-// Parameter: reqName (The primary key of the Requester)
-// Parameter: requester (The Requester object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester& requester);
+// ---------------------------------------------------------
+// Displays the first 20 or fewer Requesters in the file
+int requesterFileDisplay20OrLess(
+    // Parameter: page (The page number to display)
+    // Parameter: filename (The name of the file to display Requesters from)
+    // Returns: int (The number of Requesters displayed)
+    int page,
+    const char* filename  // in
+);
 
+// ---------------------------------------------------------
+bool retrieveRequesterByKey(
+    // Retrieves a Requester by its primary key
+    // Parameter: filename (The name of the file to retrieve the Requester from)
+    // Parameter: reqName (The primary key of the Requester)
+    // Parameter: requester (The Requester object to store the retrieved data)
+    // Returns: bool (true if retrieval was successful, false otherwise)
+    const char* filename,  // in
+    const char* reqName,  // in
+    Requester& requester  // out
+);
+
+// ---------------------------------------------------------
 // Creates a new Requester
 // Parameter: reqName (The name of the Requester)
 // Parameter: phoneNumber (The phone number of the Requester)
 // Parameter: email (The email address of the Requester)
 // Parameter: department (The department of the Requester)
-void createRequester(const char* reqName,
-					 const char* phoneNumber,
-					 const char* email,
-					 const char* department);
+void createRequester(const char* reqName,  // in
+					 const char* phoneNumber,  // in
+					 const char* email,  // in
+					 const char* department);  // in
 #endif // REQUESTER_H

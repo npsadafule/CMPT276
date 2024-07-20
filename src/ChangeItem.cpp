@@ -2,8 +2,11 @@
 // Module Name: ChangeItem.cpp
 // ============================================
 // Version History:
-// Rev. 1 - 2024/07/01 - Group 7
+// Rev. 2 - 2024/07/17 - Group 7
 // ============================================
+
+// Overall internal design issues:
+// This module implements ChangeItems. So, it uses the "ChangeItem" struct, imported from ChangeItem.h (see it for detailed list of attributes). It uses linear search to find products within files based on a criteria of attributes (e.g., primary key (single or compound)).
 
 // Memory/Speed/Complexity Trade-offs: 
 // Memory use is optimized by handling file I/O operations directly, which can be slower but avoids loading large data sets into memory.
@@ -18,8 +21,6 @@
 #include <fstream>
 #include <cstring>
 
-// Global variables initialized
-int globalHighestCID = -1;
 // Global variable exertns
 extern std::vector<Product> products;
 extern std::fstream changeItemFile;
@@ -28,19 +29,18 @@ extern std::fstream highestCIDFile;
 // ============================================
 // Function Implementations
 // ============================================
-
-// Converts an integer to a C-style string
-// Parameter: number (The integer to convert)
-// Returns: const char* (C-style string representation of the number)
+// ---------------------------------------------------------
 const char* intToCString(int number) {
+    // Converts an integer to a C-style string
     static std::string str; // static to ensure memory is not deallocated after function exits
     str = std::to_string(number);
     return str.c_str();
 }
 
-// Opens the change item file
-// Exits the program if the file cannot be opened
+// ---------------------------------------------------------
 void openChangeItemFile() {
+    // Opens the change item file
+    // Exits the program if the file cannot be opened
     changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
@@ -50,8 +50,8 @@ void openChangeItemFile() {
 
 // ---------------------------------------------------------
 // Function: closeProductFile
-// Closes the change item file if it is open
 void closeChangeItemFile() {
+    // Closes the change item file if it is open
     if (changeItemFile.is_open()) {
         changeItemFile.close();
     }
@@ -59,15 +59,14 @@ void closeChangeItemFile() {
 
 // ---------------------------------------------------------
 // Function: writeProduct
-// Writes a change item to the change item file
-// Parameter: changeItem (The change item to write)
 void writeChangeItem(const ChangeItem& changeItem) {
+    // Writes a change item to the change item file
+    // Parameter: changeItem (The change item to write)
     if (!changeItemFile.is_open()) return;
 
 	// Get the character address of the product struct, write it a byte at a time (char),
 	// writing "sizeof(Product)" amount of bytes  
 	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
-	changeItemFile.seekp(0, std::ios::end);
     changeItemFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
 
 	// Check if we ran out of disk space; exit if we have
@@ -76,8 +75,8 @@ void writeChangeItem(const ChangeItem& changeItem) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
-// Sets the file position to the beginning of the change item file
 void seekToBeginningOfChangeItemFile() {
+    // Sets the file position to the beginning of the change item file
     if (!changeItemFile.is_open()) return;
 
 	// Reset internal flags
@@ -88,10 +87,11 @@ void seekToBeginningOfChangeItemFile() {
     changeItemFile.seekg(0, std::ios::beg);
 }
 
-// For bringing up lists of products for reports
-// Displays a change item
-// Parameter: changeItem (The change item to display)
+// ---------------------------------------------------------
 void displayChangeItem(const ChangeItem& changeItem) {
+    // For bringing up lists of products for reports
+    // Displays a change item
+    // Parameter: changeItem (The change item to display)
 	std::cout << intToCString(changeItem.changeID) << 
 				  ", " << changeItem.productName << 
 				  ", " << changeItem.description << 
@@ -99,14 +99,16 @@ void displayChangeItem(const ChangeItem& changeItem) {
 				  ", " << changeItem.state << std::endl;
 }
 
-// Displays up to 20 change items from a file
-// Parameter: filename (The name of the file to read change items from)
+// ---------------------------------------------------------
 void changeItemFileDisplay20OrLess(const char* filename) {
-	const int MAX_READS = 20;
+    // Displays up to 20 change items from a file
+    // Parameter: filename (The name of the file to read change items from)
+    const int MAX_READS = 20;
 
 	ChangeItem tmpCI;
 
 	int counter = 0;
+    // Loop by the size of ChangeItem and while the loop counter is less than MAX_READS to display change items
     while (changeItemFile.read(reinterpret_cast<char*>(&tmpCI), sizeof(ChangeItem)) &&
 		   counter < MAX_READS) {
 		displayChangeItem(tmpCI);
@@ -115,13 +117,14 @@ void changeItemFileDisplay20OrLess(const char* filename) {
 	changeItemFile.clear();
 }
 
-// For retrieving a particular product with a particular name
-// Retrieves a change item by its ID
-// Parameter: filename (The name of the file to read change items from)
-// Parameter: changeID (The ID of the change item to retrieve)
-// Parameter: changeItem (The change item object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
+// ---------------------------------------------------------
 bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem) {
+    // For retrieving a particular product with a particular name
+    // Retrieves a change item by its ID
+    // Parameter: filename (The name of the file to read change items from)
+    // Parameter: changeID (The ID of the change item to retrieve)
+    // Parameter: changeItem (The change item object to store the retrieved data)
+    // Returns: bool (true if retrieval was successful, false otherwise)
 	ChangeItem tmpChangeItem;
 
 	seekToBeginningOfChangeItemFile();
@@ -147,13 +150,13 @@ bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& cha
 
 // ---------------------------------------------------------
 // Function: createChangeItem
-// Creates a new change item
-// Parameter: changeID (The ID of the change item)
-// Parameter: productName (The name of the product associated with the change item)
-// Parameter: description (The description of the change item)
-// Parameter: anticipatedReleaseID (The anticipated release ID for the change item)
-// Parameter: state (The state of the change item)
 void createChangeItem(int changeID,
+    // Creates a new change item
+    // Parameter: changeID (The ID of the change item)
+    // Parameter: productName (The name of the product associated with the change item)
+    // Parameter: description (The description of the change item)
+    // Parameter: anticipatedReleaseID (The anticipated release ID for the change item)
+    // Parameter: state (The state of the change item)
 					  const char* productName,
 					  const char* description,
 					  const char* anticipatedReleaseID,
@@ -177,6 +180,7 @@ void createChangeItem(int changeID,
 
 	seekToBeginningOfChangeItemFile();
 
+        // Loop forward by the size of change items to retrieve all records on file
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpReadCI), sizeof(ChangeItem))) {
         if (tmpReadCI.changeID == tmpCI.changeID) {
 			changeItemExists = true;
@@ -193,14 +197,15 @@ void createChangeItem(int changeID,
 	storeHighestCID();
 }
 
-// For retrieving a particular product with a particular name
-// Retrieves a change item by its ID and product name
-// Parameter: filename (The name of the file to read change items from)
-// Parameter: changeID (The ID of the change item to retrieve)
-// Parameter: changeItem (The change item object to store the retrieved data)
-// Parameter: product (The name of the product)
-// Returns: bool (true if retrieval was successful, false otherwise)
+// ---------------------------------------------------------
 bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product) {
+    // For retrieving a particular product with a particular name
+    // Retrieves a change item by its ID and product name
+    // Parameter: filename (The name of the file to read change items from)
+    // Parameter: changeID (The ID of the change item to retrieve)
+    // Parameter: changeItem (The change item object to store the retrieved data)
+    // Parameter: product (The name of the product)
+    // Returns: bool (true if retrieval was successful, false otherwise)
 	seekToBeginningOfChangeItemFile();
 
     // Read each product from the file and compare its name with the target name
@@ -216,11 +221,12 @@ bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, Chang
     return false; // Product not found
 }
 
-// Updates an existing change item
-// Parameter: origChangeID (The original change ID of the change item to update)
-// Parameter: changeItem (The updated change item data)
-// Returns: bool (true if update was successful, false otherwise)
+// ---------------------------------------------------------
 bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
+    // Updates an existing change item
+    // Parameter: origChangeID (The original change ID of the change item to update)
+    // Parameter: changeItem (The updated change item data)
+    // Returns: bool (true if update was successful, false otherwise)
 	// For reading
 	ChangeItem readCI;
 
@@ -258,16 +264,18 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 	return true;
 }
 
-// Closes the highest change ID file if it is open
+// ---------------------------------------------------------
 void closeHighestCID() {
+    // Closes the highest change ID file if it is open
 	if (highestCIDFile.is_open()) {
         highestCIDFile.close();
     }
 }
 
+// ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
-// Sets the file position to the beginning of the highest change ID file
 void seekToBeginningOfHighestCIDFile() {
+    // Sets the file position to the beginning of the highest change ID file
     if (!highestCIDFile.is_open()) return;
 
 	// Reset internal flags
@@ -278,8 +286,9 @@ void seekToBeginningOfHighestCIDFile() {
     highestCIDFile.seekg(0, std::ios::beg);
 }
 
-// Stores the highest change ID in a separate file
+// ---------------------------------------------------------
 void storeHighestCID() {
+    // Stores the highest change ID in a separate file
 	// For reading
 	ChangeItem readCI;
 	ChangeItem highestCID;
@@ -299,8 +308,8 @@ void storeHighestCID() {
 
 	// Store highest CID
 	highestCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
-	globalHighestCID = highestCID.changeID;
 
-	// Print the highest CID
-	std::cout << "The highest Change ID is " << std::to_string(globalHighestCID) << std::endl;
+	// // Print the highest CID. (For testing).
+	// std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
+
 }
