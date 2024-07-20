@@ -547,17 +547,17 @@ void handleChangeRequestMaintenance(int choice) {
 
 					// Enter description for change item
 					do {
-						std::cout << "\nEnter the description for the change item (max 150 char): \n";
+						std::cout << "\nEnter the description for the change item (max 30 char): \n";
 						std::cin.getline(description, CHANGE_DESC_LENGTH);
 
 						// Check if input length is valid
 						if (std::cin.fail()) {
 							std::cin.clear(); // Clear the fail state
 							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 150 characters." << std::endl;
+							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
 							CInotProperLen = true; // Continue the loop
 						} else if (strlen(description) == 0) {
-							std::cout << "\nDescription cannot be empty. Please enter 1 to 150 characters." << std::endl;
+							std::cout << "\nDescription cannot be empty. Please enter 1 to 30 characters." << std::endl;
 							CInotProperLen = true; // Continue the loop
 						} else {
 							CInotProperLen = false;

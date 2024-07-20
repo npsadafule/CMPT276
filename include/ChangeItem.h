@@ -14,7 +14,7 @@
 #include "Product.h"
 
 // Global constant definitions
-const int CHANGE_DESC_LENGTH = 150 +1;
+const int CHANGE_DESC_LENGTH = 30 +1;
 const int STATE_LENGTH = 10 +1;
 
 // ============================================
