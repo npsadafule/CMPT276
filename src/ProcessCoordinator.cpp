@@ -9,6 +9,14 @@
 #include <ctime>
 #include <cstdio>  // For sprintf
 
+// Overall internal design issues:
+// This module implements ProcessCoordinator.h, following our central control design 
+// from our Architectural Design Document. Specifically, it houses the implementation of s
+// cenario execution as cases of a particular submenu. For example, handleProductMaintenance 
+// has a case for executing Product creation and Product Release creation. Hence, it uses structures 
+// exported by each of the lower-level modules (e.g., Product). Also, do-while loops are used 
+// freqeuntly to ensure proper user input.
+
 // Constants for repeating a scenario
 static const int YES = 1;
 static const int NO = 0;

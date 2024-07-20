@@ -5,6 +5,12 @@
 // Rev. 1 - 2024/07/01 - Group 7
 // ============================================
 
+// Overall internal design issues:
+// This module implements ChangeItems. So, it uses the "ChangeItem" struct, imported 
+// from ChangeItem.h (see it for detailed list of attributes). It uses linear search
+// to find products within files based on a criteria of attributes (e.g., primary key 
+// (single or compound)).
+
 // Memory/Speed/Complexity Trade-offs: 
 // Memory use is optimized by handling file I/O operations directly, which can be slower but avoids loading large data sets into memory.
 // Representation Choices: Using fixed-size structs to handle ChangeItem data for predictable file I/O operations.
@@ -99,6 +105,7 @@ void displayChangeItem(const ChangeItem& changeItem) {
 				  ", " << changeItem.state << std::endl;
 }
 
+// ---------------------------------------------------------
 // Displays up to 20 change items from a file
 // Parameter: filename (The name of the file to read change items from)
 void changeItemFileDisplay20OrLess(const char* filename) {
@@ -115,6 +122,7 @@ void changeItemFileDisplay20OrLess(const char* filename) {
 	changeItemFile.clear();
 }
 
+// ---------------------------------------------------------
 // For retrieving a particular product with a particular name
 // Retrieves a change item by its ID
 // Parameter: filename (The name of the file to read change items from)
@@ -193,6 +201,7 @@ void createChangeItem(int changeID,
 	storeHighestCID();
 }
 
+// ---------------------------------------------------------
 // For retrieving a particular product with a particular name
 // Retrieves a change item by its ID and product name
 // Parameter: filename (The name of the file to read change items from)
@@ -216,6 +225,7 @@ bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, Chang
     return false; // Product not found
 }
 
+// ---------------------------------------------------------
 // Updates an existing change item
 // Parameter: origChangeID (The original change ID of the change item to update)
 // Parameter: changeItem (The updated change item data)
@@ -258,6 +268,7 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 	return true;
 }
 
+// ---------------------------------------------------------
 // Closes the highest change ID file if it is open
 void closeHighestCID() {
 	if (highestCIDFile.is_open()) {
@@ -265,6 +276,7 @@ void closeHighestCID() {
     }
 }
 
+// ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
 // Sets the file position to the beginning of the highest change ID file
 void seekToBeginningOfHighestCIDFile() {
@@ -278,6 +290,7 @@ void seekToBeginningOfHighestCIDFile() {
     highestCIDFile.seekg(0, std::ios::beg);
 }
 
+// ---------------------------------------------------------
 // Stores the highest change ID in a separate file
 void storeHighestCID() {
 	// For reading
