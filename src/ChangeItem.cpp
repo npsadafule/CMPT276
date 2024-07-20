@@ -206,7 +206,8 @@ bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, Chang
     // Read each product from the file and compare its name with the target name
     while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
         // If in the changeItemFile, there exists an element that matches what we hope to retrieve
-        if ((std::strcmp(changeItem.productName, product) == 0) &&
+        std::cout << "product name: " << changeItem.productName << "change ID: " << changeItem.changeID << std::endl;
+		if ((std::strcmp(changeItem.productName, product) == 0) &&
 			(changeItem.changeID == changeID)) {
 			
             return true; // release ID found
