@@ -72,7 +72,6 @@ bool getNextReport(Report& report) {
 // Prints the report to standard output
 void generateReport1(const std::string& productName) {
     ChangeItem changeItem;
-    openChangeItemFile();
     seekToBeginningOfChangeItemFile();
     
     std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
@@ -81,17 +80,18 @@ void generateReport1(const std::string& productName) {
         if (std::strcmp(changeItem.productName, productName.c_str()) == 0 &&
             std::strcmp(changeItem.state, "Done") != 0 && 
             std::strcmp(changeItem.state, "Cancelled") != 0) {
-            std::cout << "ID: " << changeItem.changeID 
+            std::cout << "Change ID: " << changeItem.changeID 
+					  << ", Product name: " << changeItem.productName
                       << ", Description: " << changeItem.description 
                       << ", State: " << changeItem.state 
                       << ", Anticipated Release ID: " << changeItem.anticipatedReleaseID << "\n";
             found = true;
         }
     }
+	changeItemFile.clear();
     if (!found) {
         std::cerr << "No matching change items found for product: " << productName << ".\n";
     }
-    closeChangeItemFile();
 }
 
 // ---------------------------------------------------------
