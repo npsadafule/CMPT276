@@ -17,7 +17,10 @@ static const int NO = 0;
 extern std::fstream productReleaseFile;
 
 // Variables for navigation options
-int entryCount;
+static int entryCount;
+
+// Global variables externed
+extern int globalHighestCID;
 
 // Function Implementations
 // ============================================
@@ -539,15 +542,8 @@ void handleChangeRequestMaintenance(int choice) {
 						}
 					} while (CInotExists);
 				} else if (CIChoice == CREATE_CI) { // Create change ID
-					// Enter new change ID
-					do {
-						changeID = readIntegerInput(CIPrompt,0,999999);
-
-						CInotExists = retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
-						if (CInotExists) {
-							std::cout << "\nThe change item must not exist!\n";
-						}
-					} while (CInotExists);
+					// Store new change ID
+					changeID = globalHighestCID + 1;
 
 					// Enter description for change item
 					do {

@@ -18,6 +18,8 @@
 #include <fstream>
 #include <cstring>
 
+// Global variables initialized
+int globalHighestCID = -1;
 // Global variable exertns
 extern std::vector<Product> products;
 extern std::fstream changeItemFile;
@@ -297,7 +299,8 @@ void storeHighestCID() {
 
 	// Store highest CID
 	highestCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
+	globalHighestCID = highestCID.changeID;
 
-	// // Print the highest CID
-	// std::cout << "The highest Change ID is " << std::to_string(highestCID.changeID) << std::endl;
+	// Print the highest CID
+	// std::cout << "The highest Change ID is " << std::to_string(globalHighestCID) << std::endl;
 }
