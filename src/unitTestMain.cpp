@@ -131,8 +131,8 @@ void testCreateProduct() {
 void testCreateChangeItem() {
 	// Test data
 	const ChangeItem CITest[3] {
-		{2112, "Product A", "Sample description that runs on for a while", "R51B", "Reported"},
-		{3113, "Random stuff", "The quick brown fox jumps over the lazy dog", "AB12", "Reported"},
+		{6969, "Product A", "Sample  a while", "R51B", "Reported"},
+		{3113, "Random stuff", "The ps over the lazy dog", "AB12", "Reported"},
 		{4114, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
 	};
 
@@ -199,7 +199,7 @@ void testCreateChangeItem() {
 void testCreateRequester() {
 	// Test data
 	const Requester reqTest[2] {
-		{"new", "6041237654", "fakeemail@yahoo.com", "Engineering"},
+		{"TEST", "6041237654", "fakeemail@yahoo.com", "Engineering"},
 		{"jeans", "7784039872", "asedf@gmail.com", "N/A"}
 	};
 
@@ -261,7 +261,7 @@ void testCreateRequester() {
 void testCreateChangeRequest() {
 	// Test data
 	const ChangeRequest CRTest[2] {
-		{"YOLO", 1234, "A1CD", "20040923", "Top"},
+		{"TEST", 1234, "A1CD", "20040923", "Top"},
 		{"SWAG", 5678, "MA34", "20240913", "Bottom"}
 	};
 
@@ -365,7 +365,7 @@ void testUpdateChangeItem() {
 // Function: runAllTests
 // Runs all defined test functions.
 void runAllTests() {
-    // testCreateProduct();
+    testCreateProduct();
 	// testCreateChangeItem();
 	// testCreateRequester();
 	// testCreateChangeRequest();

@@ -461,7 +461,7 @@ void handleChangeRequestMaintenance(int choice) {
 					do {
 						std::cout << "\nEnter the email of the customer (max 24 char in the format "
 									"username@email_provider.domain_type):\n";
-						std::cin.getline(email, PHONE_NUMBER_LENGTH);
+						std::cin.getline(email, EMAIL_LENGTH);
 
 						// Check if input length is valid
 						if (std::cin.fail()) {
