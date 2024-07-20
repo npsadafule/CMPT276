@@ -652,7 +652,7 @@ void handleChangeRequestMaintenance(int choice) {
 			
 				// Ask for a Priority
 				do {
-					std::cout << "\nEnter the change request's priority (max 10 char):\n";
+					std::cout << "\nEnter the change request's priority (1 to 5, with 5 being the highest; max 10 char):\n";
 					std::cin.getline(priority, PRIORITY_LENGTH);
 
 					// Check if input length is valid
