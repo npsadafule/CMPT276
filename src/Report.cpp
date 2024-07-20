@@ -77,9 +77,9 @@ void generateReport1(const std::string& productName) {
     std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
     bool found = false;
     while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
-        if (std::strcmp(changeItem.productName, productName.c_str()) == 0 &&
-            std::strcmp(changeItem.state, "Done") != 0 && 
-            std::strcmp(changeItem.state, "Cancelled") != 0) {
+        if ((std::strcmp(changeItem.productName, productName.c_str()) == 0) &&
+            (std::strcmp(changeItem.state, "Done") != 0) && 
+            (std::strcmp(changeItem.state, "Cancelled") != 0)) {
             std::cout << "Change ID: " << changeItem.changeID 
 					  << ", Product name: " << changeItem.productName
                       << ", Description: " << changeItem.description 
