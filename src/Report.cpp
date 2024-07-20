@@ -106,57 +106,36 @@ void generateReport2(const std::string& changeID) {
     bool changeRequestFound = false;
     bool requesterFound = false;
 
-    openChangeItemFile();
-    if (!changeItemFile.is_open()) {
-        std::cerr << "Failed to open changeItemFile.\n";
-        return;
-    }
+	// Search for the ChangeItem with the specified changeID
     seekToBeginningOfChangeItemFile();
-
-    // Search for the ChangeItem with the specified changeID
     while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
         if (std::to_string(changeItem.changeID) == changeID) {
             changeItemFound = true;
             break;
         }
     }
-    closeChangeItemFile();
-
+    changeItemFile.clear();
     if (!changeItemFound) {
         std::cerr << "ChangeItem with ChangeID " << changeID << " not found.\n";
         return;
     }
+    // std::cout << "Found ChangeItem: ID=" << changeItem.changeID << ", Description=" << changeItem.description << "\n";
 
-    std::cout << "Found ChangeItem: ID=" << changeItem.changeID << ", Description=" << changeItem.description << "\n";
-
-    openChangeRequestFile();
-    if (!changeRequestFile.is_open()) {
-        std::cerr << "Failed to open changeRequestFile.\n";
-        return;
-    }
     seekToBeginningOfChangeRequestFile();
-
-    std::vector<std::string> requesterNames;
+	std::vector<std::string> requesterNames;
     while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
         if (changeRequest.changeID == std::stoi(changeID)) {
             changeRequestFound = true;
             requesterNames.push_back(changeRequest.requesterName);
         }
     }
-    closeChangeRequestFile();
-
+    changeRequestFile.clear();
     if (!changeRequestFound) {
         std::cerr << "No change request found for ChangeItem with ChangeID " << changeID << ".\n";
         return;
     }
 
-    openRequesterFile();
-    if (!requesterFile.is_open()) {
-        std::cerr << "Failed to open requesterFile.\n";
-        return;
-    }
     seekToBeginningOfRequesterFile();
-
     std::vector<Requester> relatedRequesters;
     while (requesterFile.read(reinterpret_cast<char*>(&requester), sizeof(Requester))) {
         for (const auto& name : requesterNames) {
@@ -166,8 +145,7 @@ void generateReport2(const std::string& changeID) {
             }
         }
     }
-    closeRequesterFile();
-
+   	requesterFile.clear();
     if (!requesterFound) {
         std::cerr << "No requesters found for ChangeItem with ChangeID " << changeID << ".\n";
         return;
