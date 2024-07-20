@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: main.cpp
+// ============================================
+// Version History:
+// Rev. 1 - 2024/07/01 - Group 7
+// ============================================
+
 #include <iostream>
 #include "UserInterface.h"
 #include "SystemController.h"
@@ -5,10 +12,13 @@
 // ============================================
 // Main Function
 // ============================================
+
+// ---------------------------------------------------------
 // Function: main
-// Entry point of the program. Starts the system and activates the user interface.
-// Returns: int (Exit status, 0 indicates successful execution)
 int main() {
+    // Description:
+    // Entry point of the program. Starts the system and activates the user interface.
+    // Returns: int (Exit status, 0 indicates successful execution)
     start();         // Initialize system components
     activateUI();    // Start user interface
     return 0;        // Exit program successfully
@@ -25,6 +35,8 @@ Coding Conventions:
     - Each function must have a comment describing its purpose, parameters, and any exceptions it might throw.
     - Use a thin horizontal dividing line before function prototypes in header files.
     - Place specific comments regarding a whole function after the signature but before the first statement.
+        - If there is only one line for a comment detailing the general operation of the function, it is placed above the prototype.
+        - If a comment is two or more lines, it will either be completely stored inside the function curly braces or have one brief description line before the prototype
 
 3. Naming Conventions:
     - Class names: CamelCase with the first letter capitalized.

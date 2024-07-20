@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: SystemController.h
+// ============================================
+// Version History:
+// Rev. 2 - 2024/07/17 - Group 7
+// ============================================
+
 #ifndef SYSTEMCONTROLLER_H
 #define SYSTEMCONTROLLER_H
 
@@ -15,29 +22,35 @@ extern std::map<std::string, ChangeRequest> changeRequests;
 // ============================================
 // Function Declarations
 // ============================================
-
+// ---------------------------------------------------------
 // Initializes the Requester module
 void initRequester();
 
-
+// ---------------------------------------------------------
 // Initializes the Product module
 void initProduct();
 
+// ---------------------------------------------------------
 // Initializes the ChangeRequest module
 void initChangeRequest();
 
+// ---------------------------------------------------------
 // Initializes the ChangeItem module
 void initChangeItem();
 
+// ---------------------------------------------------------
 // Initializes the Report generation module
 void initReportGen();
 
+// ---------------------------------------------------------
 // Initializes the Highest ChangeID module
 void initHighestCID();
 
+// ---------------------------------------------------------
 // Starts the system controller
 void start();
 
+// ---------------------------------------------------------
 // Shuts down the system controller
 void shutdown();
 

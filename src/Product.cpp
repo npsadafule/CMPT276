@@ -1,3 +1,13 @@
+// ============================================
+// Module Name: Product.cpp
+// ============================================
+// Version History:
+// Rev. 2 - 2024/07/17 - Group 7
+// ============================================
+
+// Overall internal design issues:
+// This module implements both Products and Product Releases. Hence it uses "Product" and "ProductRelease" structs, imported from Product.h (see it for detailed list of attributes). It uses linear search to find products within files based on a criteria of attributes (e.g., primary key (single or compound)).
+
 #include "Product.h"
 #include <iostream>
 #include <fstream>
@@ -13,9 +23,9 @@ extern std::fstream productReleaseFile;
 
 // ---------------------------------------------------------
 // Function: openProductFile
-// Opens the product file for reading and writing in binary append mode
-// Exits the program if the file fails to open
 void openProductFile() {
+    // Opens the product file for reading and writing in binary append mode
+    // Exits the program if the file fails to open
     productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
@@ -24,8 +34,8 @@ void openProductFile() {
 
 // ---------------------------------------------------------
 // Function: closeProductFile
-// Closes the product file if it is open
 void closeProductFile() {
+    // Closes the product file if it is open
     if (productFile.is_open()) {
         productFile.close();
     }
@@ -33,9 +43,9 @@ void closeProductFile() {
 
 // ---------------------------------------------------------
 // Function: writeProduct
-// Writes a Product object to the product file
-// Exits the program if there is a failure while writing
 void writeProduct(const Product& product) {
+    // Writes a Product object to the product file
+    // Exits the program if there is a failure while writing
     if (!productFile.is_open()) return;
 
 	// Get the character address of the product struct, write it a byte at a time (char),
@@ -49,8 +59,8 @@ void writeProduct(const Product& product) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
-// Seeks to the beginning of the product file
 void seekToBeginningOfProductFile() {
+    // Seeks to the beginning of the product file
     if (!productFile.is_open()) return;
 
 	// Reset internal flags
@@ -63,15 +73,13 @@ void seekToBeginningOfProductFile() {
 
 // ---------------------------------------------------------
 // Function: displayProduct
-// Displays the name of a product to the standard output
 void displayProduct(const Product& product) {
+    // Displays the name of a product to the standard output
 	std::cout << product.name << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: productFileDisplay20OrLess
-// Displays up to 20 products from the product file
-// Parameter: filename (The name of the file to read products from)
 void productFileDisplay20OrLess(const char* filename) {
 	const int MAX_READS = 20;
 
@@ -89,14 +97,14 @@ void productFileDisplay20OrLess(const char* filename) {
 
 // ---------------------------------------------------------
 // Function: retrieveProductByName
-// Retrieves a product from the product file by its name
-// Parameters:
-//   filename (The name of the file to retrieve the product from)
-//   productName (The name of the product to retrieve)
-//   product (The Product object to store the retrieved data)
-// Returns:
-//   bool (true if retrieval was successful, false otherwise)
 bool retrieveProductByName(const char* filename, const char* productName, Product& product) {
+    // Retrieves a product from the product file by its name
+    // Parameters:
+    //   filename (The name of the file to retrieve the product from)
+    //   productName (The name of the product to retrieve)
+    //   product (The Product object to store the retrieved data)
+    // Returns:
+    //   bool (true if retrieval was successful, false otherwise)
     Product tmpProduct;
 
 	seekToBeginningOfProductFile();
@@ -122,14 +130,16 @@ bool retrieveProductByName(const char* filename, const char* productName, Produc
 
 // ---------------------------------------------------------
 // Function: createProduct
-// Creates a new product with the given name and writes it to the product file if it doesn't already exist
-// Parameter: namePtr (Pointer to the name of the product to create)
 void createProduct(const char* namePtr) { 
+    // Creates a new product with the given name and writes it to the product file if it doesn't already exist
+    // Parameter: namePtr (Pointer to the name of the product to create)
 	// Create the product
     Product product = {};
 	
 	// Store the string into product's name attribute
 	std::strcpy(product.name, namePtr);
+
+	//std::cout << "createProduct: the product we received was named " << product.name << std::endl;
 
 	// Check if the product is on the file
 	bool productExists = false;
@@ -137,17 +147,16 @@ void createProduct(const char* namePtr) {
 	Product tmpProduct;
 
 	seekToBeginningOfProductFile();
-
+	
 	while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, namePtr) == 0) {
 			productExists = true;
         }
     }
-	productFile.clear();
 
-	// If the product doesn't exist, append it to the end of the file
-    if (!productExists) {
-		writeProduct(product);
+	// Clear flags if we didn't find the product
+	if (!productFile.good()) {
+		productFile.clear();
 	}	
 }
 
@@ -157,9 +166,9 @@ void createProduct(const char* namePtr) {
 
 // ---------------------------------------------------------
 // Function: openProductReleaseFile
-// Opens the product release file for reading and writing in binary append mode
-// Exits the program if the file fails to open
 void openProductReleaseFile() {
+    // Opens the product release file for reading and writing in binary append mode
+    // Exits the program if the file fails to open
     productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
@@ -168,8 +177,8 @@ void openProductReleaseFile() {
 
 // ---------------------------------------------------------
 // Function: closeProductReleaseFile
-// Closes the product release file if it is open
 void closeProductReleaseFile() {
+    // Closes the product release file if it is open
     if (productReleaseFile.is_open()) {
         productReleaseFile.close();
     }
@@ -177,9 +186,9 @@ void closeProductReleaseFile() {
 
 // ---------------------------------------------------------
 // Function: writeProductRelease
-// Writes a ProductRelease object to the product release file
-// Exits the program if there is a failure while writing
 void writeProductRelease(const ProductRelease& productRelease) {
+    // Writes a ProductRelease object to the product release file
+    // Exits the program if there is a failure while writing
     if (!productReleaseFile.is_open()) return;
 
 	// Get the character address of the product struct, write it a byte at a time (char),
@@ -193,8 +202,8 @@ void writeProductRelease(const ProductRelease& productRelease) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductReleaseFile
-// Seeks to the beginning of the product release file
 void seekToBeginningOfProductReleaseFile() {
+    // Seeks to the beginning of the product release file
     if (!productReleaseFile.is_open()) return;
 
 	// Reset internal flags
@@ -207,8 +216,8 @@ void seekToBeginningOfProductReleaseFile() {
 
 // ---------------------------------------------------------
 // Function: displayProductRelease
-// Displays details of a product release to the standard output
 void displayProductRelease(const ProductRelease& productRelease) {
+    // Displays details of a product release to the standard output
 	std::cout << productRelease.productName <<
 				 ", " << productRelease.releaseID <<
 				 ", " << productRelease.releaseDate << std::endl;
@@ -216,9 +225,9 @@ void displayProductRelease(const ProductRelease& productRelease) {
 
 // ---------------------------------------------------------
 // Function: productReleaseFileDisplay20OrLess
-// Displays up to 20 product releases from the product release file
-// Parameter: filename (The name of the file to read product releases from)
 void productReleaseFileDisplay20OrLess(const char* filename) {
+    // Displays up to 20 product releases from the product release file
+    // Parameter: filename (The name of the file to read product releases from)
 	const int MAX_READS = 20;
 
 	ProductRelease tmpPR;
@@ -235,16 +244,8 @@ void productReleaseFileDisplay20OrLess(const char* filename) {
 
 // ---------------------------------------------------------
 // Function: retrieveProductReleaseByKey
-// Retrieves a product release from the product release file by its product name and release ID
-// Parameters:
-//   filename (The name of the file to retrieve the product release from)
-//   productReleaseName (The name of the product in the release)
-//   releaseID (The release ID of the product release)
-//   productRelease (The ProductRelease object to store the retrieved data)
-// Returns:
-//   bool (true if retrieval was successful, false otherwise)
 bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease) {
-	ProductRelease tmpProductRelease;
+    ProductRelease tmpProductRelease;
 
 	seekToBeginningOfProductReleaseFile();
 
@@ -268,12 +269,12 @@ bool retrieveProductReleaseByKey(const char* filename, const char* productReleas
 
 // ---------------------------------------------------------
 // Function: createProductRelease
-// Creates a new product release with the given details and writes it to the product release file if it doesn't already exist
-// Parameters:
-//   productName (The name of the product in the release)
-//   releaseID (The release ID of the product release)
-//   releaseDate (The date of the product release)
 void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate) {	// Variables
+    // Creates a new product release with the given details and writes it to the product release file if it doesn't already exist
+    // Parameters:
+    //   productName (The name of the product in the release)
+    //   releaseID (The release ID of the product release)
+    //   releaseDate (The date of the product release)
 	// Create the product release
 	ProductRelease productRelease = {};
 	
@@ -302,18 +303,18 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 	// If the product release doesn't exist, append it to the end of the file
     if (!productReleaseExists) {
 		writeProductRelease(productRelease);
-	}	
+	}
 }
 
 
 // ---------------------------------------------------------
 // Function: determineReleaseIDExistence
-// Checks if a given release ID exists in the product release file
-// Parameter:
-//   releaseID (The release ID to check for existence)
-// Returns:
-//   bool (true if the release ID exists, false otherwise)
 bool determineReleaseIDExistence(const char* releaseID) {
+    // Checks if a given release ID exists in the product release file
+    // Parameter:
+    //   releaseID (The release ID to check for existence)
+    // Returns:
+    //   bool (true if the release ID exists, false otherwise)
     ProductRelease tmpProductRelease;
 
 	seekToBeginningOfProductReleaseFile();

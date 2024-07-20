@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: testFileOps.cpp
+// ============================================
+// Version History:
+// Rev. 1 - 2024/07/17 - Group 7
+// ============================================
+
 #include <iostream>
 #include <cassert>
 #include <vector>
@@ -6,7 +13,7 @@
 #include <algorithm>
 #include "Product.h"
 
-// Constants
+// Non-expored module-scope constants
 static const int STRCMP_TRUE = 0;
 // For extracting predetermined attribute test data from 'attributes' array
 static const int PR_NAME = 0;
@@ -22,10 +29,11 @@ void runAllTests();
 
 // Main Function
 // ============================================
+// ---------------------------------------------------------
 // Function: main
-// Entry point of the program. Runs all test functions and prints end message.
-// Returns: int (Exit status, 0 indicates successful execution)
 int main() {
+    // Entry point of the program. Runs all test functions and prints end message.
+    // Returns: int (Exit status, 0 indicates successful execution)
     runAllTests();  // Run all defined test functions
     std::cout << "End of testFileOps" << std::endl;  // Print end of tests message
     return 0;  // Exit program successfully
@@ -34,13 +42,12 @@ int main() {
 // ============================================
 // Test Implementations
 // ============================================
-
 // ---------------------------------------------------------
 // Function: testCreateProductRelease
-// Test function for creating product releases and verifying their storage and retrieval.
-// This function initializes product releases with predetermined attribute data,
-// stores them in a file, retrieves them, and checks for correctness.
 void testCreateProductRelease() {
+    // Test function for creating product releases and verifying their storage and retrieval.
+    // This function initializes product releases with predetermined attribute data,
+    // stores them in a file, retrieves them, and checks for correctness.
     // Define a 2D array of C-style strings containing the attribute test data
     const char* attributes[NUM_TEST_PR][3] = {
         {"A", "11", "20240611"},
@@ -60,6 +67,7 @@ void testCreateProductRelease() {
 
     // Run the function to create product releases from the attribute data
     std::cout << "Running createProductRelease()..." << std::endl;
+    // Loop forward by the number of test entries of product releases that need to be created
     for (int i = 0; i < NUM_TEST_PR; ++i) {
         createProductRelease(attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], attributes[i][PR_RELEASE_DATE]);
     }
@@ -69,6 +77,7 @@ void testCreateProductRelease() {
 
     // Initialize tally of correct retrievals
     int correctTally = 0;
+    // Loop forward by the number of test entries of product releases that need to be retrieved
     for (int i = 0; i < NUM_TEST_PR; ++i) {
         // Retrieve product release from file
         retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
@@ -98,7 +107,7 @@ void testCreateProductRelease() {
 
 // ---------------------------------------------------------
 // Function: runAllTests
-// Function to run all defined test functions.
 void runAllTests() {
+    // Function to run all defined test functions.
     testCreateProductRelease();  // Run test for creating and retrieving product releases
 }

@@ -1,3 +1,13 @@
+// ============================================
+// Module Name: SystemController.cpp
+// ============================================
+// Version History:
+// Rev. 2 - 2024/07/17 - Group 7
+// ============================================
+
+// Overall internal design issues:
+// This module implements SystemController.h, following our central control design from our Architectural Design Document. Specifically, it houses the implementation of the start-up function, along with each module's file initialization function. Currently, shutdown functions are stored in their respective lower-level modules, but they will be stored here in our fifth release.
+
 #include "SystemController.h"
 #include "Product.h"
 #include "ChangeRequest.h"
@@ -7,10 +17,6 @@
 #include <iostream>
 #include <fstream>
 
-// Global variable definitions
-std::vector<Product> products;
-// std::vector<User> users;
-std::map<std::string, ChangeRequest> changeRequests;
 // Global file streams
 std::fstream requesterFile;
 std::fstream productFile;
@@ -23,12 +29,11 @@ std::fstream highestCIDFile;
 // ============================================
 // Function Implementations
 // ============================================
-
 // ---------------------------------------------------------
 // Function: initRequester
-// Initializes the requester file stream for reading and writing requesters.
-// Ensures the requesterFile stream is opened in binary append mode.
 void initRequester() {
+    // Initializes the requester file stream for reading and writing requesters.
+    // Ensures the requesterFile stream is opened in binary append mode.
     requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!requesterFile.is_open()) {
         std::cerr << "Failed to open requestersFile.dat file.\n";
@@ -38,9 +43,9 @@ void initRequester() {
 
 // ---------------------------------------------------------
 // Function: initProduct
-// Initializes the product and product release file streams for reading and writing products.
-// Ensures both productFile and productReleaseFile streams are opened in binary append mode.
 void initProduct() {
+    // Initializes the product and product release file streams for reading and writing products.
+    // Ensures both productFile and productReleaseFile streams are opened in binary append mode.
     productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!productFile.is_open()) {
         std::cerr << "Failed to open products.dat file.\n";
@@ -56,9 +61,9 @@ void initProduct() {
 
 // ---------------------------------------------------------
 // Function: initChangeRequest
-// Initializes the change request file stream for reading and writing change requests.
-// Ensures the changeRequestFile stream is opened in binary append mode.
 void initChangeRequest() {
+    // Initializes the change request file stream for reading and writing change requests.
+    // Ensures the changeRequestFile stream is opened in binary append mode.
     changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!changeRequestFile.is_open()) {
         std::cerr << "Failed to open changeRequests.dat file.\n";
@@ -68,8 +73,6 @@ void initChangeRequest() {
 
 // ---------------------------------------------------------
 // Function: initChangeItem
-// Initializes the change item file stream for reading and writing change items.
-// Ensures the changeItemFile stream is opened in binary append mode.
 void initChangeItem() {
     changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
     if (!(changeItemFile.is_open())) {
@@ -80,16 +83,14 @@ void initChangeItem() {
 
 // ---------------------------------------------------------
 // Function: initReportGen
-// Initializes the report generation functionality.
-// This function is currently to be determined (TBD) and has no implementation.
 void initReportGen() {
-    // TBD
+    // Initializes the report generation functionality.
+    // This function is currently to be determined (TBD) and has no implementation.
+    // May or may not be needed for Assignment 5
 }
 
 // ---------------------------------------------------------
 // Function: initHighestCID
-// Initializes the highest change ID file stream for reading and writing.
-// Ensures the highestCIDFile stream is opened in binary append mode.
 void initHighestCID() {
     highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary);
     if (!(highestCIDFile.is_open())) {
@@ -100,25 +101,25 @@ void initHighestCID() {
 
 // ---------------------------------------------------------
 // Function: start
-// Starts the system, initializing all necessary components.
-// Calls functions to initialize requester, product, change request, change item,
-// report generation, and highest change ID functionalities.
 void start() {
-	initRequester();
+    // Starts the system, initializing all necessary components.
+    // Calls functions to initialize requester, product, change request, change item,
+    // report generation, and highest change ID functionalities.
+    initRequester();
     initProduct();
     initChangeRequest();
     initChangeItem();
     initReportGen();
-	initHighestCID();
-	storeHighestCID();
+    initHighestCID();
+    storeHighestCID();
 }
 
 // ---------------------------------------------------------
 // Function: shutdown
-// Shuts down the system, closing all open file streams.
-// Calls functions to close requester, product, change request, change item,
-// and report file streams.
 void shutdown() {
+    // Shuts down the system, closing all open file streams.
+    // Calls functions to close requester, product, change request, change item,
+    // and report file streams.
     closeRequesterFile();
     closeProductFile(); // Function call to close product file (not defined here)
     closeChangeRequestFile(); // Function call to close change request file (not defined here)

@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: Product.h
+// ============================================
+// Version History:
+// Rev. 2 - 2024/07/17 - Group 7
+// ============================================
+
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
@@ -28,85 +35,125 @@ struct ProductRelease {
 // Function Declarations: Product
 // ============================================
 
-
+// ---------------------------------------------------------
 // Opens the Product file
 void openProductFile();
 
+// ---------------------------------------------------------
 // Closes the Product file
 void closeProductFile();
 
+// ---------------------------------------------------------
 // Writes a Product to the file
-// Parameter: product (The Product to write)
-void writeProduct(const Product& product);
+void writeProduct(
+    // Parameter: product (The Product to write)
+    const Product& product  // in
+);
 
+// ---------------------------------------------------------
 // Seeks to the beginning of the Product file
 void seekToBeginningOfProductFile();
 
-
+// ---------------------------------------------------------
 // Displays a Product
-// Parameter: product (The Product to display)
-void displayProduct(const Product& product);
+void displayProduct(
+    // Parameter: product (The Product to display)
+    const Product& product  // in
+);
 
-
+// ---------------------------------------------------------
 // Displays the first 20 or fewer Products in the file
-// Parameter: filename (The name of the file to display Products from)
-void productFileDisplay20OrLess(const char* filename);
+void productFileDisplay20OrLess(
+    // Parameter: filename (The name of the file to display Products from)
+    const char* filename    // in
+);
 
-// Retrieves a Product by its name
-// Parameter: filename (The name of the file to retrieve the Product from)
-// Parameter: productName (The name of the Product)
-// Parameter: product (The Product object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveProductByName(const char* filename, const char* productName, Product& product);
+// ---------------------------------------------------------
+bool retrieveProductByName(
+    // Retrieves a Product by its name
+    // Parameter: filename (The name of the file to retrieve the Product from)
+    // Parameter: productName (The name of the Product)
+    // Parameter: product (The Product object to store the retrieved data)
+    // Returns: bool (true if retrieval was successful, false otherwise)
+    const char* filename,    // in   
+    const char* productName,    // in
+    Product& product    // out
+);
 
-
+// ---------------------------------------------------------
 // Creates a new Product
-// Parameter: namePtr (The name of the Product)
-void createProduct(const char* namePtr); 
+void createProduct(
+    // Parameter: namePtr (The name of the Product)
+    const char* namePtr    // in
+); 
 
 // ============================================
 // Function Declarations: Product Release
 // ============================================
-
-
+// ---------------------------------------------------------
 // Opens the ProductRelease file
 void openProductReleaseFile();
 
+// ---------------------------------------------------------
 // Closes the ProductRelease file
 void closeProductReleaseFile();
 
+// ---------------------------------------------------------
 // Writes a ProductRelease to the file
-// Parameter: productRelease (The ProductRelease to write)
-void writeProductRelease(const ProductRelease& productRelease);
+void writeProductRelease(
+    // Parameter: productRelease (The ProductRelease to write)
+    const ProductRelease& productRelease
+);
 
+// ---------------------------------------------------------
 // Seeks to the beginning of the ProductRelease file
 void seekToBeginningOfProductReleaseFile();
 
-// Displays a ProductRelease
-// Parameter: productRelease (The ProductRelease to display)
-void displayProductRelease(const ProductRelease& productRelease);
+// ---------------------------------------------------------
+void displayProductRelease(
+    // Displays a ProductRelease
+    // Parameter: productRelease (The ProductRelease to display)
+    const ProductRelease& productRelease
+);
 
+// ---------------------------------------------------------
 // Displays the first 20 or fewer ProductReleases in the file
-// Parameter: filename (The name of the file to display ProductReleases from)
-void productReleaseFileDisplay20OrLess(const char* filename);
+void productReleaseFileDisplay20OrLess(
+    // Parameter: filename (The name of the file to display ProductReleases from)
+    const char* filename    // in
+);
 
-// Retrieves a ProductRelease by its key (product name and release ID)
-// Parameter: filename (The name of the file to retrieve the ProductRelease from)
-// Parameter: productReleaseName (The name of the product associated with the ProductRelease)
-// Parameter: releaseID (The release ID of the ProductRelease)
-// Parameter: productRelease (The ProductRelease object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease);
+// ---------------------------------------------------------
+bool retrieveProductReleaseByKey(
+    // Retrieves a ProductRelease by its key (product name and release ID)
+    // Parameter: filename (The name of the file to retrieve the ProductRelease from)
+    // Parameter: productReleaseName (The name of the product associated with the ProductRelease)
+    // Parameter: releaseID (The release ID of the ProductRelease)
+    // Parameter: productRelease (The ProductRelease object to store the retrieved data)
+    // Returns: bool (true if retrieval was successful, false otherwise)
+    const char* filename,     // in
+    const char* productReleaseName,    // in
+    const char* releaseID,    // in
+    ProductRelease& productRelease    // out
+);
 
-// Creates a new ProductRelease
-// Parameter: productName (The name of the product associated with the ProductRelease)
-// Parameter: releaseID (The release ID of the ProductRelease)
-// Parameter: releaseDate (The release date of the ProductRelease)
-void createProductRelease(const char* productName, const char* releaseID, const char* releaseDate);
+// ---------------------------------------------------------
+void createProductRelease(
+    // Creates a new ProductRelease
+    // Parameter: productName (The name of the product associated with the ProductRelease)
+    // Parameter: releaseID (The release ID of the ProductRelease)
+    // Parameter: releaseDate (The release date of the ProductRelease)
+    const char* productName,    // in
+    const char* releaseID,    // in
+    const char* releaseDate    // in
+);
 
-// Determines if a given release ID exists
-// Parameter: releaseID (The release ID to check for existence)
-// Returns: bool (true if the release ID exists, false otherwise)
-bool determineReleaseIDExistence(const char* releaseID);
+// ---------------------------------------------------------
+bool determineReleaseIDExistence(
+    // Determines if a given release ID exists
+    // Parameter: releaseID (The release ID to check for existence)
+    // Returns: bool (true if the release ID exists, false otherwise)
+    const char* releaseID    // in
+);
 
 #endif // PRODUCT_H

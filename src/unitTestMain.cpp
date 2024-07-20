@@ -1,3 +1,10 @@
+// ============================================
+// Module Name: unitTestMain.cpp
+// ============================================
+// Version History:
+// Rev. 1 - 2024/07/17 - Group 7
+// ============================================
+
 #include <iostream>
 #include <cassert>
 #include <vector>
@@ -11,7 +18,7 @@
 #include "SystemController.h"
 #include "ChangeItem.h"
 
-// Constants
+// Non-exported module-scope constant
 static const int STRCMP_TRUE = 0;
 
 // ============================================
@@ -26,10 +33,11 @@ void runAllTests();
 
 // Main Function
 // ============================================
+// ---------------------------------------------------------
 // Function: main
-// Entry point of the program. Runs all test functions and prints end message.
-// Returns: int (Exit status, 0 indicates successful execution)
 int main() {
+    // Entry point of the program. Runs all test functions and prints end message.
+    // Returns: int (Exit status, 0 indicates successful execution)
     runAllTests();
     // std::cout << "All unit tests passed.\n";
 	std::cout << "End of unitTestMain" << std::endl;
@@ -39,11 +47,10 @@ int main() {
 // ============================================
 // Test Implementations
 // ============================================
-
 // ---------------------------------------------------------
 // Function: testCreateProduct
-// Test function for creating a product and verifying its storage and retrieval.
 void testCreateProduct() {
+    // Test function for creating a product and verifying its storage and retrieval.
 	// ORIGINAL TEST
 
 	// String we are testing
@@ -78,7 +85,7 @@ void testCreateProduct() {
 	closeProductFile();
 
 	// ==========================================
-	// LOOPING TEST (Kept for future testing)
+	// LOOPING TEST
 
 	// // String we are testing
 	// const char* attributes[5] = {
@@ -94,12 +101,14 @@ void testCreateProduct() {
 
 	// // Run the function
 	// std::cout << "Running createProduct()..." << std::endl;
+        // // Loop forward by the number of test products we have to store them on file
 	// for (int i=0; i<5; i++)
 	// {
 	// 	createProduct(attributes[i]);
 	// }
 
 	// // Read "joey" out of file
+        // // Loop forward by the numbre of test products we have to retrieve them from file
 	// for (int i=0; i<5; i++)
 	// {
 	// 	retrieveProductByName("products.dat", attributes[i], product2);
@@ -122,18 +131,23 @@ void testCreateProduct() {
 
 	// // Close the product file
 	// closeProductFile();
+
+	// ==========================================
+	// CHANGE ITEM TEST
+
+	
+
 }
 
 // ---------------------------------------------------------
 // Function: testCreateChangeItem
-// Test function for creating change items and verifying their storage and retrieval.
-
 void testCreateChangeItem() {
+    // Test function for creating change items and verifying their storage and retrieval.
 	// Test data
 	const ChangeItem CITest[3] {
-		{6969, "Product A", "Sample  a while", "R51B", "Reported"},
-		{3113, "Random stuff", "The ps over the lazy dog", "AB12", "Reported"},
-		{4114, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
+		{1235, "Product A", "Sample description that runs on for a while", "R51B", "Reported"},
+		{4567, "Random stuff", "The quick brown fox jumps over the lazy dog", "AB12", "Reported"},
+		{6789, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
 	};
 
 	// Open the file
@@ -148,6 +162,7 @@ void testCreateChangeItem() {
 	
 	// Run the function
 	std::cout << "Running createChangeItem()..." << std::endl;
+        // Loop forward by the number of test change items there are to store them into file
 	for (int i=0; i<3; i++) {
 		createChangeItem(CITest[i].changeID,
 						 CITest[i].productName,
@@ -161,6 +176,7 @@ void testCreateChangeItem() {
 
 	// Initialize tally
 	int correctTally = 0;
+    // Loop forward by the number of test change items there are to retrieve them from file
     for (int i=0; i<3; i++) {
 		// Perform the retrieval
 		retrieveChangeItemByKey("changeItems.dat", CITest[i].changeID, displayCI);
@@ -187,20 +203,21 @@ void testCreateChangeItem() {
 	}
 
 	// Test sequential reading
-	// seekToBeginningOfChangeItemFile();
-	// changeItemFileDisplay20OrLess("changeItems.dat");
+	seekToBeginningOfChangeItemFile();
+	changeItemFileDisplay20OrLess("changeItems.dat");
 
 	// Close the change item file
 	closeChangeItemFile();
 }
+
 // ---------------------------------------------------------
 // Function: testCreateRequester
-// Test function for creating requesters and verifying their storage and retrieval.
 void testCreateRequester() {
+    // Test function for creating requesters and verifying their storage and retrieval.
 	// Test data
 	const Requester reqTest[2] {
-		{"TEST", "6041237654", "fakeemail@yahoo.com", "Engineering"},
-		{"jeans", "7784039872", "asedf@gmail.com", "N/A"}
+		{"joe", "6041237654", "fakeemail@yahoo.com", "Engineering"},
+		{"mama", "7784039872", "asedf@gmail.com", "N/A"}
 	};
 
 	// Open the file
@@ -214,6 +231,7 @@ void testCreateRequester() {
 	// Run the function
 	std::cout << "Running createRequester()..." << std::endl;
     // Store the attribute test data as product releases
+    // Loop forward by the number of test requesters to store them on file
     for (int i=0; i<2; i++) {
         createRequester(reqTest[i].reqName,reqTest[i].phoneNumber,reqTest[i].email,reqTest[i].department);
     }
@@ -223,6 +241,7 @@ void testCreateRequester() {
 
 	// Initialize tally
 	int correctTally = 0;
+    // Loop forward by the number of test requesters to retrieve them from file 
     for (int i=0; i<2; i++) {
 		// Perform the retrieval
 		retrieveRequesterByKey("requestersFile.dat", reqTest[i].reqName, displayReq);
@@ -257,12 +276,12 @@ void testCreateRequester() {
 
 // ---------------------------------------------------------
 // Function: testCreateChangeRequest
-// Test function for creating change requests and verifying their storage and retrieval.
 void testCreateChangeRequest() {
+    // Test function for creating change requests and verifying their storage and retrieval.
 	// Test data
 	const ChangeRequest CRTest[2] {
-		{"TEST", 1234, "A1CD", "20040923", "Top"},
-		{"SWAG", 5678, "MA34", "20240913", "Bottom"}
+		{"joe", 1234, "A1CD", "20040923", "Top"},
+		{"mama", 5678, "MA34", "20240913", "Bottom"}
 	};
 
 	// Open the file
@@ -275,7 +294,7 @@ void testCreateChangeRequest() {
 
 	// Run the function
 	std::cout << "Running createChangeRequest()..." << std::endl;
-    // Store the attribute test data as product releases
+    // Loop forward by the number of test change requests to store them on file
     for (int i=0; i<2; i++) {
         createChangeRequest(CRTest[i].requesterName,
 						CRTest[i].changeID,
@@ -289,6 +308,7 @@ void testCreateChangeRequest() {
 
 	// Initialize tally
 	int correctTally = 0;
+    // Loop forward by the number of test change requests to retrieve them from file
     for (int i=0; i<2; i++) {
 		// Perform the retrieval
 		retrieveChangeRequestByKey("changeRequests.dat", 
@@ -327,44 +347,9 @@ void testCreateChangeRequest() {
 }
 
 // ---------------------------------------------------------
-// Function: testCreateMultipleProducts
-// Test function for creating multiple products and verifying their creation.
-void testCreateMultipleProducts() {
-    // products.clear();
-    // for (int i = 1; i <= 1000; ++i) {
-    //     createProduct("Product" + std::to_string(i));
-    // }
-    // assert(products.size() == 1000);
-    // std::cout << "testCreateMultipleProducts passed.\n";
-}
-
-// ---------------------------------------------------------
-// Function: testQueryChangeItem
-// Test function for querying change items and verifying the query results.
-void testQueryChangeItem() {
-    // products.clear();
-    // createProduct("TestProduct");
-    // createChangeRequest("TestUser", "TestProduct", "123456", "Test Change", "0001");
-    // queryChangeItem("TestProduct", "123456");
-    // std::cout << "testQueryChangeItem passed.\n";
-}
-
-// ---------------------------------------------------------
-// Function: testUpdateChangeItem
-// Test function for updating change items and verifying the update results.
-void testUpdateChangeItem() {
-    // products.clear();
-    // createProduct("TestProduct");
-    // createChangeRequest("TestUser", "TestProduct", "123456", "Test Change", "0001");
-    // updateChangeItem("TestProduct", "123456", "InProgress");
-    // assert(products[0].changeItems["123456"].state == "InProgress");
-    // std::cout << "testUpdateChangeItem passed.\n";
-}
-
-// ---------------------------------------------------------
 // Function: runAllTests
-// Runs all defined test functions.
 void runAllTests() {
+    // Runs all defined test functions.
     testCreateProduct();
 	// testCreateChangeItem();
 	// testCreateRequester();

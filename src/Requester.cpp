@@ -1,3 +1,13 @@
+// ============================================
+// Module Name: Requester.cpp
+// ============================================
+// Version History:
+// Rev. 1 - 2024/07/17 - Group 7
+// ============================================
+// ---------------------------------------------------------
+// Overall internal design issues:
+// This module implements Requesters. So, it uses the "Requester" struct, imported from ChangeItem.h (see it for detailed list of attributes). It uses linear search to find products within files based on a criteria of attributes (e.g., primary key (single or compound)).
+
 #include "Requester.h"
 #include <fstream>
 #include <vector>
@@ -14,9 +24,9 @@ extern std::fstream requesterFile;
 
 // ---------------------------------------------------------
 // Function: openRequesterFile
-// Opens the requester file in binary mode for reading, writing, and appending.
-// Exits the program if the file fails to open.
 void openRequesterFile() {
+    // Opens the requester file in binary mode for reading, writing, and appending.
+    // Exits the program if the file fails to open.
     requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 
 	// Check if file opening worked properly, exit if it didn't
@@ -25,8 +35,8 @@ void openRequesterFile() {
 
 // ---------------------------------------------------------
 // Function: closeRequesterFile
-// Closes the requester file if it is open.
 void closeRequesterFile() {
+    // Closes the requester file if it is open.
     if (requesterFile.is_open()) {
         requesterFile.close();
     }
@@ -34,9 +44,9 @@ void closeRequesterFile() {
 
 // ---------------------------------------------------------
 // Function: writeRequester
-// Writes a Requester object to the requester file.
-// Exits the program if the file encounters an error during writing.
 void writeRequester(const Requester& requester) {
+    // Writes a Requester object to the requester file.
+    // Exits the program if the file encounters an error during writing.
     if (!requesterFile.is_open()) return;
 
 	// Get the character address of the product struct, write it a byte at a time (char),
@@ -50,8 +60,8 @@ void writeRequester(const Requester& requester) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfRequesterFile
-// Sets the file pointer to the beginning of the requester file.
 void seekToBeginningOfRequesterFile() {
+    // Sets the file pointer to the beginning of the requester file.
     if (!requesterFile.is_open()) return;
 
 	// Reset internal flags
@@ -63,8 +73,8 @@ void seekToBeginningOfRequesterFile() {
 }
 // ---------------------------------------------------------
 // Function: displayRequester
-// Displays the details of a Requester object to the standard output.
 void displayRequester(const Requester& requester) {
+    // Displays the details of a Requester object to the standard output.
 	std::cout << requester.reqName << 
 					 ", " << requester.phoneNumber << 
 					 ", " << requester.email <<
@@ -72,13 +82,60 @@ void displayRequester(const Requester& requester) {
 }
 
 // ---------------------------------------------------------
+// Function: requesterFileDisplay20OrLess
+int requesterFileDisplay20OrLess(int page, const char* filename) {
+    // Displays up to 20 Requester objects from the specified page of the requester file.
+    // Returns the number of Requesters displayed or -1 if the file cannot be opened.
+    // Parameter: page (The page number to display)
+    // Parameter: filename (The name of the requester file)
+	const int MAX_READS = 20;
+
+	Requester tmpReq;
+
+    std::ifstream inFile(filename, std::ios::binary);
+    if (!inFile) {
+        std::cerr << "Failed to open requesters file for reading!" << std::endl;
+        return -1;
+    }
+
+	// Loop forward by the number of pages on the file 
+	for (int i=0; i<page-1; i++)
+	{		
+		// Read 20 items
+		int counter = 0;
+		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
+			counter < MAX_READS) {
+			counter++;
+		}
+	}
+
+	// Print the page if valid
+	if (inFile.fail()) {
+		inFile.clear();
+		std::cout << "The page you requested does not exist!" << std::endl;
+		return -1;
+	}
+	else {
+		int counter = 0;
+		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
+			counter < MAX_READS) {
+			std::cout << std::to_string(counter+1) << ") ";
+			displayRequester(tmpReq);
+			std::cout << std::endl;
+			counter++;
+		}
+		return counter;
+	}
+}
+
+// ---------------------------------------------------------
 // Function: retrieveRequesterByKey
-// Retrieves a Requester object from the requester file by matching reqName.
-// Returns true and stores the retrieved Requester in 'requester' if found; otherwise, returns false.
-// Parameter: filename (The name of the requester file)
-// Parameter: reqName (The name of the Requester to retrieve)
-// Parameter: requester (The Requester object to store the retrieved data)
 bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester& requester) {
+    // Retrieves a Requester object from the requester file by matching reqName.
+    // Returns true and stores the retrieved Requester in 'requester' if found; otherwise, returns false.
+    // Parameter: filename (The name of the requester file)
+    // Parameter: reqName (The name of the Requester to retrieve)
+    // Parameter: requester (The Requester object to store the retrieved data)
 	Requester tmpRequester;
 
 	seekToBeginningOfRequesterFile();
@@ -103,12 +160,12 @@ bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester
 
 // ---------------------------------------------------------
 // Function: createRequester
-// Creates a new Requester object with the provided details and writes it to the requester file if it doesn't already exist.
-// Parameter: reqName (The name of the Requester)
-// Parameter: phoneNumber (The phone number of the Requester)
-// Parameter: email (The email address of the Requester)
-// Parameter: department (The department of the Requester)
 void createRequester(const char* reqName,
+    // Creates a new Requester object with the provided details and writes it to the requester file if it doesn't already exist.
+    // Parameter: reqName (The name of the Requester)
+    // Parameter: phoneNumber (The phone number of the Requester)
+    // Parameter: email (The email address of the Requester)
+    // Parameter: department (The department of the Requester)
 					 const char* phoneNumber,
 					 const char* email,
 					 const char* department) {	// Variables
@@ -141,4 +198,3 @@ void createRequester(const char* reqName,
 		writeRequester(tmpReq);
 	}	
 }
-

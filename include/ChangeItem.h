@@ -2,10 +2,8 @@
 // Module Name: ChangeItem.h
 // ============================================
 // Version History:
-// Rev. 1 - 2024/07/01 - Group 7
+// Rev. 2 - 2024/07/17 - Group 7
 // ============================================
-
-
 
 #ifndef CHANGEITEM_H
 #define CHANGEITEM_H
@@ -14,7 +12,7 @@
 #include "Product.h"
 
 // Global constant definitions
-const int CHANGE_DESC_LENGTH = 30 +1;
+const int CHANGE_DESC_LENGTH = 150 +1;
 const int STATE_LENGTH = 10 +1;
 
 // ============================================
@@ -32,72 +30,107 @@ struct ChangeItem {
 // Function Declarations
 // ============================================
 
+// ---------------------------------------------------------
 // Converts an integer to a C-style string
-// Parameter: number (The integer to convert)
-// Returns: const char* (The resulting C-style string)
-// Essentially for displaying changeIDs
-const char* intToCString(int number); 
+const char* intToCString(
+    // Parameter: number (The integer to convert)
+    // Returns: const char* (The resulting C-style string)
+    // Essentially for displaying changeIDs
+    int number
+); 
 
+// ---------------------------------------------------------
 // Opens the ChangeItem file
 void openChangeItemFile();
 
+// ---------------------------------------------------------
 // Closes the ChangeItem file
 void closeChangeItemFile();
 
+// ---------------------------------------------------------
 // Writes a ChangeItem to the file
-// Parameter: changeItem (The ChangeItem to write)
-void writeChangeItem(const ChangeItem& changeItem);
+void writeChangeItem(
+    // Parameter: changeItem (The ChangeItem to write)
+    const ChangeItem& changeItem    // in
+);
 
+// ---------------------------------------------------------
 // Seeks to the beginning of the ChangeItem file
 void seekToBeginningOfChangeItemFile();
 
+// ---------------------------------------------------------
 // Displays a ChangeItem
-// Parameter: changeItem (The ChangeItem to display)
-void displayChangeItem(const ChangeItem& changeItem);
+void displayChangeItem(
+    // Parameter: changeItem (The ChangeItem to display)
+    const ChangeItem& changeItem    // in
+);
 
+// ---------------------------------------------------------
 // Displays the first 20 or fewer ChangeItems in the file
-// Parameter: filename (The name of the file to display ChangeItems from)
-void changeItemFileDisplay20OrLess(const char* filename);
+void changeItemFileDisplay20OrLess(
+    // Parameter: filename (The name of the file to display ChangeItems from)
+    const char* filename    // in
+);
 
+// ---------------------------------------------------------
 // Retrieves a ChangeItem by its primary key
-// Parameter: filename (The name of the file to retrieve the ChangeItem from)
-// Parameter: changeID (The primary key of the ChangeItem)
-// Parameter: changeItem (The ChangeItem object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem);
+bool retrieveChangeItemByKey(
+    // Parameter: filename (The name of the file to retrieve the ChangeItem from)
+    // Parameter: changeID (The primary key of the ChangeItem)
+    // Parameter: changeItem (The ChangeItem object to store the retrieved data)
+    // Returns: bool (true if retrieval was successful, false otherwise)
+    const char* filename,   // in
+    int changeID,   // in
+    ChangeItem& changeItem  // out
+);
 
+// ---------------------------------------------------------
 // Creates a new ChangeItem
-// Parameter: changeID (The ID of the ChangeItem)
-// Parameter: productName (The name of the product associated with the ChangeItem)
-// Parameter: description (The description of the ChangeItem)
-// Parameter: anticipatedReleaseID (The anticipated release ID for the ChangeItem)
-// Parameter: state (The state of the ChangeItem)
 void createChangeItem(int changeID,
-					  const char* productName,
-					  const char* description,
-					  const char* anticipatedReleaseID,
-					  const char* state);
+                        // Parameter: changeID (The ID of the ChangeItem)
+                        // Parameter: productName (The name of the product associated with the ChangeItem)
+                        // Parameter: description (The description of the ChangeItem)
+                        // Parameter: anticipatedReleaseID (The anticipated release ID for the ChangeItem)
+                        // Parameter: state (The state of the ChangeItem)
+					  const char* productName,   // in
+					  const char* description,   // in     
+					  const char* anticipatedReleaseID,   // in
+					  const char* state   // in
+);
 
+// ---------------------------------------------------------
 // Retrieves a ChangeItem by its primary key and product
-// Parameter: filename (The name of the file to retrieve the ChangeItem from)
-// Parameter: changeID (The primary key of the ChangeItem)
-// Parameter: changeItem (The ChangeItem object to store the retrieved data)
-// Parameter: product (The product associated with the ChangeItem)
-// Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product);
+bool retrieveChangeItemByKeyAndProduct(
+    // Parameter: filename (The name of the file to retrieve the ChangeItem from)
+    // Parameter: changeID (The primary key of the ChangeItem)
+    // Parameter: changeItem (The ChangeItem object to store the retrieved data)
+    // Parameter: product (The product associated with the ChangeItem)
+    // Returns: bool (true if retrieval was successful, false otherwise)
+    const char* filename,   // in
+    int changeID,   // in
+    ChangeItem& changeItem,   // out
+    char* product   // in
+);
 
+// ---------------------------------------------------------
 // Updates an existing ChangeItem
-// Parameter: origChangeID (The original ID of the ChangeItem)
-// Parameter: changeItem (The ChangeItem with updated information)
-// Returns: bool (true if update was successful, false otherwise)
-bool updateChangeItem(int origChangeID, ChangeItem& changeItem);
+bool updateChangeItem(
+    // Parameter: origChangeID (The original ID of the ChangeItem)
+    // Parameter: changeItem (The ChangeItem with updated information)
+    // Returns: bool (true if update was successful, false otherwise)
+    int origChangeID,
+    ChangeItem& changeItem
+);
 
+// ---------------------------------------------------------
 // Closes the file storing the highest ChangeItem ID
 void closeHighestCID();
 
+// ---------------------------------------------------------
 // Seeks to the beginning of the file storing the highest ChangeItem ID
 void seekToBeginningOfHighestCIDFile();
 
+// ---------------------------------------------------------
 // Stores the highest ChangeItem ID
 void storeHighestCID();
 
