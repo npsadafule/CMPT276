@@ -17,9 +17,6 @@
 // exported by each of the lower-level modules (e.g., Product). Also, do-while loops are used 
 // freqeuntly to ensure proper user input.
 
-// Global variables
-extern int reqPages;
-
 // Constants for repeating a scenario
 static const int YES = 1;
 static const int NO = 0;
@@ -367,6 +364,7 @@ void handleChangeRequestMaintenance(int choice) {
 			int reqChoice;
 			Requester tmpRequester;
 			// Enter requester 
+			int requesterPage = 1;  // (always start display on requesterPage 1)
 			int ERnotExists;
 			int ERnotProperLen;
 			// Create requester
@@ -396,19 +394,14 @@ void handleChangeRequestMaintenance(int choice) {
 		
 			// For repeat choice
 			do {
-				// reset condition vairables
-				ERnotProperLen = false;
-				ERnotExists = false;
-
 				// Get a requester name
 				reqChoice = readIntegerInput(reqSearchChoice,1,2);
 				if (reqChoice == ENTER_REQ) {
 					// Define a variable for requesterPage entry
-					int requesterPage = 1;  // (always start display on requesterPage 1)
+					std::cout << std::endl;
 					do {
 						requesterFileDisplay20OrLess(requesterPage);
-						std::cout << "\nEnter the Requester name (max 30 char, must pre-exist): \n"; // Change the input options
-						std::cout << "Page " << requesterPage << "/" << reqPages << ". If previous/next pages exist, ‘<’ for previous page of 20 Items, ‘>’ for next page of 20 Items" << std::endl;
+						std::cout << "Enter the Requester name (max 30 char, must pre-exist): \n"; // Change the input options
 						std::cin.getline(requester, REQ_NAME_LENGTH);
 
 						// Check for navigation input
@@ -422,12 +415,12 @@ void handleChangeRequestMaintenance(int choice) {
 							// Check if input length is valid
 							std::cin.clear(); // Clear the fail state
 							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+							std::cout << "Invalid input. Please enter 1 to 30 characters." << std::endl;
 							ERnotProperLen = true; // Continue the loop
 							ERnotExists = false; // Reset ERnotExists flag
 						} else if (strlen(requester) == 0) {
 							// Check if input length is valid
-							std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							std::cout << "Requester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
 							ERnotProperLen = true; // Continue the loop
 							ERnotExists = false; // Reset ERnotExists flag
 						} else {

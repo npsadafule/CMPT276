@@ -13,8 +13,7 @@
 #include <vector>
 #include <iostream>
 
-// Global variable definition
-int reqPages;
+
 // extern std::vector<User> users;
 extern std::fstream requesterFile;
 
@@ -87,9 +86,12 @@ int requesterFileDisplay20OrLess(int& page) {
     // Returns the number of Requesters displayed or -1 if the file cannot be opened.
     // Parameter: page (The page number to display)
     // Parameter: filename (The name of the requester file)
-	const int ITEMS_PER_PAGE = 20;
-	int error = -1; // Set to 1 if no previous pages exist; set to 2 if no next pages exist
+	
+	// Constants
+	static const int ITEMS_PER_PAGE = 20;	// static
 
+	// Variables
+	int reqPages;
 	Requester tmpReq;
 
 	// Find the total number of items on file
@@ -109,10 +111,10 @@ int requesterFileDisplay20OrLess(int& page) {
 	if ((page < 1) || (page > reqPages)) {
 		if (page < 1) {
 			page++;
-			error = 1;
+			std::cout << "No previous pages exist!" << std::endl;
 		} else {
 			page--;
-			error = 2;
+			std::cout << "No next pages exist!" << std::endl;
 		}
 	} 
 
@@ -124,22 +126,25 @@ int requesterFileDisplay20OrLess(int& page) {
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
+	std::cout << "Select your requester:" << std::endl;
 	int pageRecordsCount = 0;
 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-		std::cout << std::to_string(pageRecordsCount+1) << ") ";
+		std::cout << "- ";
 		displayRequester(tmpReq);
 		pageRecordsCount++;
 	}
 	requesterFile.clear();
 	// std::cout << "end of printing page" << std::endl;
 
-	// Print any errors
-	if (error == 1) {
-		std::cout << "No previous pages exist!" << std::endl;
-	} else if (error == 2) {
-		std::cout << "No next pages exist!" << std::endl;
+	int padding = ITEMS_PER_PAGE - pageRecordsCount;
+	while (padding > 0) {
+		std::cout << std::endl;
+		padding--;
 	}
+
+	std::cout << "Page " << page << "/" << reqPages << ". If previous/next pages exist, enter ‘<’ for previous page of 20 Items, ‘>’ for next page of 20 Items" << std::endl;
+
 	
 	return pageRecordsCount;
 }
