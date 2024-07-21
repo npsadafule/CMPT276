@@ -109,18 +109,72 @@ void displayChangeItem(const ChangeItem& changeItem) {
 // ---------------------------------------------------------
 // Displays up to 20 change items from a file
 // Parameter: filename (The name of the file to read change items from)
-void changeItemFileDisplay20OrLess(const char* filename) {
-	const int MAX_READS = 20;
+int changeItemFileDisplay20OrLess(int& page) {
+	// Displays up to 20 module objects from the specified page of the module file.
+    // Returns the number of modules displayed or -1 if the file cannot be opened.
+    // Parameter: page (The page number to display)
+    // Parameter: filename (The name of the module file)
+	
+	// Constants
+	static const int ITEMS_PER_PAGE = 20;	// static
 
-	ChangeItem tmpCI;
+	// Variables
+	int modulePages;
+	ChangeItem tmpModule;
 
+	// Find the total number of items on file
+	seekToBeginningOfChangeItemFile();
 	int counter = 0;
-    while (changeItemFile.read(reinterpret_cast<char*>(&tmpCI), sizeof(ChangeItem)) &&
-		   counter < MAX_READS) {
-		displayChangeItem(tmpCI);
+	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem))) {
 		counter++;
-    }
+	}	
 	changeItemFile.clear();
+	// std::cout << "total entries " << std::to_string(counter) << std::endl;
+
+	// Calculate the total number of pages
+	modulePages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+	// std::cout << "total pages " << std::to_string(modulePages) << std::endl;
+
+	// Determine if the provided page is valid
+	if ((page < 1) || (page > modulePages)) {
+		if (page < 1) {
+			page++;
+			std::cout << "No previous pages exist!" << std::endl;
+		} else {
+			page--;
+			std::cout << "No next pages exist!" << std::endl;
+		}
+	} 
+
+	// Display the selected page
+	// Loop forward by the number of pages on the file so that the next read is the
+	// desired page
+	seekToBeginningOfChangeItemFile();
+	changeItemFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(ChangeItem),std::ios::cur);
+	// std::cout << "end of getting to page" << std::endl;
+
+	// Print the page
+	std::cout << "Page " << page << "/" << modulePages << std::endl;
+	int pageRecordsCount = 0;
+	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
+		  (pageRecordsCount < ITEMS_PER_PAGE)) {
+		std::cout << "- ";
+		displayChangeItem(tmpModule);
+		pageRecordsCount++;
+	}
+	changeItemFile.clear();
+	// std::cout << "end of printing page" << std::endl;
+
+	int padding = ITEMS_PER_PAGE - pageRecordsCount;
+	while (padding > 0) {
+		std::cout << std::endl;
+		padding--;
+	}
+
+	std::cout << "If previous/next pages exist, enter ‘-1’ for the previous page and ‘-2’ for the next page." << std::endl;
+
+	
+	return pageRecordsCount;
 }
 
 // ---------------------------------------------------------

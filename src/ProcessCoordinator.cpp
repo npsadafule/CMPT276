@@ -375,10 +375,11 @@ void handleChangeRequestMaintenance(int choice) {
 			Product tmpProd;
 			int PnotExists;
 			int PnotProperLen;
-			int productPage;
+			int productPage = 1;
 
 			// ChangeItem selection
 			ChangeItem tmpCI;
+			int CIPage = 1;
 			int CIChoice;
 			int CInotExists;
 			int CInotProperLen;
@@ -560,10 +561,16 @@ void handleChangeRequestMaintenance(int choice) {
 				{
 					// Get the change ID based on product choice
 					do {
-						changeID = readIntegerInput(CIPrompt,0,999999);
-
+						changeItemFileDisplay20OrLess(CIPage);
+						changeID = readIntegerInput(CIPrompt,-2,999999);
+						
 						CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
-						if (CInotExists) {
+
+						if (changeID == -1) {
+							CIPage--;
+						} else if (changeID == -2) {
+							CIPage++;
+						} else if (CInotExists) {
 							std::cout << "\nThe change item must exist!\n";
 						}
 						else {
@@ -574,7 +581,7 @@ void handleChangeRequestMaintenance(int choice) {
 								std::cout << "The change item must have your selected change ID 'and' product name.\n";
 							}
 						}
-					} while (CInotExists || (!CIOfProductExists));
+					} while (CInotExists || (!CIOfProductExists) || (changeID == -1) || (changeID == -2));
 				} else if (CIChoice == CREATE_CI) { // Create change ID
 					// Store new change ID
 					changeID = globalHighestCID + 1;

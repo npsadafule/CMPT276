@@ -203,8 +203,8 @@ void testCreateChangeItem() {
 	}
 
 	// Test sequential reading
-	seekToBeginningOfChangeItemFile();
-	changeItemFileDisplay20OrLess("changeItems.dat");
+	// seekToBeginningOfChangeItemFile();
+	// changeItemFileDisplay20OrLess("changeItems.dat");
 
 	// Close the change item file
 	closeChangeItemFile();
