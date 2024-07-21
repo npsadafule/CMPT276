@@ -408,7 +408,7 @@ void handleChangeRequestMaintenance(int choice) {
 					do {
 						requesterFileDisplay20OrLess(requesterPage);
 						std::cout << "\nEnter the Requester name (max 30 char, must pre-exist): \n"; // Change the input options
-						std::cout << "=== If previous/next pages exist, ‘<’ for previous page of 20 Items, ‘>’ for next page of 20 Items ===" << std::endl;
+						std::cout << "Page " << requesterPage << "/" << reqPages << ". If previous/next pages exist, ‘<’ for previous page of 20 Items, ‘>’ for next page of 20 Items" << std::endl;
 						std::cin.getline(requester, REQ_NAME_LENGTH);
 
 						// Check for navigation input
