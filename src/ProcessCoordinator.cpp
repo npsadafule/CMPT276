@@ -375,6 +375,7 @@ void handleChangeRequestMaintenance(int choice) {
 			Product tmpProd;
 			int PnotExists;
 			int PnotProperLen;
+			int productPage;
 
 			// ChangeItem selection
 			ChangeItem tmpCI;
@@ -407,11 +408,9 @@ void handleChangeRequestMaintenance(int choice) {
 						// Check for navigation input
 						if (std::strcmp(requester,"<") == 0) {
 							requesterPage--;
-						}
-						else if (std::strcmp(requester,">") == 0) {
+						} else if (std::strcmp(requester,">") == 0) {
 							requesterPage++;
-						}
-						else if (std::cin.fail()) {
+						} else if (std::cin.fail()) {
 							// Check if input length is valid
 							std::cin.clear(); // Clear the fail state
 							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
@@ -525,11 +524,16 @@ void handleChangeRequestMaintenance(int choice) {
 
 				// Select a product
 				do {
-					std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n";
+					productFileDisplay20OrLess(productPage);
+					std::cout << "Enter the Product Name (max 30 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
-					if (std::cin.fail()) {
+					if (std::strcmp(productName,"<") == 0) {
+						productPage--;
+					} else if (std::strcmp(productName,">") == 0) {
+						productPage++;
+					} else if (std::cin.fail()) {
 						std::cin.clear(); // Clear the fail state
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
@@ -547,7 +551,7 @@ void handleChangeRequestMaintenance(int choice) {
 						}
 						PnotProperLen = false; // Exit the loop if both conditions are false
 					}
-				} while (PnotProperLen || PnotExists);
+				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
 
 				// Change item
 				CIChoice = readIntegerInput(CIChoiceDisplay,ENTER_CI,CREATE_CI);

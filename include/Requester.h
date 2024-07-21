@@ -63,7 +63,7 @@ int requesterFileDisplay20OrLess(
     // Parameter: page (The page number to display)
     // Parameter: filename (The name of the file to display Requesters from)
     // Returns: int (The number of Requesters displayed)
-    int& page // in
+    int& page // in/out
 );
 
 // ---------------------------------------------------------

@@ -81,18 +81,72 @@ void displayProduct(const Product& product) {
 
 // ---------------------------------------------------------
 // Function: productFileDisplay20OrLess
-void productFileDisplay20OrLess(const char* filename) {
-	const int MAX_READS = 20;
+int productFileDisplay20OrLess(int& page) {
+    // Displays up to 20 Requester objects from the specified page of the requester file.
+    // Returns the number of Requesters displayed or -1 if the file cannot be opened.
+    // Parameter: page (The page number to display)
+    // Parameter: filename (The name of the requester file)
+	
+	// Constants
+	static const int ITEMS_PER_PAGE = 20;	// static
 
-	Product tmpProduct;
+	// Variables
+	int reqPages;
+	Product tmpReq;
 
+	// Find the total number of items on file
+	seekToBeginningOfProductFile();
 	int counter = 0;
-    while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product)) &&
-		   counter < MAX_READS) {
-		displayProduct(tmpProduct);
+	while (productFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Product))) {
 		counter++;
-    }
+	}	
 	productFile.clear();
+	// std::cout << "total entries " << std::to_string(counter) << std::endl;
+
+	// Calculate the total number of pages
+	reqPages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+	// std::cout << "total pages " << std::to_string(reqPages) << std::endl;
+
+	// Determine if the provided page is valid
+	if ((page < 1) || (page > reqPages)) {
+		if (page < 1) {
+			page++;
+			std::cout << "No previous pages exist!" << std::endl;
+		} else {
+			page--;
+			std::cout << "No next pages exist!" << std::endl;
+		}
+	} 
+
+	// Display the selected page
+	// Loop forward by the number of pages on the file so that the next read is the
+	// desired page
+	seekToBeginningOfProductFile();
+	productFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(Product),std::ios::cur);
+	// std::cout << "end of getting to page" << std::endl;
+
+	// Print the page
+	std::cout << "Page " << page << "/" << reqPages << std::endl;
+	int pageRecordsCount = 0;
+	while (productFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Product)) && 
+		  (pageRecordsCount < ITEMS_PER_PAGE)) {
+		std::cout << "- ";
+		displayProduct(tmpReq);
+		pageRecordsCount++;
+	}
+	productFile.clear();
+	// std::cout << "end of printing page" << std::endl;
+
+	int padding = ITEMS_PER_PAGE - pageRecordsCount;
+	while (padding > 0) {
+		std::cout << std::endl;
+		padding--;
+	}
+
+	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
+
+	
+	return pageRecordsCount;
 }
 
 
@@ -227,20 +281,72 @@ void displayProductRelease(const ProductRelease& productRelease) {
 
 // ---------------------------------------------------------
 // Function: productReleaseFileDisplay20OrLess
-void productReleaseFileDisplay20OrLess(const char* filename) {
-    // Displays up to 20 product releases from the product release file
-    // Parameter: filename (The name of the file to read product releases from)
-	const int MAX_READS = 20;
+void productReleaseFileDisplay20OrLess(int& page) {
+//     // Displays up to 20 Requester objects from the specified page of the requester file.
+//     // Returns the number of Requesters displayed or -1 if the file cannot be opened.
+//     // Parameter: page (The page number to display)
+//     // Parameter: filename (The name of the requester file)
+	
+// 	// Constants
+// 	static const int ITEMS_PER_PAGE = 20;	// static
 
-	ProductRelease tmpPR;
+// 	// Variables
+// 	int reqPages;
+// 	Requester tmpReq;
 
-	int counter = 0;
-    while (productReleaseFile.read(reinterpret_cast<char*>(&tmpPR), sizeof(ProductRelease)) &&
-		   counter < MAX_READS) {
-		displayProductRelease(tmpPR);
-		counter++;
-    }
-	productReleaseFile.clear();
+// 	// Find the total number of items on file
+// 	seekToBeginningOfRequesterFile();
+// 	int counter = 0;
+// 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester))) {
+// 		counter++;
+// 	}	
+// 	requesterFile.clear();
+// 	// std::cout << "total entries " << std::to_string(counter) << std::endl;
+
+// 	// Calculate the total number of pages
+// 	reqPages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+// 	// std::cout << "total pages " << std::to_string(reqPages) << std::endl;
+
+// 	// Determine if the provided page is valid
+// 	if ((page < 1) || (page > reqPages)) {
+// 		if (page < 1) {
+// 			page++;
+// 			std::cout << "No previous pages exist!" << std::endl;
+// 		} else {
+// 			page--;
+// 			std::cout << "No next pages exist!" << std::endl;
+// 		}
+// 	} 
+
+// 	// Display the selected page
+// 	// Loop forward by the number of pages on the file so that the next read is the
+// 	// desired page
+// 	seekToBeginningOfRequesterFile();
+// 	requesterFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(Requester),std::ios::cur);
+// 	// std::cout << "end of getting to page" << std::endl;
+
+// 	// Print the page
+// 	std::cout << "Page " << page << "/" << reqPages << std::endl;
+// 	int pageRecordsCount = 0;
+// 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 
+// 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
+// 		std::cout << "- ";
+// 		displayRequester(tmpReq);
+// 		pageRecordsCount++;
+// 	}
+// 	requesterFile.clear();
+// 	// std::cout << "end of printing page" << std::endl;
+
+// 	int padding = ITEMS_PER_PAGE - pageRecordsCount;
+// 	while (padding > 0) {
+// 		std::cout << std::endl;
+// 		padding--;
+// 	}
+
+// 	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
+
+	
+// 	return pageRecordsCount;
 }
 
 

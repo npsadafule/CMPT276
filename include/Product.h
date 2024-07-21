@@ -63,9 +63,9 @@ void displayProduct(
 
 // ---------------------------------------------------------
 // Displays the first 20 or fewer Products in the file
-void productFileDisplay20OrLess(
+int productFileDisplay20OrLess(
     // Parameter: filename (The name of the file to display Products from)
-    const char* filename    // in
+    int& page   // in
 );
 
 // ---------------------------------------------------------
@@ -120,7 +120,7 @@ void displayProductRelease(
 // Displays the first 20 or fewer ProductReleases in the file
 void productReleaseFileDisplay20OrLess(
     // Parameter: filename (The name of the file to display ProductReleases from)
-    const char* filename    // in
+    int& page    // in/out
 );
 
 // ---------------------------------------------------------
