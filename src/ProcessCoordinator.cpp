@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <ctime>
 #include <cstdio>  // For sprintf
+#include <sstream>
 
 // Overall internal design issues:
 // This module implements ProcessCoordinator.h, following our central control design 
@@ -46,6 +47,27 @@ void getTodaysDate(char* dateStr, size_t size) {
 
     // Format the date into the provided buffer using snprintf
     std::snprintf(dateStr, size, "%04d%02d%02d", now->tm_year + 1900, now->tm_mon + 1, now->tm_mday);
+}
+
+// ---------------------------------------------------------
+// Function: stringToInt
+// Not using "atoi" because failure output (i.e., 0) does not work with existing code
+bool stringToInt(const char* str, int& result) {
+    // Check for an empty string
+    if (str == nullptr || std::strlen(str) == 0) {
+        return false;
+    }
+
+    // Check for non-digit characters
+    for (size_t i = 0; i < std::strlen(str); ++i) {
+        if (!std::isdigit(str[i])) {
+            return false;
+        }
+    }
+
+    // Use atoi to convert the string to an integer
+    result = std::atoi(str);
+    return true;
 }
 
 // Display functions for Scenario 4.1
@@ -378,8 +400,11 @@ void handleChangeRequestMaintenance(int choice) {
 			int productPage = 1;
 
 			// ChangeItem selection
+			static const int CI_STRING_BUF_LEN = 6 +1;
 			ChangeItem tmpCI;
+			bool isNumber = false;
 			int CIPage = 1;
+			char CIStringBuf[CI_STRING_BUF_LEN];
 			int CIChoice;
 			int CInotExists;
 			int CInotProperLen;
@@ -559,29 +584,51 @@ void handleChangeRequestMaintenance(int choice) {
 
 				if (CIChoice == ENTER_CI) // Enter existing change ID
 				{
-					// Get the change ID based on product choice
 					do {
 						changeItemFileDisplay20OrLess(CIPage);
-						changeID = readIntegerInput(CIPrompt,-2,999999);
-						
-						CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+						std::cout << "Enter an existing change ID [between 0-999999]: \n";
+						std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
-						if (changeID == -1) {
+						// Check if input length is valid
+						if (std::strcmp(CIStringBuf,"<") == 0) {
 							CIPage--;
-						} else if (changeID == -2) {
+						} else if (std::strcmp(CIStringBuf,">") == 0) {
 							CIPage++;
-						} else if (CInotExists) {
-							std::cout << "\nThe change item must exist!\n";
-						}
-						else {
-							CInotExists = false;
-							CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
-							if (!CIOfProductExists)
-							{
-								std::cout << "The change item must have your selected change ID 'and' product name.\n";
+						} else if (std::cin.fail()) {
+							std::cin.clear(); // Clear the fail state
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+							std::cout << "\nInvalid input. Please enter 1 to 6 digits." << std::endl;
+							CInotProperLen = true; // Continue the loop
+							CInotExists = false; // Reset CInotExists flag
+						} else if (strlen(CIStringBuf) == 0) {
+							std::cout << "\nChange ID cannot be empty. Please enter 1 to 6 digits." << std::endl;
+							CInotProperLen = true; // Continue the loop
+							CInotExists = false; // Reset CInotExists flag
+						} else {
+							// Check if the change item exists
+
+							isNumber = stringToInt(CIStringBuf,changeID);
+							CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+							if (!isNumber) {
+								// Check if the string is a number
+								std::cout << "The change ID must be a number!" << std::endl;
+							} else if (CInotExists) {
+								std::cout << "\nThe change ID must exist!" << std::endl;
+							} else {
+								// Check if change items exists for the specified product
+								CInotExists = false;
+								CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+								if (!CIOfProductExists)
+								{
+									std::cout << "The change item must have your selected change ID 'and' product name.\n";
+								}
 							}
+							CInotProperLen = false; // Exit the loop if both conditions are false
 						}
-					} while (CInotExists || (!CIOfProductExists) || (changeID == -1) || (changeID == -2));
+						// If the change item is for the chosen product and is a number between 0-999999
+					} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
+							 (std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
+							 (!isNumber));
 				} else if (CIChoice == CREATE_CI) { // Create change ID
 					// Store new change ID
 					changeID = globalHighestCID + 1;

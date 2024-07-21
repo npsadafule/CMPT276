@@ -171,7 +171,7 @@ int changeItemFileDisplay20OrLess(int& page) {
 		padding--;
 	}
 
-	std::cout << "If previous/next pages exist, enter ‘-1’ for the previous page and ‘-2’ for the next page." << std::endl;
+	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
 
 	
 	return pageRecordsCount;
