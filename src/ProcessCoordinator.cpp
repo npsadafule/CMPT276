@@ -586,7 +586,7 @@ void handleChangeRequestMaintenance(int choice) {
 				{
 					do {
 						changeItemFileDisplay20OrLess(CIPage);
-						std::cout << "Enter an existing change ID [between 0-999999]: \n";
+						std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
 						std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
 						// Check if input length is valid

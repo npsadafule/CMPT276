@@ -130,7 +130,7 @@ int requesterFileDisplay20OrLess(int& page) {
 	int pageRecordsCount = 0;
 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-		std::cout << "- ";
+		std::cout << std::to_string(pageRecordsCount+1) << ") ";
 		displayRequester(tmpReq);
 		pageRecordsCount++;
 	}

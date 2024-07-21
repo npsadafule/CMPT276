@@ -23,6 +23,7 @@
 #include <vector>
 #include <fstream>
 #include <cstring>
+#include <iomanip>
 
 // Global variables initialized
 int globalHighestCID = -1;
@@ -99,11 +100,11 @@ void seekToBeginningOfChangeItemFile() {
 // Displays a change item
 // Parameter: changeItem (The change item to display)
 void displayChangeItem(const ChangeItem& changeItem) {
-	std::cout << intToCString(changeItem.changeID) << 
-				  ", " << changeItem.productName << 
-				  ", " << changeItem.description << 
-				  ", " << changeItem.anticipatedReleaseID <<
-				  ", " << changeItem.state << std::endl;
+	std::cout << std::left << std::setw(10) << changeItem.productName << 
+				  "  " << std::setw(30) << changeItem.description << 
+				  "  " << std::setw(9) << intToCString(changeItem.changeID) << 
+				  "  " << std::setw(10) << changeItem.state <<
+				  "  " << std::setw(11) << changeItem.anticipatedReleaseID << std::endl;;
 }
 
 // ---------------------------------------------------------
@@ -154,11 +155,13 @@ int changeItemFileDisplay20OrLess(int& page) {
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
-	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	int pageRecordsCount = 0;
+	std::cout << "Page " << page << "/" << modulePages << std::endl;
+	std::cout << "                                                                      Anticipated" << std::endl;
+	std::cout << "   Product     Description                     Change ID  State       Release ID" << std::endl;
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-		std::cout << "- ";
+		std::cout << std::to_string(pageRecordsCount+1) << ") ";
 		displayChangeItem(tmpModule);
 		pageRecordsCount++;
 	}

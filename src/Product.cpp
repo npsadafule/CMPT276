@@ -130,7 +130,7 @@ int productFileDisplay20OrLess(int& page) {
 	int pageRecordsCount = 0;
 	while (productFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(Product)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-		std::cout << "- ";
+		std::cout << std::to_string(pageRecordsCount+1) << ") ";
 		displayProduct(tmpModule);
 		pageRecordsCount++;
 	}
