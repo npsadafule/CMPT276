@@ -51,6 +51,7 @@ void writeChangeRequest(const ChangeRequest& changeRequest) {
     // writing "sizeof(Product)" amount of bytes  
     // Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
     changeRequestFile.write(reinterpret_cast<const char*>(&changeRequest), sizeof(ChangeRequest));
+	changeRequestFile.flush();
 
     // Check if we ran out of disk space; exit if we have
     if (!changeRequestFile.good()) exit(1);
@@ -203,7 +204,8 @@ void updateChangeRequest(const std::string& requesterName, const int changeID, c
             found = true;
         }
         tempFile.write(reinterpret_cast<const char*>(&changeRequest), sizeof(ChangeRequest));
-    }
+		tempFile.flush();
+	}
     
     closeChangeRequestFile();
     tempFile.close();

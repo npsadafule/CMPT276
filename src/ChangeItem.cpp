@@ -75,6 +75,7 @@ void writeChangeItem(const ChangeItem& changeItem) {
 	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
 	changeItemFile.seekp(0, std::ios::end);
     changeItemFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
+	changeItemFile.flush();
 
 	// Check if we ran out of disk space; exit if we have
 	if (!changeItemFile.good()) exit(1);
@@ -246,6 +247,7 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 
 			// Write the updated ChangeItem back to the changeItemFile
 			changeItemFile.write(reinterpret_cast<const char*>(&changeItem), sizeof(ChangeItem));
+			changeItemFile.flush();
 
 			// Validate what we inserted
 			changeItemFile.seekp(position - std::streamoff(sizeof(ChangeItem)));
@@ -312,6 +314,7 @@ void storeHighestCID() {
 
 	// Store highest CID
 	highestCIDFile.write(reinterpret_cast<const char*>(&highestCID), sizeof(ChangeItem));
+	highestCIDFile.flush();
 	globalHighestCID = highestCID.changeID;
 
 	// Print the highest CID

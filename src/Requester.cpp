@@ -14,6 +14,7 @@
 #include <iostream>
 
 // Global variable definition
+int reqPages;
 // extern std::vector<User> users;
 extern std::fstream requesterFile;
 
@@ -53,6 +54,7 @@ void writeRequester(const Requester& requester) {
 	// writing "sizeof(Product)" amount of bytes  
 	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
 	requesterFile.write(reinterpret_cast<const char*>(&requester), sizeof(Requester));
+	requesterFile.flush();
 
 	// Check if we ran out of disk space; exit if we have
 	if (!requesterFile.good()) exit(1);
@@ -75,57 +77,79 @@ void seekToBeginningOfRequesterFile() {
 // Function: displayRequester
 void displayRequester(const Requester& requester) {
     // Displays the details of a Requester object to the standard output.
-	std::cout << requester.reqName << 
-					 ", " << requester.phoneNumber << 
-					 ", " << requester.email <<
-					 ", " << requester.department;
+	std::cout << requester.reqName << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: requesterFileDisplay20OrLess
-int requesterFileDisplay20OrLess(int page, const char* filename) {
+int requesterFileDisplay20OrLess(int& page) {
     // Displays up to 20 Requester objects from the specified page of the requester file.
     // Returns the number of Requesters displayed or -1 if the file cannot be opened.
     // Parameter: page (The page number to display)
     // Parameter: filename (The name of the requester file)
-	const int MAX_READS = 20;
+	const int ITEMS_PER_PAGE = 20;
+	int error = -1; // Set to 1 if no previous pages exist; set to 2 if no next pages exist
 
 	Requester tmpReq;
 
-    std::ifstream inFile(filename, std::ios::binary);
-    if (!inFile) {
-        std::cerr << "Failed to open requesters file for reading!" << std::endl;
-        return -1;
-    }
+	// Find the total number of items on file
+	seekToBeginningOfRequesterFile();
+	int counter = 0;
+	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester))) {
+		counter++;
+	}	
+	requesterFile.clear();
+	// std::cout << "total entries " << std::to_string(counter) << std::endl;
 
-	// Loop forward by the number of pages on the file 
-	for (int i=0; i<page-1; i++)
+	// Calculate the total number of pages
+	reqPages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+	// std::cout << "total pages " << std::to_string(reqPages) << std::endl;
+
+	// Determine if the provided page is valid
+	if ((page < 1) || (page > reqPages)) {
+		if (page < 1) {
+			page++;
+			error = 1;
+		} else {
+			page--;
+			error = 2;
+		}
+	} 
+
+	// Display the selected page
+	// Loop forward by the number of pages on the file so that the next read is the
+	// desired page
+	seekToBeginningOfRequesterFile();
+	for (int i=1; i<page; i++)
 	{		
 		// Read 20 items
 		int counter = 0;
-		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-			counter < MAX_READS) {
+		while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
+			counter < ITEMS_PER_PAGE) {
 			counter++;
 		}
+		requesterFile.clear();
 	}
+	// std::cout << "end of getting to page" << std::endl;
 
-	// Print the page if valid
-	if (inFile.fail()) {
-		inFile.clear();
-		std::cout << "The page you requested does not exist!" << std::endl;
-		return -1;
+	// Print the page
+	int pageRecordsCount = 0;
+	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester))) {
+		std::cout << std::to_string(pageRecordsCount+1) << ") ";
+		displayRequester(tmpReq);
+		pageRecordsCount++;
 	}
-	else {
-		int counter = 0;
-		while (inFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-			counter < MAX_READS) {
-			std::cout << std::to_string(counter+1) << ") ";
-			displayRequester(tmpReq);
-			std::cout << std::endl;
-			counter++;
-		}
-		return counter;
+	requesterFile.clear();
+	// std::cout << "end of printing page" << std::endl;
+
+	// Print any errors
+	if (error == 1) {
+		std::cout << "No previous pages exist!" << std::endl;
+	} else if (error == 2) {
+		std::cout << "No next pages exist!" << std::endl;
 	}
+	
+	return pageRecordsCount;
 }
 
 // ---------------------------------------------------------

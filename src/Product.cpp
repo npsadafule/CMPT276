@@ -52,6 +52,7 @@ void writeProduct(const Product& product) {
 	// writing "sizeof(Product)" amount of bytes  
 	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
     productFile.write(reinterpret_cast<const char*>(&product), sizeof(Product));
+	productFile.flush();
 
 	// Check if we ran out of disk space; exit if we have
 	if (!productFile.good()) exit(1);
@@ -195,6 +196,7 @@ void writeProductRelease(const ProductRelease& productRelease) {
 	// writing "sizeof(Product)" amount of bytes  
 	// Note: fixed-length writing as Product is a struct and attribute type fixes the struct size
 	productReleaseFile.write(reinterpret_cast<const char*>(&productRelease), sizeof(ProductRelease));
+	productReleaseFile.flush();
 
 	// Check if we ran out of disk space; exit if we have
 	if (!productReleaseFile.good()) exit(1);
