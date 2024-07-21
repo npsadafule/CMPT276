@@ -126,7 +126,7 @@ int requesterFileDisplay20OrLess(int& page) {
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
-	std::cout << "Select your requester:" << std::endl;
+	std::cout << "Page " << page << "/" << reqPages << std::endl;
 	int pageRecordsCount = 0;
 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
@@ -143,7 +143,7 @@ int requesterFileDisplay20OrLess(int& page) {
 		padding--;
 	}
 
-	std::cout << "Page " << page << "/" << reqPages << ". If previous/next pages exist, enter ‘<’ for previous page of 20 Items, ‘>’ for next page of 20 Items" << std::endl;
+	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
 
 	
 	return pageRecordsCount;
