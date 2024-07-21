@@ -82,33 +82,33 @@ void displayProduct(const Product& product) {
 // ---------------------------------------------------------
 // Function: productFileDisplay20OrLess
 int productFileDisplay20OrLess(int& page) {
-    // Displays up to 20 Requester objects from the specified page of the requester file.
-    // Returns the number of Requesters displayed or -1 if the file cannot be opened.
+    // Displays up to 20 module objects from the specified page of the module file.
+    // Returns the number of modules displayed or -1 if the file cannot be opened.
     // Parameter: page (The page number to display)
-    // Parameter: filename (The name of the requester file)
+    // Parameter: filename (The name of the module file)
 	
 	// Constants
 	static const int ITEMS_PER_PAGE = 20;	// static
 
 	// Variables
-	int reqPages;
-	Product tmpReq;
+	int modulePages;
+	Product tmpModule;
 
 	// Find the total number of items on file
 	seekToBeginningOfProductFile();
 	int counter = 0;
-	while (productFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Product))) {
+	while (productFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(Product))) {
 		counter++;
 	}	
 	productFile.clear();
 	// std::cout << "total entries " << std::to_string(counter) << std::endl;
 
 	// Calculate the total number of pages
-	reqPages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
-	// std::cout << "total pages " << std::to_string(reqPages) << std::endl;
+	modulePages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+	// std::cout << "total pages " << std::to_string(modulePages) << std::endl;
 
 	// Determine if the provided page is valid
-	if ((page < 1) || (page > reqPages)) {
+	if ((page < 1) || (page > modulePages)) {
 		if (page < 1) {
 			page++;
 			std::cout << "No previous pages exist!" << std::endl;
@@ -126,12 +126,12 @@ int productFileDisplay20OrLess(int& page) {
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
-	std::cout << "Page " << page << "/" << reqPages << std::endl;
+	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	int pageRecordsCount = 0;
-	while (productFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Product)) && 
+	while (productFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(Product)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
 		std::cout << "- ";
-		displayProduct(tmpReq);
+		displayProduct(tmpModule);
 		pageRecordsCount++;
 	}
 	productFile.clear();
