@@ -120,21 +120,13 @@ int requesterFileDisplay20OrLess(int& page) {
 	// Loop forward by the number of pages on the file so that the next read is the
 	// desired page
 	seekToBeginningOfRequesterFile();
-	for (int i=1; i<page; i++)
-	{		
-		// Read 20 items
-		int counter = 0;
-		while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) &&
-			counter < ITEMS_PER_PAGE) {
-			counter++;
-		}
-		requesterFile.clear();
-	}
+	requesterFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(Requester),std::ios::cur);
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
 	int pageRecordsCount = 0;
-	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester))) {
+	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 
+		  (pageRecordsCount < ITEMS_PER_PAGE)) {
 		std::cout << std::to_string(pageRecordsCount+1) << ") ";
 		displayRequester(tmpReq);
 		pageRecordsCount++;

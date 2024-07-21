@@ -396,6 +396,10 @@ void handleChangeRequestMaintenance(int choice) {
 		
 			// For repeat choice
 			do {
+				// reset condition vairables
+				ERnotProperLen = false;
+				ERnotExists = false;
+
 				// Get a requester name
 				reqChoice = readIntegerInput(reqSearchChoice,1,2);
 				if (reqChoice == ENTER_REQ) {
@@ -409,11 +413,9 @@ void handleChangeRequestMaintenance(int choice) {
 
 						// Check for navigation input
 						if (std::strcmp(requester,"<") == 0) {
-							// if <, store requesterPage--, stick it with the bottom conditional blocks, make it part of the loop conditional
 							requesterPage--;
 						}
 						else if (std::strcmp(requester,">") == 0) {
-							// if >, store requesterPage++, stick it with the bottom conditional blocks, make it part of the loop conditional
 							requesterPage++;
 						}
 						else if (std::cin.fail()) {
@@ -429,14 +431,14 @@ void handleChangeRequestMaintenance(int choice) {
 							ERnotProperLen = true; // Continue the loop
 							ERnotExists = false; // Reset ERnotExists flag
 						} else {
-							// Check if the product exists
+							// Check if the requester exists
 							ERnotExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
 							if (ERnotExists) {
 								std::cout << "\nThe Requester must exist!" << std::endl;
 							}
 							ERnotProperLen = false; // Exit the loop if both conditions are false
 						}
-					} while (ERnotProperLen || ERnotExists || (std::strcmp(requester,"<") != 0) || (std::strcmp(requester,">") != 0));
+					} while (ERnotProperLen || ERnotExists || (std::strcmp(requester,"<") == 0) || (std::strcmp(requester,">") == 0));
 				} else if (reqChoice == CREATE_REQ) {
 					// Get requester name
 					do {
