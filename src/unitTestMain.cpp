@@ -145,9 +145,9 @@ void testCreateChangeItem() {
     // Test function for creating change items and verifying their storage and retrieval.
 	// Test data
 	const ChangeItem CITest[3] {
-		{1235, "Product A", "Sample description while", "R51B", "Reported"},
-		{4567, "Random stuff", "The quick brown lazy dog", "AB12", "Reported"},
-		{6789, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
+		{3, "Product A", "Sample description while", "R51B", "Reported"},
+		{4, "Random stuff", "The quick brown lazy dog", "AB12", "Reported"},
+		{5, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
 	};
 
 	// Open the file
