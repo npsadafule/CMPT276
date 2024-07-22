@@ -18,9 +18,10 @@
 // exported by each of the lower-level modules (e.g., Product). Also, do-while loops are used 
 // freqeuntly to ensure proper user input.
 
-// Constants for repeating a scenario
+// Static constants
 static const int YES = 1;
 static const int NO = 0;
+static const int CI_STRING_BUF_LEN = 6 +1;
 
 // Files
 extern std::fstream productReleaseFile;
@@ -400,7 +401,6 @@ void handleChangeRequestMaintenance(int choice) {
 			int productPage = 1;
 
 			// ChangeItem selection
-			static const int CI_STRING_BUF_LEN = 6 +1;
 			ChangeItem tmpCI;
 			bool isNumber = false;
 			int CIPage = 1;
@@ -585,7 +585,7 @@ void handleChangeRequestMaintenance(int choice) {
 				if (CIChoice == ENTER_CI) // Enter existing change ID
 				{
 					do {
-						changeItemFileDisplay20OrLess(CIPage);
+						changeItemFileDisplay20OrLess(CIPage,productName);
 						std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
 						std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
@@ -787,57 +787,96 @@ void handleChangeItemMaintenance(int choice) {
 			int changeID;
 			// Get an existing product
 			Product tmpProd;
-			int notProperLen;
-			int notExists;
+			int productPage = 1;
+			int PnotProperLen;
+			int PnotExists;
 			// Get a change item based on product
 			ChangeItem tmpCI;
+			int CIPage = 1;
+			char CIStringBuf[CI_STRING_BUF_LEN];
+			bool isNumber;
 			int CInotExists;
+			int CInotProperLen;
 			int CIOfProductExists;
 
 			// For repeating the scenario
 			do {
 				do {
-					std::cout << "\nSelect a product name (max 30 char, must pre-exist): \n";
+					productFileDisplay20OrLess(productPage);
+					std::cout << "Enter the Product Name (max 30 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
-					if (std::cin.fail()) {
+					if (std::strcmp(productName,"<") == 0) {
+						productPage--;
+					} else if (std::strcmp(productName,">") == 0) {
+						productPage++;
+					} else if (std::cin.fail()) {
 						std::cin.clear(); // Clear the fail state
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
-						notProperLen = true; // Continue the loop
-						notExists = false; // Reset notExists flag
+						PnotProperLen = true; // Continue the loop
+						PnotExists = false; // Reset PnotExists flag
 					} else if (strlen(productName) == 0) {
 						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
-						notProperLen = true; // Continue the loop
-						notExists = false; // Reset notExists flag
+						PnotProperLen = true; // Continue the loop
+						PnotExists = false; // Reset PnotExists flag
 					} else {
 						// Check if the product exists
-						notExists = !retrieveProductByName("products.dat", productName, tmpProd);
-						if (notExists) {
+						PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						if (PnotExists) {
 							std::cout << "\nThe product must exist!" << std::endl;
 						}
-						notProperLen = false; // Exit the loop if both conditions are false
+						PnotProperLen = false; // Exit the loop if both conditions are false
 					}
-				} while (notProperLen || notExists);
+				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
 			
 				// Get the change ID based on product choice
 				do {
-					changeID = readIntegerInput(CIPrompt,0,999999);
+					changeItemFileDisplay20OrLess(CIPage,productName);
+					std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
+					std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
-					CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
-					if (CInotExists) {
-						std::cout << "\nThe change item must exist!\n";
-					}
-					else {
-						CInotExists = false;
-						CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
-						if (!CIOfProductExists)
-						{
-							std::cout << "The change item must have your selected change ID 'and' product name.\n";
+					// Check if input length is valid
+					if (std::strcmp(CIStringBuf,"<") == 0) {
+						CIPage--;
+					} else if (std::strcmp(CIStringBuf,">") == 0) {
+						CIPage++;
+					} else if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "\nInvalid input. Please enter 1 to 6 digits." << std::endl;
+						CInotProperLen = true; // Continue the loop
+						CInotExists = false; // Reset CInotExists flag
+					} else if (strlen(CIStringBuf) == 0) {
+						std::cout << "\nChange ID cannot be empty. Please enter 1 to 6 digits." << std::endl;
+						CInotProperLen = true; // Continue the loop
+						CInotExists = false; // Reset CInotExists flag
+					} else {
+						// Check if the change item exists
+
+						isNumber = stringToInt(CIStringBuf,changeID);
+						CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+						if (!isNumber) {
+							// Check if the string is a number
+							std::cout << "The change ID must be a number!" << std::endl;
+						} else if (CInotExists) {
+							std::cout << "\nThe change ID must exist!" << std::endl;
+						} else {
+							// Check if change items exists for the specified product
+							CInotExists = false;
+							CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+							if (!CIOfProductExists)
+							{
+								std::cout << "The change item must have your selected change ID 'and' product name.\n";
+							}
 						}
+						CInotProperLen = false; // Exit the loop if both conditions are false
 					}
-				} while (CInotExists || (!CIOfProductExists));
+					// If the change item is for the chosen product and is a number between 0-999999
+				} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
+							(std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
+							(!isNumber));
 
 
 				// Print the information of the product's change item

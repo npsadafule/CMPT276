@@ -110,7 +110,7 @@ void displayChangeItem(const ChangeItem& changeItem) {
 // ---------------------------------------------------------
 // Displays up to 20 change items from a file
 // Parameter: filename (The name of the file to read change items from)
-int changeItemFileDisplay20OrLess(int& page) {
+int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	// Displays up to 20 module objects from the specified page of the module file.
     // Returns the number of modules displayed or -1 if the file cannot be opened.
     // Parameter: page (The page number to display)
@@ -161,9 +161,11 @@ int changeItemFileDisplay20OrLess(int& page) {
 	std::cout << "   Product     Description                     Change ID  State       Release ID" << std::endl;
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-		std::cout << std::to_string(pageRecordsCount+1) << ") ";
-		displayChangeItem(tmpModule);
-		pageRecordsCount++;
+		if (strcmp(tmpModule.productName,productName) == 0) {
+			std::cout << std::to_string(pageRecordsCount+1) << ") ";
+			displayChangeItem(tmpModule);
+			pageRecordsCount++;
+		}
 	}
 	changeItemFile.clear();
 	// std::cout << "end of printing page" << std::endl;

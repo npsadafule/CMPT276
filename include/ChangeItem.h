@@ -69,7 +69,8 @@ void displayChangeItem(
 // Displays the first 20 or fewer ChangeItems in the file
 int changeItemFileDisplay20OrLess(
     // Parameter: filename (The name of the file to display ChangeItems from)
-    int& page   // in/out
+    int& page,   // in/out
+	const char* productName    // in
 );
 
 // ---------------------------------------------------------
