@@ -208,10 +208,11 @@ void createProduct(const char* namePtr) {
 			productExists = true;
         }
     }
+	productFile.clear();
 
-	// Clear flags if we didn't find the product
-	if (!productFile.good()) {
-		productFile.clear();
+	// If the product doesn't exist, append it to the end of the file
+	if (!productExists) {
+		writeProduct(product);
 	}	
 }
 

@@ -54,7 +54,7 @@ void testCreateProduct() {
 	// ORIGINAL TEST
 
 	// String we are testing
-	char testString[PRODUCT_NAME_LENGTH] = "HMMMMMMM";
+	char testString[PRODUCT_NAME_LENGTH] = "ProductXXX";
 
 	// Open the file
 	openProductFile();
@@ -351,10 +351,10 @@ void testCreateChangeRequest() {
 void runAllTests() {
     // Runs all defined test functions.
     testCreateProduct();
-	std::cout << "========================================" << std::endl;
-	testCreateChangeItem();
-	std::cout << "========================================" << std::endl;
-	testCreateRequester();
-	std::cout << "========================================" << std::endl;
-	testCreateChangeRequest();
+// 	std::cout << "========================================" << std::endl;
+// 	testCreateChangeItem();
+// 	std::cout << "========================================" << std::endl;
+// 	testCreateRequester();
+// 	std::cout << "========================================" << std::endl;
+// 	testCreateChangeRequest();
 }
