@@ -93,15 +93,14 @@ void doYouWantAnotherProduct() {
 // Function: confirmAddingProdRel
 // Prompts the user to confirm adding a product release
 void confirmAddingProdRel() {
-	std::cout << "\nAre you sure you want to add this product release (1 for Y, 0 for N)?\n" <<
-	std::endl;
+	std::cout << "\nAre you sure you want to add this product release (1 for Y, 0 for N)?\n";
 }
 
 // ---------------------------------------------------------
 // Function: doYouWantAnotherProdRel
 // Prompts the user to confirm adding another product release
 void doYouWantAnotherProdRel() {
-	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n" << std::endl;
+	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n";
 }
 
 // Display functions for Scenario 4.3
@@ -318,7 +317,7 @@ void handleProductMaintenance(int choice) {
 
 				// Get a release date
 				do {
-					std::cout << "\nEnter the release date (YYYYMMDD)): \n \n";
+					std::cout << "\nEnter the release date (YYYYMMDD)): \n";
 					std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
 
 					notProperLen = std::cin.fail() || strlen(releaseDate) != 8;
