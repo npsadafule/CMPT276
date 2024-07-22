@@ -54,7 +54,7 @@ void testCreateProduct() {
 	// ORIGINAL TEST
 
 	// String we are testing
-	char testString[PRODUCT_NAME_LENGTH] = "testProduct";
+	char testString[PRODUCT_NAME_LENGTH] = "HMMMMMMM";
 
 	// Open the file
 	openProductFile();
@@ -147,7 +147,7 @@ void testCreateChangeItem() {
 	const ChangeItem CITest[3] {
 		{3, "Product A", "Sample description while", "R51B", "Reported"},
 		{4, "Random stuff", "The quick brown lazy dog", "AB12", "Reported"},
-		{5, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
+		{6, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
 	};
 
 	// Open the file
@@ -216,7 +216,7 @@ void testCreateRequester() {
     // Test function for creating requesters and verifying their storage and retrieval.
 	// Test data
 	const Requester reqTest[2] {
-		{"joe", "6041237654", "fakeemail@yahoo.com", "Engineering"},
+		{"HMMMMMMM", "6041237654", "fakeemail@yahoo.com", "Engineering"},
 		{"mama", "7784039872", "asedf@gmail.com", "N/A"}
 	};
 
@@ -280,7 +280,7 @@ void testCreateChangeRequest() {
     // Test function for creating change requests and verifying their storage and retrieval.
 	// Test data
 	const ChangeRequest CRTest[2] {
-		{"joe", 1234, "A1CD", "20040923", "Top"},
+		{"HMMMMMMM", 1234, "A1CD", "20040923", "Top"},
 		{"mama", 5678, "MA34", "20240913", "Bottom"}
 	};
 
@@ -351,7 +351,10 @@ void testCreateChangeRequest() {
 void runAllTests() {
     // Runs all defined test functions.
     testCreateProduct();
-	// testCreateChangeItem();
-	// testCreateRequester();
-	// testCreateChangeRequest();
+	std::cout << "========================================" << std::endl;
+	testCreateChangeItem();
+	std::cout << "========================================" << std::endl;
+	testCreateRequester();
+	std::cout << "========================================" << std::endl;
+	testCreateChangeRequest();
 }
