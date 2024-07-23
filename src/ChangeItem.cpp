@@ -371,5 +371,5 @@ void storeHighestCID() {
 	globalHighestCID = highestCID.changeID;
 
 	// Print the highest CID
-	std::cout << "The highest Change ID is " << std::to_string(globalHighestCID) << std::endl;
+	// std::cout << "The highest Change ID is " << std::to_string(globalHighestCID) << std::endl;
 }
