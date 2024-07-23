@@ -417,303 +417,321 @@ void handleChangeRequestMaintenance(int choice) {
 			// Priority selection
 			int PriorityNotProperLen;
 
-			// Exit flag
+			// Change request duplicate check
+			ChangeRequest tmpCR;
+
+			// Flags
 			bool exitFlag = false;
+			bool duplicateFlag = false;
 
 		
 			// For repeat choice
 			do {
-				// Get a requester name
-				reqChoice = readIntegerInput(reqSearchChoice,1,2);
-				if (reqChoice == ENTER_REQ) {
-					// Define a variable for requesterPage entry
-					do {
-						requesterFileDisplay20OrLess(requesterPage);
-						std::cout << "Select a requester by entering their name (max 30 char, must pre-exist): \n"; // Change the input options
-						std::cin.getline(requester, REQ_NAME_LENGTH);
+				// Ensure that the change request is not a duplicate
+				do {
+					// Get a requester name
+					reqChoice = readIntegerInput(reqSearchChoice,1,2);
+					if (reqChoice == ENTER_REQ) {
+						// Define a variable for requesterPage entry
+						do {
+							requesterFileDisplay20OrLess(requesterPage);
+							std::cout << "Select a requester by entering their name (max 30 char, must pre-exist): \n"; // Change the input options
+							std::cin.getline(requester, REQ_NAME_LENGTH);
 
-						// Check for navigation input
-						if (std::strcmp(requester,"Exit") == 0) {
-							exitFlag = true;
-							break;
-						} else if (std::strcmp(requester,"<") == 0) {
-							requesterPage--;
-						} else if (std::strcmp(requester,">") == 0) {
-							requesterPage++;
-						} else if (std::cin.fail()) {
-							// Check if input length is valid
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "Invalid input. Please enter 1 to 30 characters." << std::endl;
-							ERnotProperLen = true; // Continue the loop
-							ERnotExists = false; // Reset ERnotExists flag
-						} else if (strlen(requester) == 0) {
-							// Check if input length is valid
-							std::cout << "Requester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
-							ERnotProperLen = true; // Continue the loop
-							ERnotExists = false; // Reset ERnotExists flag
-						} else {
-							// Check if the requester exists
-							ERnotExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
-							if (ERnotExists) {
-								std::cout << "\nThe Requester must exist!" << std::endl;
+							// Check for navigation input
+							if (std::strcmp(requester,"Exit") == 0) {
+								exitFlag = true;
+								break;
+							} else if (std::strcmp(requester,"<") == 0) {
+								requesterPage--;
+							} else if (std::strcmp(requester,">") == 0) {
+								requesterPage++;
+							} else if (std::cin.fail()) {
+								// Check if input length is valid
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "Invalid input. Please enter 1 to 30 characters." << std::endl;
+								ERnotProperLen = true; // Continue the loop
+								ERnotExists = false; // Reset ERnotExists flag
+							} else if (strlen(requester) == 0) {
+								// Check if input length is valid
+								std::cout << "Requester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+								ERnotProperLen = true; // Continue the loop
+								ERnotExists = false; // Reset ERnotExists flag
+							} else {
+								// Check if the requester exists
+								ERnotExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+								if (ERnotExists) {
+									std::cout << "\nThe Requester must exist!" << std::endl;
+								}
+								ERnotProperLen = false; // Exit the loop if both conditions are false
 							}
-							ERnotProperLen = false; // Exit the loop if both conditions are false
-						}
-					} while (ERnotProperLen || ERnotExists || (std::strcmp(requester,"<") == 0) || (std::strcmp(requester,">") == 0));
-					if (exitFlag) break;
-				} else if (reqChoice == CREATE_REQ) {
-					// Get requester name
+						} while (ERnotProperLen || ERnotExists || (std::strcmp(requester,"<") == 0) || (std::strcmp(requester,">") == 0));
+						if (exitFlag) break;
+					} else if (reqChoice == CREATE_REQ) {
+						// Get requester name
+						do {
+							std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
+							std::cin.getline(requester, REQ_NAME_LENGTH);
+
+							// Check if input length is valid
+							if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+								CRexists = false; // Reset CRexists flag
+							} else if (strlen(requester) == 0) {
+								std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+								CRexists = false; // Reset CRexists flag
+							} else {
+								// Check if the requester already exists
+								CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+								if (CRexists) {
+									std::cout << "\nThe requester already exists!" << std::endl;
+								}
+								CRnotProperLen = false; // Exit the loop if both conditions are false
+							}
+						} while (CRnotProperLen || CRexists);
+
+						// Get phone number
+						do {
+							std::cout << "\nEnter your phone number (10 digits in the format DDDDDDDDDD): \n";
+							std::cin.getline(phoneNum, PHONE_NUMBER_LENGTH);
+
+							// Check if input length is valid
+							if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 10 characters." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+							} else if (strlen(phoneNum) < 10) {
+								std::cout << "\nPhone number cannot be less than 10 digits. Please enter 10 digits." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+							} else {
+								CRnotProperLen = false;
+							}
+						} while (CRnotProperLen);
+
+						// Get email
+						do {
+							std::cout << "\nEnter the email of the customer (max 24 char in the format "
+										"username@email_provider.domain_type):\n";
+							std::cin.getline(email, EMAIL_LENGTH);
+
+							// Check if input length is valid
+							if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 1 to 24 characters." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+							} else if (strlen(email) == 0) {
+								std::cout << "\nEmail cannot be empty. Please enter 1 to 24 characters." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+							} else {
+								CRnotProperLen = false;
+							}
+						} while (CRnotProperLen);
+
+						// Get department
+						do {
+							std::cout << "\nIf you are an employee, enter your department (max 12 char). If this is not "
+										"applicable to you, enter 'N/A':\n";
+							std::cin.getline(department, DEPARTMENT_LENGTH);
+
+							// Check if input length is valid
+							if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 1 to 12 characters." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+							} else if (strlen(department) == 0) {
+								std::cout << "\nDepartment cannot be empty. Please enter 1 to 12 characters." << std::endl;
+								CRnotProperLen = true; // Continue the loop
+							} else {
+								CRnotProperLen = false;
+							}
+						} while (CRnotProperLen);		
+
+						// Create new requester
+						createRequester(requester,phoneNum,email,department);
+						std::cout << "Requester successfully created" << std::endl;
+					}
+
+					// Select a product
 					do {
-						std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
-						std::cin.getline(requester, REQ_NAME_LENGTH);
+						productFileDisplay20OrLess(productPage);
+						std::cout << "Select a product by entering its name (max 30 char, must pre-exist): \n";
+						std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 						// Check if input length is valid
-						if (std::cin.fail()) {
+						if (std::strcmp(productName,"Exit") == 0) {
+							exitFlag = true;
+							break;
+						} else if (std::strcmp(productName,"<") == 0) {
+							productPage--;
+						} else if (std::strcmp(productName,">") == 0) {
+							productPage++;
+						} else if (std::cin.fail()) {
 							std::cin.clear(); // Clear the fail state
 							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-							CRexists = false; // Reset CRexists flag
-						} else if (strlen(requester) == 0) {
-							std::cout << "\nRequester name cannot be empty. Please enter 1 to 30 characters." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-							CRexists = false; // Reset CRexists flag
+							PnotProperLen = true; // Continue the loop
+							PnotExists = false; // Reset PnotExists flag
+						} else if (strlen(productName) == 0) {
+							std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							PnotProperLen = true; // Continue the loop
+							PnotExists = false; // Reset PnotExists flag
 						} else {
-							// Check if the requester already exists
-							CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
-							if (CRexists) {
-								std::cout << "\nThe requester already exists!" << std::endl;
+							// Check if the product exists
+							PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
+							if (PnotExists) {
+								std::cout << "\nThe product must exist!" << std::endl;
 							}
-							CRnotProperLen = false; // Exit the loop if both conditions are false
+							PnotProperLen = false; // Exit the loop if both conditions are false
 						}
-					} while (CRnotProperLen || CRexists);
+					} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
+					if (exitFlag) break;
 
-					// Get phone number
-					do {
-						std::cout << "\nEnter your phone number (10 digits in the format DDDDDDDDDD): \n";
-						std::cin.getline(phoneNum, PHONE_NUMBER_LENGTH);
+					// Change item
+					CIChoice = readIntegerInput(CIChoiceDisplay,ENTER_CI,CREATE_CI);
 
-						// Check if input length is valid
-						if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 10 characters." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-						} else if (strlen(phoneNum) < 10) {
-							std::cout << "\nPhone number cannot be less than 10 digits. Please enter 10 digits." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-						} else {
-							CRnotProperLen = false;
-						}
-					} while (CRnotProperLen);
+					if (CIChoice == ENTER_CI) // Enter existing change ID
+					{
+						do {
+							changeItemFileDisplay20OrLess(CIPage,productName);
+							std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
+							std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
-					// Get email
-					do {
-						std::cout << "\nEnter the email of the customer (max 24 char in the format "
-									"username@email_provider.domain_type):\n";
-						std::cin.getline(email, EMAIL_LENGTH);
-
-						// Check if input length is valid
-						if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 24 characters." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-						} else if (strlen(email) == 0) {
-							std::cout << "\nEmail cannot be empty. Please enter 1 to 24 characters." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-						} else {
-							CRnotProperLen = false;
-						}
-					} while (CRnotProperLen);
-
-					// Get department
-					do {
-						std::cout << "\nIf you are an employee, enter your department (max 12 char). If this is not "
-									"applicable to you, enter 'N/A':\n";
-						std::cin.getline(department, DEPARTMENT_LENGTH);
-
-						// Check if input length is valid
-						if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 12 characters." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-						} else if (strlen(department) == 0) {
-							std::cout << "\nDepartment cannot be empty. Please enter 1 to 12 characters." << std::endl;
-							CRnotProperLen = true; // Continue the loop
-						} else {
-							CRnotProperLen = false;
-						}
-					} while (CRnotProperLen);		
-
-					// Create new requester
-					createRequester(requester,phoneNum,email,department);
-					std::cout << "Requester successfully created" << std::endl;
-				}
-
-				// Select a product
-				do {
-					productFileDisplay20OrLess(productPage);
-					std::cout << "Select a product by entering its name (max 30 char, must pre-exist): \n";
-					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
-
-					// Check if input length is valid
-					if (std::strcmp(productName,"Exit") == 0) {
-						exitFlag = true;
-						break;
-					} else if (std::strcmp(productName,"<") == 0) {
-						productPage--;
-					} else if (std::strcmp(productName,">") == 0) {
-						productPage++;
-					} else if (std::cin.fail()) {
-						std::cin.clear(); // Clear the fail state
-						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
-						PnotProperLen = true; // Continue the loop
-						PnotExists = false; // Reset PnotExists flag
-					} else if (strlen(productName) == 0) {
-						std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
-						PnotProperLen = true; // Continue the loop
-						PnotExists = false; // Reset PnotExists flag
-					} else {
-						// Check if the product exists
-						PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
-						if (PnotExists) {
-							std::cout << "\nThe product must exist!" << std::endl;
-						}
-						PnotProperLen = false; // Exit the loop if both conditions are false
-					}
-				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
-				if (exitFlag) break;
-
-				// Change item
-				CIChoice = readIntegerInput(CIChoiceDisplay,ENTER_CI,CREATE_CI);
-
-				if (CIChoice == ENTER_CI) // Enter existing change ID
-				{
-					do {
-						changeItemFileDisplay20OrLess(CIPage,productName);
-						std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
-						std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
-
-						// Check if input length is valid
-						if (std::strcmp(CIStringBuf,"Exit") == 0) {
-							exitFlag = true;
-							break;
-						} else if (std::strcmp(CIStringBuf,"<") == 0) {
-							CIPage--;
-						} else if (std::strcmp(CIStringBuf,">") == 0) {
-							CIPage++;
-						} else if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 6 digits." << std::endl;
-							CInotProperLen = true; // Continue the loop
-							CInotExists = false; // Reset CInotExists flag
-						} else if (strlen(CIStringBuf) == 0) {
-							std::cout << "\nChange ID cannot be empty. Please enter 1 to 6 digits." << std::endl;
-							CInotProperLen = true; // Continue the loop
-							CInotExists = false; // Reset CInotExists flag
-						} else {
-							// Check if the change item exists
-
-							isNumber = stringToInt(CIStringBuf,changeID);
-							CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
-							if (!isNumber) {
-								// Check if the string is a number
-								std::cout << "The change ID must be a number!" << std::endl;
-							} else if (CInotExists) {
-								std::cout << "\nThe change ID must exist!" << std::endl;
+							// Check if input length is valid
+							if (std::strcmp(CIStringBuf,"Exit") == 0) {
+								exitFlag = true;
+								break;
+							} else if (std::strcmp(CIStringBuf,"<") == 0) {
+								CIPage--;
+							} else if (std::strcmp(CIStringBuf,">") == 0) {
+								CIPage++;
+							} else if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 1 to 6 digits." << std::endl;
+								CInotProperLen = true; // Continue the loop
+								CInotExists = false; // Reset CInotExists flag
+							} else if (strlen(CIStringBuf) == 0) {
+								std::cout << "\nChange ID cannot be empty. Please enter 1 to 6 digits." << std::endl;
+								CInotProperLen = true; // Continue the loop
+								CInotExists = false; // Reset CInotExists flag
 							} else {
-								// Check if change items exists for the specified product
-								CInotExists = false;
-								CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
-								if (!CIOfProductExists)
+								// Check if the change item exists
+
+								isNumber = stringToInt(CIStringBuf,changeID);
+								CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+								if (!isNumber) {
+									// Check if the string is a number
+									std::cout << "The change ID must be a number!" << std::endl;
+								} else if (CInotExists) {
+									std::cout << "\nThe change ID must exist!" << std::endl;
+								} else {
+									// Check if change items exists for the specified product
+									CInotExists = false;
+									CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+									if (!CIOfProductExists)
+									{
+										std::cout << "The change item must have your selected change ID 'and' product name.\n";
+									}
+								}
+								CInotProperLen = false; // Exit the loop if both conditions are false
+							}
+							// If the change item is for the chosen product and is a number between 0-999999
+						} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
+								(std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
+								(!isNumber));
+						if (exitFlag) break;
+					} else if (CIChoice == CREATE_CI) { // Create change ID
+						// Store new change ID
+						changeID = globalHighestCID + 1;
+
+						// Enter description for change item
+						do {
+							std::cout << "\nEnter the description for the change item (max 30 char): \n";
+							std::cin.getline(description, CHANGE_DESC_LENGTH);
+
+							// Check if input length is valid
+							if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
+								CInotProperLen = true; // Continue the loop
+							} else if (strlen(description) == 0) {
+								std::cout << "\nDescription cannot be empty. Please enter 1 to 30 characters." << std::endl;
+								CInotProperLen = true; // Continue the loop
+							} else {
+								CInotProperLen = false;
+							}
+						} while (CInotProperLen);
+
+						// Enter an anticipated release ID
+						do {
+							std::cout << "\nEnter the anticipated release ID for the change item (max 8 char): \n";
+							std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
+
+							// Check if input length is valid
+							if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
+								CInotProperLen = true; // Continue the loop
+							} else if (strlen(anticipatedReleaseID) == 0) {
+								std::cout << "\nRelease ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
+								CInotProperLen = true; // Continue the loop
+
+							} else {
+								CInotProperLen = false;
+								// After verifying the input length, check if this release ID exists
+								releaseIDExists = determineReleaseIDExistence(anticipatedReleaseID);
+								if (!releaseIDExists)
 								{
-									std::cout << "The change item must have your selected change ID 'and' product name.\n";
+									std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
 								}
 							}
-							CInotProperLen = false; // Exit the loop if both conditions are false
-						}
-						// If the change item is for the chosen product and is a number between 0-999999
-					} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
-							 (std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
-							 (!isNumber));
-					if (exitFlag) break;
-				} else if (CIChoice == CREATE_CI) { // Create change ID
-					// Store new change ID
-					changeID = globalHighestCID + 1;
+						} while (CInotProperLen || (!releaseIDExists));
 
-					// Enter description for change item
-					do {
-						std::cout << "\nEnter the description for the change item (max 30 char): \n";
-						std::cin.getline(description, CHANGE_DESC_LENGTH);
+						// Enter state for Change Item
+						do {
+							std::cout << "\nEnter the Change Item's state (max 10 char):\n";
+							std::cin.getline(state, STATE_LENGTH);
 
-						// Check if input length is valid
-						if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-						} else if (strlen(description) == 0) {
-							std::cout << "\nDescription cannot be empty. Please enter 1 to 30 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-						} else {
-							CInotProperLen = false;
-						}
-					} while (CInotProperLen);
-
-					// Enter an anticipated release ID
-					do {
-						std::cout << "\nEnter the anticipated release ID for the change item (max 8 char): \n";
-						std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
-
-						// Check if input length is valid
-						if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-						} else if (strlen(anticipatedReleaseID) == 0) {
-							std::cout << "\nRelease ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-
-						} else {
-							CInotProperLen = false;
-							// After verifying the input length, check if this release ID exists
-							releaseIDExists = determineReleaseIDExistence(anticipatedReleaseID);
-							if (!releaseIDExists)
-							{
-								std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
+							// Check if input length is valid
+							if (std::cin.fail()) {
+								std::cin.clear(); // Clear the fail state
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+								std::cout << "\nInvalid input. Please enter 1 to 10 characters." << std::endl;
+								CInotProperLen = true; // Continue the loop
+							} else if (strlen(state) == 0) {
+								std::cout << "\nState cannot be empty. Please enter 1 to 10 characters." << std::endl;
+								CInotProperLen = true; // Continue the loop
+							} else {
+								CInotProperLen = false;
 							}
-						}
-					} while (CInotProperLen || (!releaseIDExists));
+						} while (CInotProperLen);	
 
-					// Enter state for Change Item
-					do {
-						std::cout << "\nEnter the Change Item's state (max 10 char):\n";
-						std::cin.getline(state, STATE_LENGTH);
+						// Create the new change ID
+						createChangeItem(changeID,productName,description,anticipatedReleaseID,state);
+						std::cout << "Change item successfully created" << std::endl;
+					}
+					if (exitFlag) break;
 
-						// Check if input length is valid
-						if (std::cin.fail()) {
-							std::cin.clear(); // Clear the fail state
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-							std::cout << "\nInvalid input. Please enter 1 to 10 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-						} else if (strlen(state) == 0) {
-							std::cout << "\nState cannot be empty. Please enter 1 to 10 characters." << std::endl;
-							CInotProperLen = true; // Continue the loop
-						} else {
-							CInotProperLen = false;
-						}
-					} while (CInotProperLen);	
-
-					// Create the new change ID
-					createChangeItem(changeID,productName,description,anticipatedReleaseID,state);
-					std::cout << "Change item successfully created" << std::endl;
-				}
+					// Check if the change request being made is a duplicate
+					if (retrieveChangeRequestByKey("changerequests.dat",requester,changeID,tmpCR)) {
+						std::cout << "The change request you create cannot already exist "
+									 "(i.e., match with an existing change reqeust's requester name and change ID)!" << std::endl << std::endl;
+						duplicateFlag = true;
+					} else {
+						duplicateFlag = false;
+					}
+				} while (duplicateFlag);
+				if (exitFlag) break;
 
 				// Ask for a release ID
 				do {
@@ -765,7 +783,7 @@ void handleChangeRequestMaintenance(int choice) {
 				if (choiceConfirmAdd == YES) {
 					getTodaysDate(date, sizeof(date));
 					createChangeRequest(requester,changeID,reportedRelease,date,priority);
-					std::cout << "Your change request's ID is " << changeID << std::endl;
+					std::cout << "Your change request’s change ID is " << changeID << std::endl;
 					std::cout << "The change request was successfully created." << std::endl;
 					choiceRepeat = readIntegerInput(repeatChangeCR,NO,YES);
 					if (choiceRepeat == YES) {

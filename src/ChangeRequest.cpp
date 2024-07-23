@@ -112,7 +112,7 @@ bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const
     }
 	changeRequestFile.clear();
 
-    return false; // Product not found
+    return false; // Change request not found
 }
 
 // ---------------------------------------------------------
