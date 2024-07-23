@@ -118,7 +118,7 @@ void requesterOptions() {
 // Function: reqSearchChoice
 // Prompts the user to enter an existing requester or create a new one
 void reqSearchChoice() {
-	std::cout << "\nEnter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
+	std::cout << "Enter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
 }
 
 // ---------------------------------------------------------
@@ -207,7 +207,7 @@ void handleProductMaintenance(int choice) {
 
 				// Product name read
 				do {
-					std::cout << "\nEnter the Product Name (max 30 char, must not exist): \n";
+					std::cout << "\nSelect a product by entering its name (max 30 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
@@ -417,6 +417,9 @@ void handleChangeRequestMaintenance(int choice) {
 			// Priority selection
 			int PriorityNotProperLen;
 
+			// Exit flag
+			bool exitFlag = false;
+
 		
 			// For repeat choice
 			do {
@@ -424,14 +427,16 @@ void handleChangeRequestMaintenance(int choice) {
 				reqChoice = readIntegerInput(reqSearchChoice,1,2);
 				if (reqChoice == ENTER_REQ) {
 					// Define a variable for requesterPage entry
-					std::cout << std::endl;
 					do {
 						requesterFileDisplay20OrLess(requesterPage);
-						std::cout << "Enter the Requester name (max 30 char, must pre-exist): \n"; // Change the input options
+						std::cout << "Select a requester by entering their name (max 30 char, must pre-exist): \n"; // Change the input options
 						std::cin.getline(requester, REQ_NAME_LENGTH);
 
 						// Check for navigation input
-						if (std::strcmp(requester,"<") == 0) {
+						if (std::strcmp(requester,"0") == 0) {
+							exitFlag = true;
+							break;
+						} else if (std::strcmp(requester,"<") == 0) {
 							requesterPage--;
 						} else if (std::strcmp(requester,">") == 0) {
 							requesterPage++;
@@ -456,6 +461,7 @@ void handleChangeRequestMaintenance(int choice) {
 							ERnotProperLen = false; // Exit the loop if both conditions are false
 						}
 					} while (ERnotProperLen || ERnotExists || (std::strcmp(requester,"<") == 0) || (std::strcmp(requester,">") == 0));
+					if (exitFlag) break;
 				} else if (reqChoice == CREATE_REQ) {
 					// Get requester name
 					do {
@@ -751,6 +757,8 @@ void handleChangeRequestMaintenance(int choice) {
 				if (choiceConfirmAdd == YES) {
 					getTodaysDate(date, sizeof(date));
 					createChangeRequest(requester,changeID,reportedRelease,date,priority);
+					std::cout << "Your change request's ID is " << changeID << std::endl;
+					std::cout << "The change request was successfully created." << std::endl;
 					choiceRepeat = readIntegerInput(repeatChangeCR,NO,YES);
 					if (choiceRepeat == YES) {
 						repeat = true;

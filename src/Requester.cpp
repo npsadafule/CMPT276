@@ -126,6 +126,7 @@ int requesterFileDisplay20OrLess(int& page) {
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
+	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << reqPages << std::endl;
 	int pageRecordsCount = 0;
 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 

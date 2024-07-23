@@ -126,6 +126,7 @@ int productFileDisplay20OrLess(int& page) {
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
+	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	int pageRecordsCount = 0;
 	while (productFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(Product)) && 
