@@ -168,7 +168,7 @@ void choiceUpdateDisp() {
 				 "1) Update Description\n"
 				 "2) Update State\n"
 				 "3) Update Anticipated Release ID\n"
-				 "Enter ‘Exit’ to leave this selection screen.\n";
+				 "0) Exit (you will be asked to save your changes)\n";
 }
 
 // ---------------------------------------------------------
@@ -844,7 +844,8 @@ void handleChangeItemMaintenance(int choice) {
 			do {
 				do {
 					productFileDisplay20OrLess(productPage);
-					std::cout << "Enter the Product Name (max 30 char, must pre-exist): \n";
+					std::cout << "Select the product your change item is for by entering its name (max 30 char, must " 
+								 "pre-exist):\n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
@@ -991,7 +992,8 @@ void handleChangeItemMaintenance(int choice) {
 			do {
 				do {
 					productFileDisplay20OrLess(productPage);
-					std::cout << "Enter the Product Name (max 30 char, must pre-exist): \n";
+					std::cout << "Select the product your change item is for by entering its name (max 30 char, must " 
+								 "pre-exist):\n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
@@ -1132,11 +1134,11 @@ void handleChangeItemMaintenance(int choice) {
 							break;
 						}
 						case 3: { // Anticipated release ID
-							std::cout << "\nCurrent anticipated release ID: " << tmpCI.anticipatedReleaseID << std::endl;
 							// Ask for a release ID
 							do {
 								productReleaseFileDisplay20OrLess(RRPage,productName);
-								std::cout << "Enter the reported release ID for the change request (max 8 char): \n";
+								std::cout << "Current anticipated release ID: " << tmpCI.anticipatedReleaseID << std::endl;
+								std::cout << "Enter the new anticipated release ID for the change item (max 8 char): \n";
 								std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 								// Check if input length is valid
@@ -1153,7 +1155,7 @@ void handleChangeItemMaintenance(int choice) {
 									std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
 									RIDnotProperLen = true; // Continue the loop
 								} else if (strlen(anticipatedReleaseID) == 0) {
-									std::cout << "Reported release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
+									std::cout << "Anticipated release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
 									RIDnotProperLen = true; // Continue the loop
 
 								} else {
