@@ -560,7 +560,10 @@ void handleChangeRequestMaintenance(int choice) {
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
-					if (std::strcmp(productName,"<") == 0) {
+					if (std::strcmp(productName,"0") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(productName,"<") == 0) {
 						productPage--;
 					} else if (std::strcmp(productName,">") == 0) {
 						productPage++;
@@ -583,6 +586,7 @@ void handleChangeRequestMaintenance(int choice) {
 						PnotProperLen = false; // Exit the loop if both conditions are false
 					}
 				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
+				if (exitFlag) break;
 
 				// Change item
 				CIChoice = readIntegerInput(CIChoiceDisplay,ENTER_CI,CREATE_CI);
@@ -595,7 +599,10 @@ void handleChangeRequestMaintenance(int choice) {
 						std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
 						// Check if input length is valid
-						if (std::strcmp(CIStringBuf,"<") == 0) {
+						if (std::strcmp(CIStringBuf,"0") == 0) {
+							exitFlag = true;
+							break;
+						} else if (std::strcmp(CIStringBuf,"<") == 0) {
 							CIPage--;
 						} else if (std::strcmp(CIStringBuf,">") == 0) {
 							CIPage++;
@@ -634,6 +641,7 @@ void handleChangeRequestMaintenance(int choice) {
 					} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
 							 (std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
 							 (!isNumber));
+					if (exitFlag) break;
 				} else if (CIChoice == CREATE_CI) { // Create change ID
 					// Store new change ID
 					changeID = globalHighestCID + 1;

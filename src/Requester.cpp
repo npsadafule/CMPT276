@@ -136,14 +136,7 @@ int requesterFileDisplay20OrLess(int& page) {
 		pageRecordsCount++;
 	}
 	requesterFile.clear();
-	// std::cout << "end of printing page" << std::endl;
-
-	// int padding = ITEMS_PER_PAGE - pageRecordsCount;
-	// while (padding > 0) {
-	// 	std::cout << std::endl;
-	// 	padding--;
-	// }
-
+	std::cout << "0) Exit" << std::endl;
 	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
 
 	
