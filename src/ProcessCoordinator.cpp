@@ -690,7 +690,7 @@ void handleChangeRequestMaintenance(int choice) {
 						// Enter an anticipated release ID
 						do {
 							productReleaseFileDisplay20OrLess(ARPage,productName);
-							std::cout << "Enter the anticipated release ID for your change item (max 8 char, following your organization’s format).\n";
+							std::cout << "Enter the anticipated release ID for your change item (max 8 char):\n";
 							std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 							// Check if input length is valid
@@ -1151,7 +1151,7 @@ void handleChangeItemMaintenance(int choice) {
 							do {
 								productReleaseFileDisplay20OrLess(RRPage,productName);
 								std::cout << "Current anticipated release ID: " << tmpCI.anticipatedReleaseID << std::endl;
-								std::cout << "Enter the new anticipated release ID for the change item (max 8 char): \n";
+								std::cout << "Enter the new anticipated release ID for the change item (max 8 char, from the list): \n";
 								std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 								// Check if input length is valid
