@@ -136,7 +136,7 @@ int productFileDisplay20OrLess(int& page) {
 		pageRecordsCount++;
 	}
 	productFile.clear();
-	std::cout << "0) Exit" << std::endl;
+	std::cout << "Enter ‘Exit’ to leave this selection screen." << std::endl;
 	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
 	
 	return pageRecordsCount;
