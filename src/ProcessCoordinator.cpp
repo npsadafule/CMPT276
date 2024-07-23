@@ -433,7 +433,7 @@ void handleChangeRequestMaintenance(int choice) {
 						std::cin.getline(requester, REQ_NAME_LENGTH);
 
 						// Check for navigation input
-						if (std::strcmp(requester,"0") == 0) {
+						if (std::strcmp(requester,"Exit") == 0) {
 							exitFlag = true;
 							break;
 						} else if (std::strcmp(requester,"<") == 0) {
@@ -556,11 +556,11 @@ void handleChangeRequestMaintenance(int choice) {
 				// Select a product
 				do {
 					productFileDisplay20OrLess(productPage);
-					std::cout << "Enter the Product Name (max 30 char, must pre-exist): \n";
+					std::cout << "Select a product by entering its name (max 30 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
-					if (std::strcmp(productName,"0") == 0) {
+					if (std::strcmp(productName,"Exit") == 0) {
 						exitFlag = true;
 						break;
 					} else if (std::strcmp(productName,"<") == 0) {
@@ -599,7 +599,7 @@ void handleChangeRequestMaintenance(int choice) {
 						std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
 						// Check if input length is valid
-						if (std::strcmp(CIStringBuf,"0") == 0) {
+						if (std::strcmp(CIStringBuf,"Exit") == 0) {
 							exitFlag = true;
 							break;
 						} else if (std::strcmp(CIStringBuf,"<") == 0) {
