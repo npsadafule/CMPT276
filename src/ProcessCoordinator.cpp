@@ -415,6 +415,7 @@ void handleChangeRequestMaintenance(int choice) {
 			// Release ID selection
 			int RIDExists;
 			int RIDnotProperLen;
+			int RRPage = 1;
 
 			// Priority selection
 			int PriorityNotProperLen;
@@ -699,7 +700,7 @@ void handleChangeRequestMaintenance(int choice) {
 							} else {
 								CInotProperLen = false;
 								// After verifying the input length, check if this release ID exists
-								releaseIDExists = retrieveProductReleaseByKey("productReleases.dat",anticipatedReleaseID,productName,tmpPR);
+								releaseIDExists = retrieveProductReleaseByKey("productReleases.dat",productName,anticipatedReleaseID,tmpPR);
 								if (!releaseIDExists)
 								{
 									std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
@@ -730,11 +731,19 @@ void handleChangeRequestMaintenance(int choice) {
 
 				// Ask for a release ID
 				do {
-					std::cout << "\nEnter the reported release ID for the change request (max 8 char): \n";
+					productReleaseFileDisplay20OrLess(RRPage,productName);
+					std::cout << "Enter the reported release ID for the change request (max 8 char): \n";
 					std::cin.getline(reportedRelease, RELEASE_ID_LENGTH);
 
 					// Check if input length is valid
-					if (std::cin.fail()) {
+					if (strcmp(reportedRelease,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(reportedRelease,"<") == 0) {
+						ARPage--;
+					} else if (std::strcmp(reportedRelease,">") == 0) {
+						ARPage++;
+					} else if (std::cin.fail()) {
 						std::cin.clear(); // Clear the fail state
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 						std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
@@ -746,13 +755,15 @@ void handleChangeRequestMaintenance(int choice) {
 					} else {
 						RIDnotProperLen = false;
 						// After verifying the input length, check if this release ID exists
-						RIDExists = determineReleaseIDExistence(reportedRelease);
+						RIDExists = retrieveProductReleaseByKey("productReleases.dat",productName,reportedRelease,tmpPR);
 						if (!RIDExists)
 						{
-							std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
+							std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
 						}
 					}
-				} while (RIDnotProperLen || (!RIDExists));
+				} while (RIDnotProperLen || (!RIDExists) || 
+							(std::strcmp(reportedRelease,"<") == 0) || (std::strcmp(reportedRelease,">") == 0));
+				if (exitFlag) break;
 			
 				// Ask for a Priority
 				do {
