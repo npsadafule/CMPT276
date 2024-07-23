@@ -1169,32 +1169,6 @@ void handleChangeItemMaintenance(int choice) {
 										(std::strcmp(anticipatedReleaseID,"<") == 0) || (std::strcmp(anticipatedReleaseID,">") == 0));
 							if (exitFlag) break;
 
-							// Enter an anticipated release ID
-							do {
-								std::cout << "Enter the new anticipated release ID for the change item (max 8 char): \n";
-								std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
-
-								// Check if input length is valid
-								if (std::cin.fail()) {
-									std::cin.clear(); // Clear the fail state
-									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-									std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
-									CInotProperLen = true; // Continue the loop
-								} else if (strlen(anticipatedReleaseID) == 0) {
-									std::cout << "\nDescription cannot be empty. Please enter 1 to 8 characters." << std::endl;
-									CInotProperLen = true; // Continue the loop
-
-								} else {
-									CInotProperLen = false;
-									// After verifying the input length, check if this release ID exists
-									releaseIDExists = determineReleaseIDExistence(anticipatedReleaseID);
-									if (!releaseIDExists)
-									{
-										std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
-									}
-								}
-							} while (CInotProperLen || (!releaseIDExists));
-
 							// Store for updating
 							std::strcpy(tmpCI.anticipatedReleaseID,anticipatedReleaseID);
 							break;
