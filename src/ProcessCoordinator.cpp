@@ -259,21 +259,32 @@ void handleProductMaintenance(int choice) {
 				int notProperLen;
 				int notExists;
 				bool ifUniqueProdRel;
+				int productPage;
+				// Flags
+				bool exitFlag = false;
 				
 				do {
 					do {
-						std::cout << "\nEnter the Product Name (max 30 char, must pre-exist): \n";
+						productFileDisplay20OrLess(productPage);
+						std::cout << "Enter the product for the product release (max 30 char, must pre-exist): \n";
 						std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 						// Check if input length is valid
-						if (std::cin.fail()) {
+						if (std::strcmp(productName,"Exit") == 0) {
+							exitFlag = true;
+							break;
+						} else if (std::strcmp(productName,"<") == 0) {
+							productPage--;
+						} else if (std::strcmp(productName,">") == 0) {
+							productPage++;
+						} else if (std::cin.fail()) {
 							std::cin.clear(); // Clear the fail state
 							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 							std::cout << "\nInvalid input. Please enter 1 to 30 characters." << std::endl;
 							notProperLen = true; // Continue the loop
 							notExists = false; // Reset notExists flag
 						} else if (strlen(productName) == 0) {
-							std::cout << "\nProduct name cannot be empty. Please enter 1 to 30 characters." << std::endl;
+							std::cout << "\nProduct field cannot be empty. Please enter 1 to 30 characters." << std::endl;
 							notProperLen = true; // Continue the loop
 							notExists = false; // Reset notExists flag
 						} else {
@@ -284,7 +295,8 @@ void handleProductMaintenance(int choice) {
 							}
 							notProperLen = false; // Exit the loop if both conditions are false
 						}
-					} while (notProperLen || notExists);
+					} while (notProperLen || notExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
+					if (exitFlag) break;
 
 					// Get a product release ID
 					do {
@@ -313,7 +325,8 @@ void handleProductMaintenance(int choice) {
 						std::cout << "You must enter a product release that has a unique compound primary key " 
 						"(i.e., unique combination of product name and release ID).\n";
 					}
-				} while (ifUniqueProdRel);				
+				} while (ifUniqueProdRel);
+				if (exitFlag) break;			
 
 				// Get a release date
 				do {
