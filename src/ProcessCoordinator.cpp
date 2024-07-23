@@ -740,9 +740,9 @@ void handleChangeRequestMaintenance(int choice) {
 						exitFlag = true;
 						break;
 					} else if (std::strcmp(reportedRelease,"<") == 0) {
-						ARPage--;
+						RRPage--;
 					} else if (std::strcmp(reportedRelease,">") == 0) {
-						ARPage++;
+						RRPage++;
 					} else if (std::cin.fail()) {
 						std::cin.clear(); // Clear the fail state
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
@@ -774,10 +774,10 @@ void handleChangeRequestMaintenance(int choice) {
 					if (std::cin.fail()) {
 						std::cin.clear(); // Clear the fail priority
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-						std::cout << "\nInvalid input. Please enter 1 to 10 characters." << std::endl;
+						std::cout << "Invalid input. Please enter 1 to 10 characters." << std::endl;
 						PriorityNotProperLen = true; // Continue the loop
 					} else if (strlen(priority) == 0) {
-						std::cout << "\nPriority cannot be empty. Please enter 1 to 10 characters." << std::endl;
+						std::cout << "Priority cannot be empty. Please enter 1 to 10 characters." << std::endl;
 						PriorityNotProperLen = true; // Continue the loop
 					} else {
 						PriorityNotProperLen = false;
@@ -976,8 +976,11 @@ void handleChangeItemMaintenance(int choice) {
 			// State update
 			char state[STATE_LENGTH];
 			// Anticipated release ID update
+			ProductRelease tmpPR;
 			char anticipatedReleaseID[RELEASE_ID_LENGTH];
 			int releaseIDExists;
+			int RRPage = 1;
+			int RIDnotProperLen;
 			// Save updates choice
 			int choiceSaveUpdates;
 			int origChangeID;
@@ -1130,6 +1133,42 @@ void handleChangeItemMaintenance(int choice) {
 						}
 						case 3: { // Anticipated release ID
 							std::cout << "\nCurrent anticipated release ID: " << tmpCI.anticipatedReleaseID << std::endl;
+							// Ask for a release ID
+							do {
+								productReleaseFileDisplay20OrLess(RRPage,productName);
+								std::cout << "Enter the reported release ID for the change request (max 8 char): \n";
+								std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
+
+								// Check if input length is valid
+								if (strcmp(anticipatedReleaseID,"Exit") == 0) {
+									exitFlag = true;
+									break;
+								} else if (std::strcmp(anticipatedReleaseID,"<") == 0) {
+									RRPage--;
+								} else if (std::strcmp(anticipatedReleaseID,">") == 0) {
+									RRPage++;
+								} else if (std::cin.fail()) {
+									std::cin.clear(); // Clear the fail state
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+									std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
+									RIDnotProperLen = true; // Continue the loop
+								} else if (strlen(anticipatedReleaseID) == 0) {
+									std::cout << "\nReported release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
+									RIDnotProperLen = true; // Continue the loop
+
+								} else {
+									RIDnotProperLen = false;
+									// After verifying the input length, check if this release ID exists
+									releaseIDExists = retrieveProductReleaseByKey("productReleases.dat",productName,anticipatedReleaseID,tmpPR);
+									if (!releaseIDExists)
+									{
+										std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
+									}
+								}
+							} while (RIDnotProperLen || (!releaseIDExists) || 
+										(std::strcmp(anticipatedReleaseID,"<") == 0) || (std::strcmp(anticipatedReleaseID,">") == 0));
+							if (exitFlag) break;
+
 							// Enter an anticipated release ID
 							do {
 								std::cout << "Enter the new anticipated release ID for the change item (max 8 char): \n";
