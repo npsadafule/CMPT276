@@ -401,6 +401,7 @@ void handleChangeRequestMaintenance(int choice) {
 
 			// ChangeItem selection
 			ChangeItem tmpCI;
+			ProductRelease tmpPR;
 			bool isNumber = false;
 			int CIPage = 1;
 			char CIStringBuf[CI_STRING_BUF_LEN];
@@ -409,7 +410,7 @@ void handleChangeRequestMaintenance(int choice) {
 			int CInotProperLen;
 			int releaseIDExists;
 			int CIOfProductExists;
-			int ARPage;
+			int ARPage = 1;
 
 			// Release ID selection
 			int RIDExists;
@@ -698,10 +699,10 @@ void handleChangeRequestMaintenance(int choice) {
 							} else {
 								CInotProperLen = false;
 								// After verifying the input length, check if this release ID exists
-								releaseIDExists = determineReleaseIDExistence(anticipatedReleaseID);
+								releaseIDExists = retrieveProductReleaseByKey("productReleases.dat",anticipatedReleaseID,productName,tmpPR);
 								if (!releaseIDExists)
 								{
-									std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
+									std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
 								}
 							}
 						} while (CInotProperLen || (!releaseIDExists) || 

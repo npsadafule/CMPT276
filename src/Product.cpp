@@ -324,9 +324,11 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 	int pageRecordsCount = 0;
 	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-		std::cout << std::to_string(pageRecordsCount+1) << ") ";
-		displayProductRelease(tmpModule);
-		pageRecordsCount++;
+		if (strcmp(tmpModule.productName,productName) == 0) {
+			std::cout << std::to_string(pageRecordsCount+1) << ") ";
+			displayProductRelease(tmpModule);
+			pageRecordsCount++;
+		}
 	}
 	productReleaseFile.clear();
 	std::cout << "Enter ‘Exit’ to leave this selection screen." << std::endl;
