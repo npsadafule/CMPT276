@@ -378,7 +378,7 @@ void handleChangeRequestMaintenance(int choice) {
 			char requester[REQ_NAME_LENGTH], phoneNum[PHONE_NUMBER_LENGTH], email[EMAIL_LENGTH], department[DEPARTMENT_LENGTH];
 			// New change item (change ID used for change request)
 			int changeID;	
-			char productName[PRODUCT_NAME_LENGTH], description[CHANGE_DESC_LENGTH], anticipatedReleaseID[RELEASE_ID_LENGTH], state[STATE_LENGTH];
+			char productName[PRODUCT_NAME_LENGTH], description[CHANGE_DESC_LENGTH], anticipatedReleaseID[RELEASE_ID_LENGTH], state[STATE_LENGTH] = "Reported";
 			// New change request
 			char date[REP_DATE_LENGTH], reportedRelease[RELEASE_ID_LENGTH], priority[PRIORITY_LENGTH];
 
@@ -471,7 +471,7 @@ void handleChangeRequestMaintenance(int choice) {
 					} else if (reqChoice == CREATE_REQ) {
 						// Get requester name
 						do {
-							std::cout << "\nEnter the Requester name (max 30 char, must not exist): \n";
+							std::cout << "\nEnter the requester name (max 30 char, must not exist): \n";
 							std::cin.getline(requester, REQ_NAME_LENGTH);
 
 							// Check if input length is valid
@@ -673,11 +673,15 @@ void handleChangeRequestMaintenance(int choice) {
 
 						// Enter an anticipated release ID
 						do {
-							std::cout << "\nEnter the anticipated release ID for the change item (max 8 char): \n";
+							std::cout << "\nEnter the anticipated release ID for your change item (max 8 char, following your organization’s format).\n"
+										 "Alternatively, enter 'Exit' to return to the main menu:\n";
 							std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 							// Check if input length is valid
-							if (std::cin.fail()) {
+							if (strcmp(anticipatedReleaseID,"Exit") == 0) {
+								exitFlag = true;
+								break;
+							} else if (std::cin.fail()) {
 								std::cin.clear(); // Clear the fail state
 								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 								std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
@@ -696,25 +700,9 @@ void handleChangeRequestMaintenance(int choice) {
 								}
 							}
 						} while (CInotProperLen || (!releaseIDExists));
+						if (exitFlag) break;
 
-						// Enter state for Change Item
-						do {
-							std::cout << "\nEnter the Change Item's state (max 10 char):\n";
-							std::cin.getline(state, STATE_LENGTH);
-
-							// Check if input length is valid
-							if (std::cin.fail()) {
-								std::cin.clear(); // Clear the fail state
-								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-								std::cout << "\nInvalid input. Please enter 1 to 10 characters." << std::endl;
-								CInotProperLen = true; // Continue the loop
-							} else if (strlen(state) == 0) {
-								std::cout << "\nState cannot be empty. Please enter 1 to 10 characters." << std::endl;
-								CInotProperLen = true; // Continue the loop
-							} else {
-								CInotProperLen = false;
-							}
-						} while (CInotProperLen);	
+						// (The state of a change item when created is always "Reported")	
 
 						// Create the new change ID
 						createChangeItem(changeID,productName,description,anticipatedReleaseID,state);
@@ -783,7 +771,7 @@ void handleChangeRequestMaintenance(int choice) {
 				if (choiceConfirmAdd == YES) {
 					getTodaysDate(date, sizeof(date));
 					createChangeRequest(requester,changeID,reportedRelease,date,priority);
-					std::cout << "Your change request’s change ID is " << changeID << std::endl;
+					std::cout << "Your change request’s change ID is " << changeID << "." << std::endl;
 					std::cout << "The change request was successfully created." << std::endl;
 					choiceRepeat = readIntegerInput(repeatChangeCR,NO,YES);
 					if (choiceRepeat == YES) {
