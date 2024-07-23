@@ -132,7 +132,7 @@ int productFileDisplay20OrLess(int& page) {
 	int pageRecordsCount = 0;
 	while (productFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(Product)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-		std::cout << std::to_string(pageRecordsCount+1) << ") ";
+		std::cout << "- ";
 		displayProduct(tmpModule);
 		pageRecordsCount++;
 	}
@@ -324,12 +324,12 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 	// Print the page
 	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
-	std::cout << "   Product A   Release ID  Release Date" << std::endl;
+	std::cout << "  Product     Release ID  Release Date" << std::endl;
 	int pageRecordsCount = 0;
 	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
-			std::cout << std::to_string(pageRecordsCount+1) << ") ";
+			std::cout << "- ";
 			displayProductRelease(tmpModule);
 			pageRecordsCount++;
 		}

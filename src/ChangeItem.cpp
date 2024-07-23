@@ -161,11 +161,11 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	std::cout << "                                                                      Anticipated" << std::endl;
-	std::cout << "   Product     Description                     Change ID  State       Release ID" << std::endl;
+	std::cout << "  Product     Description                     Change ID  State       Release ID" << std::endl;
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
-			std::cout << std::to_string(pageRecordsCount+1) << ") ";
+			std::cout << "- ";
 			displayChangeItem(tmpModule);
 			pageRecordsCount++;
 		}
