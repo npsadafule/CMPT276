@@ -274,72 +274,65 @@ void displayProductRelease(const ProductRelease& productRelease) {
 
 // ---------------------------------------------------------
 // Function: productReleaseFileDisplay20OrLess
-void productReleaseFileDisplay20OrLess(int& page) {
-//     // Displays up to 20 Requester objects from the specified page of the requester file.
-//     // Returns the number of Requesters displayed or -1 if the file cannot be opened.
-//     // Parameter: page (The page number to display)
-//     // Parameter: filename (The name of the requester file)
+int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
+    // Displays up to 20 module objects from the specified page of the module file.
+    // Returns the number of modules displayed or -1 if the file cannot be opened.
+    // Parameter: page (The page number to display)
+    // Parameter: filename (The name of the module file)
 	
-// 	// Constants
-// 	static const int ITEMS_PER_PAGE = 20;	// static
+	// Constants
+	static const int ITEMS_PER_PAGE = 20;	// static
 
-// 	// Variables
-// 	int reqPages;
-// 	Requester tmpReq;
+	// Variables
+	int modulePages;
+	ProductRelease tmpModule;
 
-// 	// Find the total number of items on file
-// 	seekToBeginningOfRequesterFile();
-// 	int counter = 0;
-// 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester))) {
-// 		counter++;
-// 	}	
-// 	requesterFile.clear();
-// 	// std::cout << "total entries " << std::to_string(counter) << std::endl;
+	// Find the total number of items on file
+	seekToBeginningOfProductReleaseFile();
+	int counter = 0;
+	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease))) {
+		counter++;
+	}	
+	productReleaseFile.clear();
+	// std::cout << "total entries " << std::to_string(counter) << std::endl;
 
-// 	// Calculate the total number of pages
-// 	reqPages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
-// 	// std::cout << "total pages " << std::to_string(reqPages) << std::endl;
+	// Calculate the total number of pages
+	modulePages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+	// std::cout << "total pages " << std::to_string(modulePages) << std::endl;
 
-// 	// Determine if the provided page is valid
-// 	if ((page < 1) || (page > reqPages)) {
-// 		if (page < 1) {
-// 			page++;
-// 			std::cout << "No previous pages exist!" << std::endl;
-// 		} else {
-// 			page--;
-// 			std::cout << "No next pages exist!" << std::endl;
-// 		}
-// 	} 
+	// Determine if the provided page is valid
+	if ((page < 1) || (page > modulePages)) {
+		if (page < 1) {
+			page++;
+			std::cout << "No previous pages exist!" << std::endl;
+		} else {
+			page--;
+			std::cout << "No next pages exist!" << std::endl;
+		}
+	} 
 
-// 	// Display the selected page
-// 	// Loop forward by the number of pages on the file so that the next read is the
-// 	// desired page
-// 	seekToBeginningOfRequesterFile();
-// 	requesterFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(Requester),std::ios::cur);
-// 	// std::cout << "end of getting to page" << std::endl;
+	// Display the selected page
+	// Loop forward by the number of pages on the file so that the next read is the
+	// desired page
+	seekToBeginningOfProductReleaseFile();
+	productReleaseFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(ProductRelease),std::ios::cur);
+	// std::cout << "end of getting to page" << std::endl;
 
-// 	// Print the page
-// 	std::cout << "Page " << page << "/" << reqPages << std::endl;
-// 	int pageRecordsCount = 0;
-// 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 
-// 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
-// 		std::cout << "- ";
-// 		displayRequester(tmpReq);
-// 		pageRecordsCount++;
-// 	}
-// 	requesterFile.clear();
-// 	// std::cout << "end of printing page" << std::endl;
-
-// 	int padding = ITEMS_PER_PAGE - pageRecordsCount;
-// 	while (padding > 0) {
-// 		std::cout << std::endl;
-// 		padding--;
-// 	}
-
-// 	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
-
+	// Print the page
+	std::cout << std::endl;
+	std::cout << "Page " << page << "/" << modulePages << std::endl;
+	int pageRecordsCount = 0;
+	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease)) && 
+		  (pageRecordsCount < ITEMS_PER_PAGE)) {
+		std::cout << std::to_string(pageRecordsCount+1) << ") ";
+		displayProductRelease(tmpModule);
+		pageRecordsCount++;
+	}
+	productReleaseFile.clear();
+	std::cout << "Enter ‘Exit’ to leave this selection screen." << std::endl;
+	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
 	
-// 	return pageRecordsCount;
+	return pageRecordsCount;
 }
 
 

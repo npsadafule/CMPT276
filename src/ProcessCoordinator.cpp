@@ -409,6 +409,7 @@ void handleChangeRequestMaintenance(int choice) {
 			int CInotProperLen;
 			int releaseIDExists;
 			int CIOfProductExists;
+			int ARPage;
 
 			// Release ID selection
 			int RIDExists;
@@ -673,14 +674,18 @@ void handleChangeRequestMaintenance(int choice) {
 
 						// Enter an anticipated release ID
 						do {
-							std::cout << "\nEnter the anticipated release ID for your change item (max 8 char, following your organization’s format).\n"
-										 "Alternatively, enter 'Exit' to return to the main menu:\n";
+							productReleaseFileDisplay20OrLess(ARPage,productName);
+							std::cout << "Enter the anticipated release ID for your change item (max 8 char, following your organization’s format).\n";
 							std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 							// Check if input length is valid
 							if (strcmp(anticipatedReleaseID,"Exit") == 0) {
 								exitFlag = true;
 								break;
+							} else if (std::strcmp(anticipatedReleaseID,"<") == 0) {
+								ARPage--;
+							} else if (std::strcmp(anticipatedReleaseID,">") == 0) {
+								ARPage++;
 							} else if (std::cin.fail()) {
 								std::cin.clear(); // Clear the fail state
 								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
@@ -699,7 +704,8 @@ void handleChangeRequestMaintenance(int choice) {
 									std::cout << "You must enter a release ID that exists (i.e., is used in a product release)\n";
 								}
 							}
-						} while (CInotProperLen || (!releaseIDExists));
+						} while (CInotProperLen || (!releaseIDExists) || 
+								 (std::strcmp(anticipatedReleaseID,"<") == 0) || (std::strcmp(anticipatedReleaseID,">") == 0));
 						if (exitFlag) break;
 
 						// (The state of a change item when created is always "Reported")	
