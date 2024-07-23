@@ -749,7 +749,7 @@ void handleChangeRequestMaintenance(int choice) {
 						std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
 						RIDnotProperLen = true; // Continue the loop
 					} else if (strlen(reportedRelease) == 0) {
-						std::cout << "\nReported release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
+						std::cout << "Reported release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
 						RIDnotProperLen = true; // Continue the loop
 
 					} else {
@@ -1153,7 +1153,7 @@ void handleChangeItemMaintenance(int choice) {
 									std::cout << "\nInvalid input. Please enter 1 to 8 characters." << std::endl;
 									RIDnotProperLen = true; // Continue the loop
 								} else if (strlen(anticipatedReleaseID) == 0) {
-									std::cout << "\nReported release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
+									std::cout << "Reported release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
 									RIDnotProperLen = true; // Continue the loop
 
 								} else {

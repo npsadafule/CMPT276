@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <iomanip>
 
 // File handling functions
 extern std::fstream productFile;
@@ -267,9 +268,9 @@ void seekToBeginningOfProductReleaseFile() {
 // Function: displayProductRelease
 void displayProductRelease(const ProductRelease& productRelease) {
     // Displays details of a product release to the standard output
-	std::cout << productRelease.productName <<
-				 ", " << productRelease.releaseID <<
-				 ", " << productRelease.releaseDate << std::endl;
+	std::cout << std::left << std::setw(10) << productRelease.productName <<
+				 "  " << std::setw(10) <<  productRelease.releaseID <<
+				 "  " << std::setw(12) <<  productRelease.releaseDate << std::endl;
 }
 
 // ---------------------------------------------------------
@@ -291,7 +292,9 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 	seekToBeginningOfProductReleaseFile();
 	int counter = 0;
 	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease))) {
-		counter++;
+		if (strcmp(tmpModule.productName,productName) == 0) {
+			counter++;
+		}
 	}	
 	productReleaseFile.clear();
 	// std::cout << "total entries " << std::to_string(counter) << std::endl;
@@ -321,6 +324,7 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 	// Print the page
 	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
+	std::cout << "   Product A   Release ID  Release Date" << std::endl;
 	int pageRecordsCount = 0;
 	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {

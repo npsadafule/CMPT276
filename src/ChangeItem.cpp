@@ -127,8 +127,10 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	seekToBeginningOfChangeItemFile();
 	int counter = 0;
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem))) {
-		counter++;
-	}	
+		if (strcmp(tmpModule.productName,productName) == 0) {
+			counter++;
+		}
+	}
 	changeItemFile.clear();
 	// std::cout << "total entries " << std::to_string(counter) << std::endl;
 
