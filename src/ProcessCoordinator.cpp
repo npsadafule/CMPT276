@@ -164,11 +164,11 @@ void repeatCIQuery() {
 // Function: choiceUpdateDisp
 // Displays the update options for a change item
 void choiceUpdateDisp() {
-	std::cout << "\nSelect what update to make to this change item of Product A:\n"
+	std::cout << "\nSelect what update to make to this change item:\n"
 				 "1) Update Description\n"
 				 "2) Update State\n"
 				 "3) Update Anticipated Release ID\n"
-				 "0) Exit\n";
+				 "Enter ‘Exit’ to leave this selection screen.\n";
 }
 
 // ---------------------------------------------------------
@@ -537,7 +537,7 @@ void handleChangeRequestMaintenance(int choice) {
 						// Get department
 						do {
 							std::cout << "\nIf you are an employee, enter your department (max 12 char). If this is not "
-										"applicable to you, enter 'N/A':\n";
+										 "applicable to you, enter 'N/A':\n";
 							std::cin.getline(department, DEPARTMENT_LENGTH);
 
 							// Check if input length is valid
@@ -915,7 +915,7 @@ void handleChangeItemMaintenance(int choice) {
 				std::cout << std::setw(25) << std::left << "Description:" << tmpCI.description << std::endl;
 				std::cout << std::setw(25) << std::left << "Change ID:" << std::to_string(changeID) << std::endl;
 				std::cout << std::setw(25) << std::left << "State:" << tmpCI.state << std::endl;
-				std::cout << std::setw(25) << std::left << "Anticipated Release ID:" << tmpCI.productName << std::endl;
+				std::cout << std::setw(25) << std::left << "Anticipated Release ID:" << tmpCI.anticipatedReleaseID << std::endl;
 
 				// Final choices
 				choiceRepeat = readIntegerInput(repeatCIQuery,NO,YES);
@@ -1064,7 +1064,7 @@ void handleChangeItemMaintenance(int choice) {
 							std::cout << "\nCurrent description: " << tmpCI.description << std::endl;
 							// Enter description for change item
 							do {
-								std::cout << "Enter the new description for the change item (max 150 char): \n";
+								std::cout << "Enter the new description for the change item (max 30 char): \n";
 								std::cin.getline(description, CHANGE_DESC_LENGTH);
 
 								// Check if input length is valid
@@ -1088,6 +1088,7 @@ void handleChangeItemMaintenance(int choice) {
 						case 2: { // State
 							std::cout << "\nCurrent state: " << tmpCI.state << std::endl;
 							do {
+								std::cout << "Options for state include: 'Reported', 'Assessed', 'InProgress', 'Done', and 'Cancelled'." << std::endl;
 								std::cout << "Enter the new state of the change item (max 10 char):\n";
 								std::cin.getline(state, STATE_LENGTH);
 
