@@ -819,6 +819,8 @@ void handleChangeItemMaintenance(int choice) {
 			int CInotExists;
 			int CInotProperLen;
 			int CIOfProductExists;
+			// Flags
+			bool exitFlag = false;
 
 			// For repeating the scenario
 			do {
@@ -828,7 +830,10 @@ void handleChangeItemMaintenance(int choice) {
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
-					if (std::strcmp(productName,"<") == 0) {
+					if (strcmp(productName,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(productName,"<") == 0) {
 						productPage--;
 					} else if (std::strcmp(productName,">") == 0) {
 						productPage++;
@@ -851,7 +856,8 @@ void handleChangeItemMaintenance(int choice) {
 						PnotProperLen = false; // Exit the loop if both conditions are false
 					}
 				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
-			
+				if (exitFlag) break;
+
 				// Get the change ID based on product choice
 				do {
 					changeItemFileDisplay20OrLess(CIPage,productName);
@@ -859,7 +865,10 @@ void handleChangeItemMaintenance(int choice) {
 					std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
 					// Check if input length is valid
-					if (std::strcmp(CIStringBuf,"<") == 0) {
+					if (strcmp(CIStringBuf,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(CIStringBuf,"<") == 0) {
 						CIPage--;
 					} else if (std::strcmp(CIStringBuf,">") == 0) {
 						CIPage++;
@@ -898,7 +907,7 @@ void handleChangeItemMaintenance(int choice) {
 				} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
 							(std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
 							(!isNumber));
-
+				if (exitFlag) break;
 
 				// Print the information of the product's change item
 				std::cout << std::endl;
@@ -954,6 +963,8 @@ void handleChangeItemMaintenance(int choice) {
 			// Save updates choice
 			int choiceSaveUpdates;
 			int origChangeID;
+			// Flags
+			bool exitFlag = false;
 
 			// For repeating the scenario
 			do {
@@ -963,7 +974,10 @@ void handleChangeItemMaintenance(int choice) {
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
-					if (std::strcmp(productName,"<") == 0) {
+					if (strcmp(productName,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(productName,"<") == 0) {
 						productPage--;
 					} else if (std::strcmp(productName,">") == 0) {
 						productPage++;
@@ -986,7 +1000,8 @@ void handleChangeItemMaintenance(int choice) {
 						PnotProperLen = false; // Exit the loop if both conditions are false
 					}
 				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
-			
+				if (exitFlag) break;
+
 				// Get the change ID based on product choice
 				do {
 					changeItemFileDisplay20OrLess(CIPage,productName);
@@ -994,7 +1009,10 @@ void handleChangeItemMaintenance(int choice) {
 					std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
 
 					// Check if input length is valid
-					if (std::strcmp(CIStringBuf,"<") == 0) {
+					if (strcmp(CIStringBuf,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(CIStringBuf,"<") == 0) {
 						CIPage--;
 					} else if (std::strcmp(CIStringBuf,">") == 0) {
 						CIPage++;
@@ -1033,6 +1051,7 @@ void handleChangeItemMaintenance(int choice) {
 				} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
 							(std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
 							(!isNumber));
+				if (exitFlag) break;
 
 				// Store the original change ID (for overwriting)
 				origChangeID = tmpCI.changeID;
