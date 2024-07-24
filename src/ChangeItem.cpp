@@ -138,6 +138,11 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	modulePages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
 	// std::cout << "total pages " << std::to_string(modulePages) << std::endl;
 
+	// Handle no items case
+	if (modulePages == 0) {
+		modulePages++;
+	}
+
 	// Determine if the provided page is valid
 	if ((page < 1) || (page > modulePages)) {
 		if (page < 1) {

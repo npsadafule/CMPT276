@@ -104,8 +104,13 @@ int requesterFileDisplay20OrLess(int& page) {
 	// std::cout << "total entries " << std::to_string(counter) << std::endl;
 
 	// Calculate the total number of pages
-	reqPages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+	reqPages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE; 
 	// std::cout << "total pages " << std::to_string(reqPages) << std::endl;
+
+	// Handle no items case
+	if (reqPages == 0) {
+		reqPages++;
+	}
 
 	// Determine if the provided page is valid
 	if ((page < 1) || (page > reqPages)) {
