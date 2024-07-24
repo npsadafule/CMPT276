@@ -75,9 +75,23 @@ void initChangeRequest() {
 // Function: initChangeItem
 void initChangeItem() {
     changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
-    if (!(changeItemFile.is_open())) {
-        std::cerr << "Failed to open changeItem.dat file.\n";
-		exit(1);
+
+    // If the file does not exist, create it
+    if (!changeItemFile.is_open()) {
+        // Open the file in write mode to create it
+        changeItemFile.open("changeItems.dat", std::ios::out | std::ios::binary);
+        if (!changeItemFile.is_open()) {
+            std::cerr << "Failed to create changeItems.dat file.\n";
+            exit(1);
+        }
+        changeItemFile.close(); // Close the file after creating it
+
+        // Reopen the file in read/write mode
+        changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
+        if (!changeItemFile.is_open()) {
+            std::cerr << "Failed to reopen changeItems.dat file.\n";
+            exit(1);
+        }
     }
 }
 
@@ -92,9 +106,18 @@ void initReportGen() {
 // ---------------------------------------------------------
 // Function: initHighestCID
 void initHighestCID() {
+    // Open the file in append mode and binary mode
+    highestCIDFile.open("highestCID.dat", std::ios::app | std::ios::binary);
+    if (!highestCIDFile.is_open()) {
+        std::cerr << "Failed to open or create highestCID.dat file.\n";
+        exit(1);
+    }
+    
+    // Close and reopen the file in read/write mode
+    highestCIDFile.close();
     highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary);
-    if (!(highestCIDFile.is_open())) {
-        std::cerr << "Failed to open highestCID.dat file.\n";
+    if (!highestCIDFile.is_open()) {
+        std::cerr << "Failed to reopen highestCID.dat file.\n";
         exit(1);
     }
 }
