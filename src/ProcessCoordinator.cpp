@@ -513,17 +513,17 @@ void handleChangeRequestMaintenance(int choice) {
 
 						// Get phone number
 						do {
-							std::cout << "\nEnter your phone number (10 digits in the format DDDDDDDDDD): \n";
+							std::cout << "\nEnter your phone number (11 digits in the format DDDDDDDDDDD): \n";
 							std::cin.getline(phoneNum, PHONE_NUMBER_LENGTH);
 
 							// Check if input length is valid
 							if (std::cin.fail()) {
 								std::cin.clear(); // Clear the fail state
 								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-								std::cout << "\nInvalid input. Please enter 10 characters." << std::endl;
+								std::cout << "\nInvalid input. Please enter 11 digits." << std::endl;
 								CRnotProperLen = true; // Continue the loop
-							} else if (strlen(phoneNum) < 10) {
-								std::cout << "\nPhone number cannot be less than 10 digits. Please enter 10 digits." << std::endl;
+							} else if (strlen(phoneNum) < (PHONE_NUMBER_LENGTH-1)) {	// Since phone number length accounts for \0
+								std::cout << "\nPhone number cannot be less than 11 digits. Please enter 11 digits." << std::endl;
 								CRnotProperLen = true; // Continue the loop
 							} else {
 								CRnotProperLen = false;

@@ -13,7 +13,7 @@
 // Global constnats
 // Note: based on A3 (not A2)
 const int REQ_NAME_LENGTH = 30 +1;
-const int PHONE_NUMBER_LENGTH = 10 +1; // Just storing numbers
+const int PHONE_NUMBER_LENGTH = 11 +1; // Just storing numbers
 const int EMAIL_LENGTH = 24 +1;
 const int DEPARTMENT_LENGTH = 12 +1;
 

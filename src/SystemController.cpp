@@ -34,7 +34,7 @@ std::fstream highestCIDFile;
 void initRequester() {
     // Initializes the requester file stream for reading and writing requesters.
     // Ensures the requesterFile stream is opened in binary append mode.
-    requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    requesterFile.open("data/requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!requesterFile.is_open()) {
         std::cerr << "Failed to open requestersFile.dat file.\n";
         exit(1);
@@ -46,13 +46,13 @@ void initRequester() {
 void initProduct() {
     // Initializes the product and product release file streams for reading and writing products.
     // Ensures both productFile and productReleaseFile streams are opened in binary append mode.
-    productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    productFile.open("data/products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!productFile.is_open()) {
         std::cerr << "Failed to open products.dat file.\n";
         exit(1);
     }
 
-    productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    productReleaseFile.open("data/productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!productReleaseFile.is_open()) {
         std::cerr << "Failed to open productReleases.dat file.\n";
         exit(1);
@@ -64,7 +64,7 @@ void initProduct() {
 void initChangeRequest() {
     // Initializes the change request file stream for reading and writing change requests.
     // Ensures the changeRequestFile stream is opened in binary append mode.
-    changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    changeRequestFile.open("data/changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     if (!changeRequestFile.is_open()) {
         std::cerr << "Failed to open changeRequests.dat file.\n";
         exit(1);
@@ -74,12 +74,12 @@ void initChangeRequest() {
 // ---------------------------------------------------------
 // Function: initChangeItem
 void initChangeItem() {
-    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
+    changeItemFile.open("data/changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
 
     // If the file does not exist, create it
     if (!changeItemFile.is_open()) {
         // Open the file in write mode to create it
-        changeItemFile.open("changeItems.dat", std::ios::out | std::ios::binary);
+        changeItemFile.open("data/changeItems.dat", std::ios::out | std::ios::binary);
         if (!changeItemFile.is_open()) {
             std::cerr << "Failed to create changeItems.dat file.\n";
             exit(1);
@@ -87,7 +87,7 @@ void initChangeItem() {
         changeItemFile.close(); // Close the file after creating it
 
         // Reopen the file in read/write mode
-        changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
+        changeItemFile.open("data/changeItems.dat", std::ios::in | std::ios::out | std::ios::binary);
         if (!changeItemFile.is_open()) {
             std::cerr << "Failed to reopen changeItems.dat file.\n";
             exit(1);
@@ -107,7 +107,7 @@ void initReportGen() {
 // Function: initHighestCID
 void initHighestCID() {
     // Open the file in append mode and binary mode
-    highestCIDFile.open("highestCID.dat", std::ios::app | std::ios::binary);
+    highestCIDFile.open("data/highestCID.dat", std::ios::app | std::ios::binary);
     if (!highestCIDFile.is_open()) {
         std::cerr << "Failed to open or create highestCID.dat file.\n";
         exit(1);
@@ -115,7 +115,7 @@ void initHighestCID() {
     
     // Close and reopen the file in read/write mode
     highestCIDFile.close();
-    highestCIDFile.open("highestCID.dat", std::ios::in | std::ios::out | std::ios::binary);
+    highestCIDFile.open("data/highestCID.dat", std::ios::in | std::ios::out | std::ios::binary);
     if (!highestCIDFile.is_open()) {
         std::cerr << "Failed to reopen highestCID.dat file.\n";
         exit(1);
