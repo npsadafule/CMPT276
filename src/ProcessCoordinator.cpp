@@ -46,8 +46,8 @@ void getTodaysDate(char* dateStr, size_t size) {
     std::time_t t = std::time(nullptr);
     std::tm* now = std::localtime(&t);
 
-    // Format the date into the provided buffer using snprintf
-    std::snprintf(dateStr, size, "%04d%02d%02d", now->tm_year + 1900, now->tm_mon + 1, now->tm_mday);
+    // Format the date into the provided buffer using snprintf in YYYY-MM-DD format
+    std::snprintf(dateStr, size, "%04d-%02d-%02d", now->tm_year + 1900, now->tm_mon + 1, now->tm_mday);
 }
 
 // ---------------------------------------------------------
@@ -333,7 +333,7 @@ void handleProductMaintenance(int choice) {
 					std::cout << "\nEnter the release date (YYYY-MM-DD): \n";
 					std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
 
-					notProperLen = std::cin.fail() || strlen(releaseDate) != (RELEASE_DATE_LENGTH-1);
+					notProperLen = std::cin.fail() || (strlen(releaseDate) != (RELEASE_DATE_LENGTH-1));
 
 					if (notProperLen) {
 						std::cin.clear(); // Clear the fail state
