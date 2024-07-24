@@ -171,7 +171,7 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 		}
 	}
 	changeItemFile.clear();
-	std::cout << "Enter ‘Exit’ to leave this selection screen." << std::endl;
+	std::cout << "Enter ‘Exit’ to return to the main menu." << std::endl;
 	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
 
 	

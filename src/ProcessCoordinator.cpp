@@ -1189,7 +1189,9 @@ void handleChangeItemMaintenance(int choice) {
 							break;
 						}
 					}
+					if (exitFlag) break;
 				} while (choiceUpdate != 0);
+				if (exitFlag) break;
 
 				// Ask user if they are sure they want to update
 				choiceSaveUpdates = readIntegerInput(choiceSaveUpdDisp,NO,YES);
