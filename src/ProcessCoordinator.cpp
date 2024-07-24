@@ -330,7 +330,7 @@ void handleProductMaintenance(int choice) {
 
 				// Get a release date
 				do {
-					std::cout << "\nEnter the release date (YYYY-MM-DD)): \n";
+					std::cout << "\nEnter the release date (YYYY-MM-DD): \n";
 					std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
 
 					notProperLen = std::cin.fail() || strlen(releaseDate) != (RELEASE_DATE_LENGTH-1);
