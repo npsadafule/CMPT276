@@ -98,7 +98,7 @@ void generateReport1(const std::string& productName) {
 // Function: generateReport2
 // Generates a report listing customers/staff who need to be informed when a particular change has been implemented
 // Prints the report to standard output
-void generateReport2(const std::string& changeID) {
+void generateReport2(const std::string& changeID, const std::string& newReleaseID) {
     ChangeItem changeItem;
     Requester requester;
     ChangeRequest changeRequest;
@@ -106,7 +106,7 @@ void generateReport2(const std::string& changeID) {
     bool changeRequestFound = false;
     bool requesterFound = false;
 
-	// Search for the ChangeItem with the specified changeID
+    // Search for the ChangeItem with the specified changeID
     seekToBeginningOfChangeItemFile();
     while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
         if (std::to_string(changeItem.changeID) == changeID) {
@@ -119,10 +119,16 @@ void generateReport2(const std::string& changeID) {
         std::cerr << "ChangeItem with ChangeID " << changeID << " not found.\n";
         return;
     }
-    // std::cout << "Found ChangeItem: ID=" << changeItem.changeID << ", Description=" << changeItem.description << "\n";
+
+    // Update the anticipated release ID of the change item
+    std::strcpy(changeItem.anticipatedReleaseID, newReleaseID.c_str());
+    if (!updateChangeItem(changeItem.changeID, changeItem)) {
+        std::cerr << "Failed to update ChangeItem with ChangeID " << changeID << ".\n";
+        return;
+    }
 
     seekToBeginningOfChangeRequestFile();
-	std::vector<std::string> requesterNames;
+    std::vector<std::string> requesterNames;
     while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
         if (changeRequest.changeID == std::stoi(changeID)) {
             changeRequestFound = true;
@@ -145,7 +151,7 @@ void generateReport2(const std::string& changeID) {
             }
         }
     }
-   	requesterFile.clear();
+    requesterFile.clear();
     if (!requesterFound) {
         std::cerr << "No requesters found for ChangeItem with ChangeID " << changeID << ".\n";
         return;

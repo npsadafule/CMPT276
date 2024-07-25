@@ -1237,9 +1237,12 @@ void handleReportGeneration(int choice) {
 		// Scenario 4.7: Report #2: List of Customers/Staff Who Need to Be Informed When
 		// a Particular Change Has Been Implemented, and in What ProductRelease ID
             std::string changeID;
+            std::string newReleaseID;
             std::cout << "Enter the Change ID to generate Report #2: ";
             std::getline(std::cin, changeID);
-            generateReport2(changeID);
+            std::cout << "Enter the new anticipated release ID: ";
+            std::getline(std::cin, newReleaseID);
+            generateReport2(changeID, newReleaseID);
             break;
         }
         default: 
