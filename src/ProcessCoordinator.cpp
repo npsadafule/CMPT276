@@ -552,8 +552,8 @@ void handleChangeRequestMaintenance(int choice) {
 
 						// Get department
 						do {
-							std::cout << "\nIf you are an employee, enter your department (max 12 char). If this is not "
-										 "applicable to you, enter 'N/A':\n";
+							std::cout << "\nIf you are an employee, enter your department (max 12 char).\n"
+										 "If this is not applicable to you, enter 'N/A':\n";
 							std::cin.getline(department, DEPARTMENT_LENGTH);
 
 							// Check if input length is valid

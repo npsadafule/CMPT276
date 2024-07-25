@@ -43,8 +43,8 @@ int readIntegerInput(MenuFuncPtr func, int min, int max) {
     while (!(std::cin >> choice) || choice < min || choice > max) {
         std::cin.clear(); // Clear the error flag
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Invalid input. Please enter a number between " << min << " and " << max << ".\n";
         func();
-        std::cout << "\nInvalid input. Please enter a number between " << min << " and " << max << ".\n";
         std::cout << "Choose an option [" << min << "-" << max << "] and press ENTER: ";
     }
 
