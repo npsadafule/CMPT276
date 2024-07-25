@@ -109,7 +109,7 @@ int requesterFileDisplay20OrLess(int& page) {
 
 	// Handle no items case
 	if (reqPages == 0) {
-		reqPages++;
+		reqPages = 1;
 	}
 
 	// Determine if the provided page is valid

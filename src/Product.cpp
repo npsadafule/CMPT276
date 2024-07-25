@@ -110,7 +110,7 @@ int productFileDisplay20OrLess(int& page) {
 
 	// Handle no items case
 	if (modulePages == 0) {
-		modulePages++;
+		modulePages = 1;
 	}
 
 	// Determine if the provided page is valid
@@ -310,7 +310,7 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 
 	// Handle no items case
 	if (modulePages == 0) {
-		modulePages++;
+		modulePages = 1;
 	}
 
 	// Determine if the provided page is valid

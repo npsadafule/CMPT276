@@ -140,7 +140,7 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 
 	// Handle no items case
 	if (modulePages == 0) {
-		modulePages++;
+		modulePages = 1;
 	}
 
 	// Determine if the provided page is valid
