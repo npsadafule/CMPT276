@@ -100,8 +100,11 @@ void displayChangeItemMaintenance() {
 void displayReportGeneration() {
     // Displays the options for report generation.
     std::cout << "\n====== Report Generation ======\n";
-    std::cout << "1) Generate Report #1\n";
-    std::cout << "2) Generate Report #2\n";
+    std::cout << "1) Generate Report #1:\n"
+				 "List of All Change Items for a Particular Product that are Not Done and Not Cancelled\n";
+    std::cout << "2) Generate Report #2\n"
+				 "List of Customers/Staff Who Need to Be Informed When a Particular Change Has\n"
+				 "Been Implemented, and in What ProductRelease ID\n";
     std::cout << "0) Return to Main Menu\n";
 }
 
