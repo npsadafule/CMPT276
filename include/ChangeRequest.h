@@ -25,7 +25,7 @@ struct ChangeRequest {
     int changeID; // primary key, foreign
     char reportedRelease[RELEASE_ID_LENGTH]; // foreign
     char reportedDate[REP_DATE_LENGTH]; // the day the request was made
-    char priority[PRIORITY_LENGTH]; // TBD how it will be used
+    char priority[PRIORITY_LENGTH];
 };
 
 // ============================================
