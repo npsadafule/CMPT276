@@ -158,17 +158,36 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
     bool changeRequestFound = false;
     bool requesterFound = false;
 
+    // Prompt for product name
+    std::string productName;
+    std::cout << "Enter the product name: ";
+    std::cin >> productName;
+
+    // Validate product name
+    Product product;
+    if (!retrieveProductByName(productName.c_str(), product)) {
+        std::cerr << "Product " << productName << " not found.\n";
+        return;
+    }
+
     // Search for the ChangeItem with the specified changeID
     seekToBeginningOfChangeItemFile();
     while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
-        if (std::to_string(changeItem.changeID) == changeID) {
+        if (std::to_string(changeItem.changeID) == changeID && std::strcmp(changeItem.productName, productName.c_str()) == 0) {
             changeItemFound = true;
             break;
         }
     }
     changeItemFile.clear();
     if (!changeItemFound) {
-        std::cerr << "ChangeItem with ChangeID " << changeID << " not found.\n";
+        std::cerr << "ChangeItem with ChangeID " << changeID << " not found for product " << productName << ".\n";
+        return;
+    }
+
+    // Validate release ID matches the product
+    ProductRelease productRelease;
+    if (!retrieveProductReleaseByKey(productName.c_str(), newReleaseID.c_str(), productRelease)) {
+        std::cerr << "ReleaseID " << newReleaseID << " not found for product " << productName << ".\n";
         return;
     }
 
@@ -214,7 +233,7 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
     }
 
     // Generate the formatted report
-    std::cout << "Product A Report #2 for Change Item " << changeID << "\n\n";
+    std::cout << "Product " << productName << " Report #2 for Change Item " << changeID << "\n\n";
     std::cout << "Details of the Current Change Item:\n";
     std::cout << changeItem.productName << ", " << changeItem.description << ", " << changeItem.changeID
               << ", " << changeItem.state << ", " << changeItem.anticipatedReleaseID << "\n";
