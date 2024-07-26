@@ -48,7 +48,7 @@ const char* intToCString(int number) {
 // Opens the change item file
 // Exits the program if the file cannot be opened
 void openChangeItemFile() {
-    changeItemFile.open("changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    changeItemFile.open("data/changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
 	if (!changeItemFile.is_open()) exit(1);

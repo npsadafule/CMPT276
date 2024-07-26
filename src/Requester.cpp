@@ -26,7 +26,7 @@ extern std::fstream requesterFile;
 void openRequesterFile() {
     // Opens the requester file in binary mode for reading, writing, and appending.
     // Exits the program if the file fails to open.
-    requesterFile.open("requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    requesterFile.open("data/requestersFile.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 
 	// Check if file opening worked properly, exit if it didn't
 	if (!requesterFile.is_open()) exit(1);

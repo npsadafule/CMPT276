@@ -27,7 +27,7 @@ extern std::fstream productReleaseFile;
 void openProductFile() {
     // Opens the product file for reading and writing in binary append mode
     // Exits the program if the file fails to open
-    productFile.open("products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    productFile.open("data/products.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
 	if (!productFile.is_open()) exit(1);
@@ -223,7 +223,7 @@ void createProduct(const char* namePtr) {
 void openProductReleaseFile() {
     // Opens the product release file for reading and writing in binary append mode
     // Exits the program if the file fails to open
-    productReleaseFile.open("productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    productReleaseFile.open("data/productReleases.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
 	if (!productReleaseFile.is_open()) exit(1);

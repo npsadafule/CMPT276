@@ -25,7 +25,7 @@ extern std::fstream changeRequestFile;
 void openChangeRequestFile() {
     // Opens the change request file
     // Exits the program if the file cannot be opened
-    changeRequestFile.open("changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
+    changeRequestFile.open("data/changeRequests.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
 
     // Check if file opening worked properly, exit if it didn't
     if (!changeRequestFile.is_open()) exit(1);
