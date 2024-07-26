@@ -127,6 +127,7 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
         return;
     }
 
+	// Find the matching change request
     seekToBeginningOfChangeRequestFile();
     std::vector<std::string> requesterNames;
     while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
@@ -143,8 +144,11 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
 
     seekToBeginningOfRequesterFile();
     std::vector<Requester> relatedRequesters;
+	// For each requester stored
     while (requesterFile.read(reinterpret_cast<char*>(&requester), sizeof(Requester))) {
-        for (const auto& name : requesterNames) {
+        // For each 'requester name' attached to the selected change item
+		for (const auto& name : requesterNames) {
+			// Store the 'requester'
             if (std::strcmp(requester.reqName, name.c_str()) == 0) {
                 relatedRequesters.push_back(requester);
                 requesterFound = true;
@@ -159,7 +163,8 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
 
     // Generate the report
     std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
-    for (const auto& req : relatedRequesters) {
+    // Print each relevant requester's name and email
+	for (const auto& req : relatedRequesters) {
         std::cout << "Name: " << req.reqName << ", Email: " << req.email << "\n";
     }
 }

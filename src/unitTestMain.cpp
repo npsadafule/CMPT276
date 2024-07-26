@@ -146,7 +146,7 @@ void testCreateChangeItem() {
 	// Test data
 	const ChangeItem CITest[3] {
 		{3, "Product A", "Sample description while", "R51B", "Reported"},
-		{4, "Random stuff", "The quick brown lazy dog", "AB12", "Reported"},
+		{4, "RandThing", "The quick brown lazy dog", "AB12", "Reported"},
 		{6, "Random", "Hahahhahahahahahha", "APO1", "Reported"}
 	};
 
@@ -154,7 +154,7 @@ void testCreateChangeItem() {
 	openChangeItemFile();
 
 	// Pre-test initialization and output
-	ChangeItem displayCI = {1682, "testProdName", "testDesc", "AJK3", "Reported"};
+	ChangeItem displayCI = {1682, "testName", "testDesc", "AJK3", "Reported"};
 
 	std::cout << "BEFORE tmp change item: " << intToCString(displayCI.changeID) << " " << displayCI.productName <<
 				 " " << displayCI.description << " " << displayCI.anticipatedReleaseID << " " << 
@@ -280,15 +280,15 @@ void testCreateChangeRequest() {
     // Test function for creating change requests and verifying their storage and retrieval.
 	// Test data
 	const ChangeRequest CRTest[2] {
-		{"HMMMMMMM", 1234, "A1CD", "20040923", "Top"},
-		{"mama", 5678, "MA34", "20240913", "Bottom"}
+		{"HMMMMMMM", 1234, "A1CD", "20040923", "1"},
+		{"mama", 5678, "MA34", "20240913", "2"}
 	};
 
 	// Open the file
 	openChangeRequestFile();
 
 	// Pre-test initialization and output
-	ChangeRequest displayCR = {"asdf", 3893, "MA34", "20240923", "Mid"};
+	ChangeRequest displayCR = {"asdf", 3893, "MA34", "20240923", "3"};
 	std::cout << "BEFORE displayCR: " << displayCR.requesterName << " " << intToCString(displayCR.changeID) << " " << displayCR.reportedRelease <<
 				 " " << displayCR.reportedDate << " " << displayCR.priority << std::endl;
 
