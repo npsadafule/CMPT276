@@ -80,7 +80,6 @@ bool retrieveChangeItemByKey(
     // Parameter: changeID (The primary key of the ChangeItem)
     // Parameter: changeItem (The ChangeItem object to store the retrieved data)
     // Returns: bool (true if retrieval was successful, false otherwise)
-    const char* filename,   // in
     int changeID,   // in
     ChangeItem& changeItem  // out
 );
@@ -107,7 +106,6 @@ bool retrieveChangeItemByKeyAndProduct(
     // Parameter: changeItem (The ChangeItem object to store the retrieved data)
     // Parameter: product (The product associated with the ChangeItem)
     // Returns: bool (true if retrieval was successful, false otherwise)
-    const char* filename,   // in
     int changeID,   // in
     ChangeItem& changeItem,   // out
     char* product   // in

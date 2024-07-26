@@ -179,7 +179,7 @@ void testCreateChangeItem() {
     // Loop forward by the number of test change items there are to retrieve them from file
     for (int i=0; i<3; i++) {
 		// Perform the retrieval
-		retrieveChangeItemByKey("changeItems.dat", CITest[i].changeID, displayCI);
+		retrieveChangeItemByKey(CITest[i].changeID, displayCI);
 		
 		// Count if desired product release was retrieved
 		if (displayCI.changeID == CITest[i].changeID) {

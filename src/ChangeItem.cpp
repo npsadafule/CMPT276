@@ -190,7 +190,7 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 // Parameter: changeID (The ID of the change item to retrieve)
 // Parameter: changeItem (The change item object to store the retrieved data)
 // Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveChangeItemByKey(const char* filename, int changeID, ChangeItem& changeItem) {
+bool retrieveChangeItemByKey(int changeID, ChangeItem& changeItem) {
 	ChangeItem tmpChangeItem;
 
 	seekToBeginningOfChangeItemFile();
@@ -270,7 +270,7 @@ void createChangeItem(int changeID,
 // Parameter: changeItem (The change item object to store the retrieved data)
 // Parameter: product (The name of the product)
 // Returns: bool (true if retrieval was successful, false otherwise)
-bool retrieveChangeItemByKeyAndProduct(const char* filename, int changeID, ChangeItem& changeItem, char* product) {
+bool retrieveChangeItemByKeyAndProduct(int changeID, ChangeItem& changeItem, char* product) {
 	seekToBeginningOfChangeItemFile();
 
     // Read each product from the file and compare its name with the target name

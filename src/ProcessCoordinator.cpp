@@ -650,7 +650,7 @@ void handleChangeRequestMaintenance(int choice) {
 								// Check if the change item exists
 
 								isNumber = stringToInt(CIStringBuf,changeID);
-								CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+								CInotExists = !retrieveChangeItemByKey(changeID,tmpCI);
 								if (!isNumber) {
 									// Check if the string is a number
 									std::cout << "The change ID must be a number!" << std::endl;
@@ -659,7 +659,7 @@ void handleChangeRequestMaintenance(int choice) {
 								} else {
 									// Check if change items exists for the specified product
 									CInotExists = false;
-									CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+									CIOfProductExists = retrieveChangeItemByKeyAndProduct(changeID,tmpCI,productName);
 									if (!CIOfProductExists)
 									{
 										std::cout << "The change item must have your selected change ID 'and' product name.\n";
@@ -926,7 +926,7 @@ void handleChangeItemMaintenance(int choice) {
 						// Check if the change item exists
 
 						isNumber = stringToInt(CIStringBuf,changeID);
-						CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+						CInotExists = !retrieveChangeItemByKey(changeID,tmpCI);
 						if (!isNumber) {
 							// Check if the string is a number
 							std::cout << "The change ID must be a number!" << std::endl;
@@ -935,7 +935,7 @@ void handleChangeItemMaintenance(int choice) {
 						} else {
 							// Check if change items exists for the specified product
 							CInotExists = false;
-							CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+							CIOfProductExists = retrieveChangeItemByKeyAndProduct(changeID,tmpCI,productName);
 							if (!CIOfProductExists)
 							{
 								std::cout << "The change item must have your selected change ID 'and' product name.\n";
@@ -1074,7 +1074,7 @@ void handleChangeItemMaintenance(int choice) {
 						// Check if the change item exists
 
 						isNumber = stringToInt(CIStringBuf,changeID);
-						CInotExists = !retrieveChangeItemByKey("changeItems.dat",changeID,tmpCI);
+						CInotExists = !retrieveChangeItemByKey(changeID,tmpCI);
 						if (!isNumber) {
 							// Check if the string is a number
 							std::cout << "The change ID must be a number!" << std::endl;
@@ -1083,7 +1083,7 @@ void handleChangeItemMaintenance(int choice) {
 						} else {
 							// Check if change items exists for the specified product
 							CInotExists = false;
-							CIOfProductExists = retrieveChangeItemByKeyAndProduct("changeItems.dat",changeID,tmpCI,productName);
+							CIOfProductExists = retrieveChangeItemByKeyAndProduct(changeID,tmpCI,productName);
 							if (!CIOfProductExists)
 							{
 								std::cout << "The change item must have your selected change ID 'and' product name.\n";
