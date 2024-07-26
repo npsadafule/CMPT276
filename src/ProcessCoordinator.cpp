@@ -1105,20 +1105,20 @@ void handleChangeItemMaintenance(int choice) {
 					choiceUpdate = readIntegerInput(choiceUpdateDisp,0,3);
 					switch (choiceUpdate) {
 						case 1: { // Description
-							std::cout << "\nCurrent description: " << tmpCI.description << std::endl;
 							// Enter description for change item
 							do {
-								std::cout << "Enter the new description for the change item (max 30 char): \n";
+								std::cout << "\nCurrent description: " << tmpCI.description;
+								std::cout << "\nEnter the new description for the change item (max 30 char): \n";
 								std::cin.getline(description, CHANGE_DESC_LENGTH);
 
 								// Check if input length is valid
 								if (std::cin.fail()) {
 									std::cin.clear(); // Clear the fail state
 									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
-									std::cout << "Invalid input. Please enter 1 to 150 characters." << std::endl;
+									std::cout << "Invalid input. Please enter 1 to 30 characters." << std::endl;
 									CInotProperLen = true; // Continue the loop
 								} else if (strlen(description) == 0) {
-									std::cout << "Description cannot be empty. Please enter 1 to 150 characters." << std::endl;
+									std::cout << "Description cannot be empty. Please enter 1 to 30 characters." << std::endl;
 									CInotProperLen = true; // Continue the loop
 								} else {
 									CInotProperLen = false;
@@ -1130,8 +1130,8 @@ void handleChangeItemMaintenance(int choice) {
 							break;
 						}
 						case 2: { // State
-							std::cout << "\nCurrent state: " << tmpCI.state << std::endl;
 							do {
+								std::cout << "\nCurrent state: " << tmpCI.state << std::endl;
 								std::cout << "Options for state include: 'Reported', 'Assessed', 'InProgress', 'Done', and 'Cancelled'." << std::endl;
 								std::cout << "Enter the new state of the change item (max 10 char):\n";
 								std::cin.getline(state, STATE_LENGTH);
@@ -1158,8 +1158,8 @@ void handleChangeItemMaintenance(int choice) {
 							// Ask for a release ID
 							do {
 								productReleaseFileDisplay20OrLess(RRPage,productName);
-								std::cout << "Current anticipated release ID: " << tmpCI.anticipatedReleaseID << std::endl;
-								std::cout << "Enter the new anticipated release ID for the change item (max 8 char, from the list): \n";
+								std::cout << "Current anticipated release ID: " << tmpCI.anticipatedReleaseID;
+								std::cout << "\nEnter the new anticipated release ID for the change item (max 8 char, from the list): \n";
 								std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 								// Check if input length is valid
