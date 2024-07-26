@@ -185,6 +185,14 @@ void repeatUpdate() {
 	std::cout << "\nDo you wish to update another Change Item? (1 for Y, 0 for N)?\n";
 }
 
+// Display functions for Scenario 4.6
+// ============================================
+// ---------------------------------------------------------
+// Function: repeatGen1
+void repeatGen1() {
+	std::cout << "\nDo you wish to generate another Report #1 (1 for Y, 0 for N)?\n";
+}
+
 // Functions for Executing Scenarios
 // ============================================
 // ---------------------------------------------------------
@@ -1225,14 +1233,112 @@ void handleChangeItemMaintenance(int choice) {
 void handleReportGeneration(int choice) {
     switch (choice) {
         case 1: {
-		// Scenario 4.6: Report #1: List of All Change Items for a 
-		// Particular Product that are Not Done and Not Cancelled
-            std::string productName;
-            std::cout << "Enter the product name to generate Report #1: ";
-            std::getline(std::cin, productName);
-            generateReport1(productName);
-            break;
-        }
+			// Scenario 4.6: Report #1: List of All Change Items for a 
+			// Particular Product that are Not Done and Not Cancelled
+						// Scenario 4.4: Querying Change Items
+
+			// Variables
+			// General
+			bool repeat = false;
+			int choiceRepeat;
+			// Storage
+            char productName[PRODUCT_NAME_LENGTH];
+			int changeID;
+			// Get an existing product
+			Product tmpProd;
+			int productPage = 1;
+			int PnotProperLen;
+			int PnotExists;
+			// Get a change item based on product
+			const int INPUT_BUF_LEN = 4 +1;
+			ChangeItem tmpCI;
+			int CIPage = 1;
+			char inputBuf[INPUT_BUF_LEN];
+			bool isNumber;
+			int CInotExists;
+			int CInotProperLen;
+			int CIOfProductExists;
+			// Flags
+			bool exitFlag = false;
+
+			// For repeating the scenario
+			do {
+				exitFlag = false;
+				// Get the product
+				do {
+					productFileDisplay20OrLess(productPage);
+					std::cout << "Select the product your change item is for by entering its name (max 10 char, must " 
+								 "pre-exist):\n";
+					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+
+					// Check if input length is valid
+					if (strcmp(productName,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(productName,"<") == 0) {
+						productPage--;
+					} else if (std::strcmp(productName,">") == 0) {
+						productPage++;
+					} else if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "Invalid input. Please enter 1 to 10 characters." << std::endl;
+						PnotProperLen = true; // Continue the loop
+						PnotExists = false; // Reset PnotExists flag
+					} else if (strlen(productName) == 0) {
+						std::cout << "Product name cannot be empty. Please enter 1 to 10 characters." << std::endl;
+						PnotProperLen = true; // Continue the loop
+						PnotExists = false; // Reset PnotExists flag
+					} else {
+						// Check if the product exists
+						PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						if (PnotExists) {
+							std::cout << "The product must exist!" << std::endl;
+						}
+						PnotProperLen = false; // Exit the loop if both conditions are false
+					}
+				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
+				if (exitFlag) break;
+			
+				// Print the report
+				// Get the change ID based on product choice
+				do {
+					generateReport1(CIPage,productName);
+					std::cin.getline(inputBuf, INPUT_BUF_LEN);
+
+					// Check if input length is valid
+					if (strcmp(inputBuf,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(inputBuf,"<") == 0) {
+						CIPage--;
+					} else if (std::strcmp(inputBuf,">") == 0) {
+						CIPage++;
+					} else if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "Invalid input. Please enter 1 to 4 charactters." << std::endl;
+						CInotProperLen = true; // Continue the loop
+						CInotExists = false; // Reset CInotExists flag
+					} else if (strlen(inputBuf) == 0) {
+						std::cout << "Input cannot be empty. Please enter 1 to 4 characters." << std::endl;
+						CInotProperLen = true; // Continue the loop
+						CInotExists = false; // Reset CInotExists flag
+					} else {
+						std::cout << "Please enter input from the given options." << std::endl;
+					}
+				} while (!exitFlag);
+
+				// Ask if they want to generate another report
+				choiceRepeat = readIntegerInput(repeatGen1,NO,YES);
+				if (choiceRepeat == YES) {
+					repeat = true;
+				} else {
+					repeat = false;
+				}
+			} while (repeat);
+			break;
+       	}
         case 2: {
 		// Scenario 4.7: Report #2: List of Customers/Staff Who Need to Be Informed When
 		// a Particular Change Has Been Implemented, and in What ProductRelease ID

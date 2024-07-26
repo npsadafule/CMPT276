@@ -64,9 +64,10 @@ bool getNextReport(
 
 // ---------------------------------------------------------
 // Generates a report based on the product name
-void generateReport1(
+int generateReport1(
     // Parameter: productName (The name of the product)
-    const std::string& productName    // in
+    int& page,
+	const char* productName    // in
 );
 
 // ---------------------------------------------------------

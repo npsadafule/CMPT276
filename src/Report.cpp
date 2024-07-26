@@ -70,28 +70,80 @@ bool getNextReport(Report& report) {
 // Function: generateReport1
 // Generates a report listing all change items for a specific product that are not done and not cancelled
 // Prints the report to standard output
-void generateReport1(const std::string& productName) {
-    ChangeItem changeItem;
-    seekToBeginningOfChangeItemFile();
-    
-    std::cout << "Report #1: List of All Change Items for " << productName << " that are Not Done and Not Cancelled\n";
-    bool found = false;
-    while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
-        if ((std::strcmp(changeItem.productName, productName.c_str()) == 0) &&
-            (std::strcmp(changeItem.state, "Done") != 0) && 
-            (std::strcmp(changeItem.state, "Cancelled") != 0)) {
-            std::cout << "Change ID: " << changeItem.changeID 
-					  << ", Product name: " << changeItem.productName
-                      << ", Description: " << changeItem.description 
-                      << ", State: " << changeItem.state 
-                      << ", Anticipated Release ID: " << changeItem.anticipatedReleaseID << "\n";
-            found = true;
-        }
-    }
+int generateReport1(int& page,const char* productName) {
+	// Displays up to 20 module objects from the specified page of the module file.
+    // Returns the number of modules displayed or -1 if the file cannot be opened.
+    // Parameter: page (The page number to display)
+    // Parameter: filename (The name of the module file)
+	
+	// Constants
+	static const int ITEMS_PER_PAGE = 20;	// static
+
+	// Variables
+	int modulePages;
+	ChangeItem tmpModule;
+
+	// Find the total number of items on file
+	seekToBeginningOfChangeItemFile();
+	int counter = 0;
+	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem))) {
+		if (strcmp(tmpModule.productName,productName) == 0) {
+			counter++;
+		}
+	}
 	changeItemFile.clear();
-    if (!found) {
-        std::cerr << "No matching change items found for product: " << productName << ".\n";
-    }
+	// std::cout << "total entries " << std::to_string(counter) << std::endl;
+
+	// Calculate the total number of pages
+	modulePages = (counter + ITEMS_PER_PAGE-1) / ITEMS_PER_PAGE;
+	// std::cout << "total pages " << std::to_string(modulePages) << std::endl;
+
+	// Handle no items case
+	if (modulePages == 0) {
+		modulePages = 1;
+	}
+
+	// Determine if the provided page is valid
+	if ((page < 1) || (page > modulePages)) {
+		if (page < 1) {
+			page++;
+			std::cout << "No previous pages exist!" << std::endl;
+		} else {
+			page--;
+			std::cout << "No next pages exist!" << std::endl;
+		}
+	} 
+
+	// Display the selected page
+	// Loop forward by the number of pages on the file so that the next read is the
+	// desired page
+	seekToBeginningOfChangeItemFile();
+	changeItemFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(ChangeItem),std::ios::cur);
+	// std::cout << "end of getting to page" << std::endl;
+
+	// Print the page
+	int pageRecordsCount = 0;
+	std::cout << std::endl;
+	std::cout << "Product A Report #1" << std::endl;
+	std::cout << "Page " << page << "/" << modulePages << std::endl;
+	std::cout << "                                                                     Anticipated" << std::endl;
+	std::cout << "  Product     Description                     Change ID  State       Release ID" << std::endl;
+	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
+		  (pageRecordsCount < ITEMS_PER_PAGE)) {
+		if ((strcmp(tmpModule.productName,productName) == 0) &&
+			!(strcmp(tmpModule.state,"Done") == 0) &&
+			!(strcmp(tmpModule.state,"Cancelled") == 0)) {
+			std::cout << "- ";
+			displayChangeItem(tmpModule);
+			pageRecordsCount++;
+		}
+	}
+	changeItemFile.clear();
+	std::cout << "Enter ‘Exit’ to stop viewing the generated Report #1." << std::endl;
+	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
+
+	
+	return pageRecordsCount;
 }
 
 // ---------------------------------------------------------
