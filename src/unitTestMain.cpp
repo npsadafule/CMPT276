@@ -244,7 +244,7 @@ void testCreateRequester() {
     // Loop forward by the number of test requesters to retrieve them from file 
     for (int i=0; i<2; i++) {
 		// Perform the retrieval
-		retrieveRequesterByKey("requestersFile.dat", reqTest[i].reqName, displayReq);
+		retrieveRequesterByKey(reqTest[i].reqName, displayReq);
 		
 		// Count if desired product release was retrieved
 		if ((std::strcmp(displayReq.reqName, reqTest[i].reqName) == STRCMP_TRUE)) {

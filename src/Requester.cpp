@@ -13,7 +13,6 @@
 #include <vector>
 #include <iostream>
 
-
 // extern std::vector<User> users;
 extern std::fstream requesterFile;
 
@@ -150,7 +149,7 @@ int requesterFileDisplay20OrLess(int& page) {
 
 // ---------------------------------------------------------
 // Function: retrieveRequesterByKey
-bool retrieveRequesterByKey(const char* filename, const char* reqName, Requester& requester) {
+bool retrieveRequesterByKey(const char* reqName, Requester& requester) {
     // Retrieves a Requester object from the requester file by matching reqName.
     // Returns true and stores the retrieved Requester in 'requester' if found; otherwise, returns false.
     // Parameter: filename (The name of the requester file)

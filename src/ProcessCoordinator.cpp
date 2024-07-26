@@ -484,7 +484,7 @@ void handleChangeRequestMaintenance(int choice) {
 								ERnotExists = false; // Reset ERnotExists flag
 							} else {
 								// Check if the requester exists
-								ERnotExists = !retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+								ERnotExists = !retrieveRequesterByKey(requester, tmpRequester);
 								if (ERnotExists) {
 									std::cout << "The Requester must exist!" << std::endl;
 								}
@@ -511,7 +511,7 @@ void handleChangeRequestMaintenance(int choice) {
 								CRexists = false; // Reset CRexists flag
 							} else {
 								// Check if the requester already exists
-								CRexists = retrieveRequesterByKey("requestersFile.dat", requester, tmpRequester);
+								CRexists = retrieveRequesterByKey(requester, tmpRequester);
 								if (CRexists) {
 									std::cout << "The requester already exists!" << std::endl;
 								}

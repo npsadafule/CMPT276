@@ -73,7 +73,6 @@ bool retrieveRequesterByKey(
     // Parameter: reqName (The primary key of the Requester)
     // Parameter: requester (The Requester object to store the retrieved data)
     // Returns: bool (true if retrieval was successful, false otherwise)
-    const char* filename,  // in
     const char* reqName,  // in
     Requester& requester  // out
 );
