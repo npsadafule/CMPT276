@@ -80,7 +80,7 @@ void testCreateProductRelease() {
     // Loop forward by the number of test entries of product releases that need to be retrieved
     for (int i = 0; i < NUM_TEST_PR; ++i) {
         // Retrieve product release from file
-        retrieveProductReleaseByKey("productReleases.dat", attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
+        retrieveProductReleaseByKey(attributes[i][PR_NAME], attributes[i][PR_RELEASE_ID], productRelease);
 
         // Check if the retrieved product release matches the expected attributes
         if ((std::strcmp(productRelease.productName, attributes[i][PR_NAME]) == STRCMP_TRUE) &&

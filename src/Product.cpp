@@ -150,7 +150,7 @@ int productFileDisplay20OrLess(int& page) {
 
 // ---------------------------------------------------------
 // Function: retrieveProductByName
-bool retrieveProductByName(const char* filename, const char* productName, Product& product) {
+bool retrieveProductByName(const char* productName, Product& product) {
     // Retrieves a product from the product file by its name
     // Parameters:
     //   filename (The name of the file to retrieve the product from)
@@ -354,7 +354,7 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 
 // ---------------------------------------------------------
 // Function: retrieveProductReleaseByKey
-bool retrieveProductReleaseByKey(const char* filename, const char* productReleaseName, const char* releaseID, ProductRelease& productRelease) {
+bool retrieveProductReleaseByKey(const char* productReleaseName, const char* releaseID, ProductRelease& productRelease) {
     ProductRelease tmpProductRelease;
 
 	seekToBeginningOfProductReleaseFile();

@@ -68,7 +68,7 @@ void testCreateProduct() {
     createProduct(testString);
 
 	// Read "joey" out of file
-	retrieveProductByName("products.dat", testString, product2);
+	retrieveProductByName(testString, product2);
 
 	std::cout << "AFTER TEST: The product we retrieved and stored into our empty product is named " << 
 				 '"' << product2.name << '"' << std::endl;
@@ -111,7 +111,7 @@ void testCreateProduct() {
         // // Loop forward by the numbre of test products we have to retrieve them from file
 	// for (int i=0; i<5; i++)
 	// {
-	// 	retrieveProductByName("products.dat", attributes[i], product2);
+	// 	retrieveProductByName(attributes[i], product2);
 	// 	std::cout << product2.name << std::endl;
 	// }
 	// std::cout << "AFTER TEST: The product we retrieved and stored into our empty product is named " << 

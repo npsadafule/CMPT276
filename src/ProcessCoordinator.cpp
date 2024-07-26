@@ -231,7 +231,7 @@ void handleProductMaintenance(int choice) {
 						exists = false; // Reset exists flag
 					} else {
 						// Check if the product already exists
-						exists = retrieveProductByName("products.dat", productName, tmpProd);
+						exists = retrieveProductByName(productName, tmpProd);
 						if (exists) {
 							std::cout << "The product already exists!" << std::endl;
 						}
@@ -297,7 +297,7 @@ void handleProductMaintenance(int choice) {
 							notExists = false; // Reset notExists flag
 						} else {
 							// Check if the product exists
-							notExists = !retrieveProductByName("products.dat", productName, tmpProd);
+							notExists = !retrieveProductByName(productName, tmpProd);
 							if (notExists) {
 								std::cout << "The product must exist!" << std::endl;
 							}
@@ -327,7 +327,7 @@ void handleProductMaintenance(int choice) {
 					} while (notProperLen);
 
 					// Check for uniquenes by product release ID
-					ifUniqueProdRel = retrieveProductReleaseByKey("productReleases.dat", productName, releaseID, tmpRel);
+					ifUniqueProdRel = retrieveProductReleaseByKey(productName, releaseID, tmpRel);
 					if (ifUniqueProdRel)
 					{
 						std::cout << "You must enter a product release that has a unique compound primary key " 
@@ -609,7 +609,7 @@ void handleChangeRequestMaintenance(int choice) {
 							PnotExists = false; // Reset PnotExists flag
 						} else {
 							// Check if the product exists
-							PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
+							PnotExists = !retrieveProductByName(productName, tmpProd);
 							if (PnotExists) {
 								std::cout << "The product must exist!" << std::endl;
 							}
@@ -721,7 +721,7 @@ void handleChangeRequestMaintenance(int choice) {
 							} else {
 								CInotProperLen = false;
 								// After verifying the input length, check if this release ID exists
-								releaseIDExists = retrieveProductReleaseByKey("productReleases.dat",productName,anticipatedReleaseID,tmpPR);
+								releaseIDExists = retrieveProductReleaseByKey(productName,anticipatedReleaseID,tmpPR);
 								if (!releaseIDExists)
 								{
 									std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
@@ -776,7 +776,7 @@ void handleChangeRequestMaintenance(int choice) {
 					} else {
 						RIDnotProperLen = false;
 						// After verifying the input length, check if this release ID exists
-						RIDExists = retrieveProductReleaseByKey("productReleases.dat",productName,reportedRelease,tmpPR);
+						RIDExists = retrieveProductReleaseByKey(productName,reportedRelease,tmpPR);
 						if (!RIDExists)
 						{
 							std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
@@ -889,7 +889,7 @@ void handleChangeItemMaintenance(int choice) {
 						PnotExists = false; // Reset PnotExists flag
 					} else {
 						// Check if the product exists
-						PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						PnotExists = !retrieveProductByName(productName, tmpProd);
 						if (PnotExists) {
 							std::cout << "The product must exist!" << std::endl;
 						}
@@ -1037,7 +1037,7 @@ void handleChangeItemMaintenance(int choice) {
 						PnotExists = false; // Reset PnotExists flag
 					} else {
 						// Check if the product exists
-						PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						PnotExists = !retrieveProductByName(productName, tmpProd);
 						if (PnotExists) {
 							std::cout << "The product must exist!" << std::endl;
 						}
@@ -1182,7 +1182,7 @@ void handleChangeItemMaintenance(int choice) {
 								} else {
 									RIDnotProperLen = false;
 									// After verifying the input length, check if this release ID exists
-									releaseIDExists = retrieveProductReleaseByKey("productReleases.dat",productName,anticipatedReleaseID,tmpPR);
+									releaseIDExists = retrieveProductReleaseByKey(productName,anticipatedReleaseID,tmpPR);
 									if (!releaseIDExists)
 									{
 										std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
@@ -1243,7 +1243,6 @@ void handleReportGeneration(int choice) {
 			int choiceRepeat;
 			// Storage
             char productName[PRODUCT_NAME_LENGTH];
-			int changeID;
 			// Get an existing product
 			Product tmpProd;
 			int productPage = 1;
@@ -1251,13 +1250,8 @@ void handleReportGeneration(int choice) {
 			int PnotExists;
 			// Get a change item based on product
 			const int INPUT_BUF_LEN = 4 +1;
-			ChangeItem tmpCI;
 			int CIPage = 1;
 			char inputBuf[INPUT_BUF_LEN];
-			bool isNumber;
-			int CInotExists;
-			int CInotProperLen;
-			int CIOfProductExists;
 			// Flags
 			bool exitFlag = false;
 
@@ -1291,7 +1285,7 @@ void handleReportGeneration(int choice) {
 						PnotExists = false; // Reset PnotExists flag
 					} else {
 						// Check if the product exists
-						PnotExists = !retrieveProductByName("products.dat", productName, tmpProd);
+						PnotExists = !retrieveProductByName(productName, tmpProd);
 						if (PnotExists) {
 							std::cout << "The product must exist!" << std::endl;
 						}
@@ -1318,12 +1312,8 @@ void handleReportGeneration(int choice) {
 						std::cin.clear(); // Clear the fail state
 						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
 						std::cout << "Invalid input. Please enter 1 to 4 charactters." << std::endl;
-						CInotProperLen = true; // Continue the loop
-						CInotExists = false; // Reset CInotExists flag
 					} else if (strlen(inputBuf) == 0) {
 						std::cout << "Input cannot be empty. Please enter 1 to 4 characters." << std::endl;
-						CInotProperLen = true; // Continue the loop
-						CInotExists = false; // Reset CInotExists flag
 					} else {
 						std::cout << "Please enter input from the given options." << std::endl;
 					}

@@ -75,7 +75,6 @@ bool retrieveProductByName(
     // Parameter: productName (The name of the Product)
     // Parameter: product (The Product object to store the retrieved data)
     // Returns: bool (true if retrieval was successful, false otherwise)
-    const char* filename,    // in   
     const char* productName,    // in
     Product& product    // out
 );
@@ -132,7 +131,6 @@ bool retrieveProductReleaseByKey(
     // Parameter: releaseID (The release ID of the ProductRelease)
     // Parameter: productRelease (The ProductRelease object to store the retrieved data)
     // Returns: bool (true if retrieval was successful, false otherwise)
-    const char* filename,     // in
     const char* productReleaseName,    // in
     const char* releaseID,    // in
     ProductRelease& productRelease    // out
