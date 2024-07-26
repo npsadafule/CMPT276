@@ -17,6 +17,7 @@
 #include "Requester.h"
 #include "SystemController.h"
 #include "ChangeItem.h"
+#include "ProcessCoordinator.h"
 
 // Non-exported module-scope constant
 static const int STRCMP_TRUE = 0;
@@ -345,15 +346,67 @@ void testCreateChangeRequest() {
 	closeChangeRequestFile();
 }
 
+
+// ---------------------------------------------------------
+// Function: generateData
+void generateData() {
+	initRequester();
+    initProduct();
+    initChangeRequest();
+    initChangeItem();
+    initReportGen();
+    initHighestCID();
+    storeHighestCID();
+
+	// Define the base string
+    const char* base_string = "Item";
+
+    // Define the number of strings to generate
+    const int num_strings = 21;
+
+    // Loop to generate and print C-style strings
+    for (int i = 1; i <= num_strings; ++i) {
+        // Create a buffer to hold the generated string (enough space for base + number + null terminator)
+        char generated_string[10];  // Adjust size as needed
+
+        // Generate the string
+        snprintf(generated_string, sizeof(generated_string), "%s%d", base_string, 1);
+
+        // Product
+        createProduct(generated_string);
+
+		// ProductRelease
+		createProductRelease(generated_string,generated_string,generated_string);
+
+		// ChangeItem
+		createChangeItem(i+21,generated_string,generated_string,generated_string,generated_string);
+		
+		// Requester
+		createRequester(generated_string,generated_string,generated_string,generated_string);
+
+		// ChangeRequestFile
+		createChangeRequest(generated_string,i,generated_string,generated_string,"A");
+    }
+
+	closeProductFile();
+	closeProductReleaseFile();
+	closeChangeItemFile();
+	closeRequesterFile();
+	closeChangeRequestFile();
+}
+
+
 // ---------------------------------------------------------
 // Function: runAllTests
 void runAllTests() {
     // Runs all defined test functions.
-    testCreateProduct();
+    // testCreateProduct();
 	// std::cout << "========================================" << std::endl;
 	// testCreateChangeItem();
 	// std::cout << "========================================" << std::endl;
 	// testCreateRequester();
 	// std::cout << "========================================" << std::endl;
 	// testCreateChangeRequest();
+	// std::cout << "========================================" << std::endl;
+	generateData();
 }
