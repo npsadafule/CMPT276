@@ -66,7 +66,6 @@ bool retrieveChangeRequestByKey(
     // Parameter: changeID (The primary key of the ChangeItem)
     // Parameter: changeRequest (The ChangeRequest object to store the retrieved data)
     // Returns: bool (true if retrieval was successful, false otherwise)
-    const char* filename,    // in
     const char* reqName,    // in
     const int changeID,    // in
     ChangeRequest& changeRequest    // out

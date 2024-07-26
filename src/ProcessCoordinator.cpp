@@ -740,7 +740,7 @@ void handleChangeRequestMaintenance(int choice) {
 					if (exitFlag) break;
 
 					// Check if the change request being made is a duplicate
-					if (retrieveChangeRequestByKey("changerequests.dat",requester,changeID,tmpCR)) {
+					if (retrieveChangeRequestByKey(requester,changeID,tmpCR)) {
 						std::cout << "The change request you create cannot already exist "
 									 "(i.e., match with an existing change reqeust's requester name and change ID)!" << std::endl << std::endl;
 						duplicateFlag = true;

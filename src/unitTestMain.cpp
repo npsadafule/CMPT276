@@ -311,8 +311,7 @@ void testCreateChangeRequest() {
     // Loop forward by the number of test change requests to retrieve them from file
     for (int i=0; i<2; i++) {
 		// Perform the retrieval
-		retrieveChangeRequestByKey("changeRequests.dat", 
-								   CRTest[i].requesterName,
+		retrieveChangeRequestByKey(CRTest[i].requesterName,
 								   CRTest[i].changeID,
 								   displayCR);
 		

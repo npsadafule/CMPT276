@@ -84,7 +84,7 @@ bool getNextChangeRequest(ChangeRequest& changeRequest) {
 
 // ---------------------------------------------------------
 // Function: retrieveChangeRequestByKey
-bool retrieveChangeRequestByKey(const char* filename, const char* reqName, const int changeID, ChangeRequest& changeRequest) {
+bool retrieveChangeRequestByKey(const char* reqName, const int changeID, ChangeRequest& changeRequest) {
     // Retrieves a change request by requester name and change ID
     // Parameter: filename (The name of the file to read change requests from)
     // Parameter: reqName (The requester name)
