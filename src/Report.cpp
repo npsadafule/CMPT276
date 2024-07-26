@@ -179,7 +179,7 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
         return;
     }
 
-	// Find the matching change request
+    // Find the matching change request
     seekToBeginningOfChangeRequestFile();
     std::vector<std::string> requesterNames;
     while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
@@ -196,11 +196,11 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
 
     seekToBeginningOfRequesterFile();
     std::vector<Requester> relatedRequesters;
-	// For each requester stored
+    // For each requester stored
     while (requesterFile.read(reinterpret_cast<char*>(&requester), sizeof(Requester))) {
         // For each 'requester name' attached to the selected change item
-		for (const auto& name : requesterNames) {
-			// Store the 'requester'
+        for (const auto& name : requesterNames) {
+            // Store the 'requester'
             if (std::strcmp(requester.reqName, name.c_str()) == 0) {
                 relatedRequesters.push_back(requester);
                 requesterFound = true;
@@ -213,10 +213,20 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
         return;
     }
 
-    // Generate the report
-    std::cout << "Report #2: List of Customers/Staff Who Need to Be Informed When a Particular Change Has Been Implemented\n";
-    // Print each relevant requester's name and email
-	for (const auto& req : relatedRequesters) {
-        std::cout << "Name: " << req.reqName << ", Email: " << req.email << "\n";
+    // Generate the formatted report
+    std::cout << "Product A Report #2 for Change Item " << changeID << "\n\n";
+    std::cout << "Details of the Current Change Item:\n";
+    std::cout << changeItem.productName << ", " << changeItem.description << ", " << changeItem.changeID
+              << ", " << changeItem.state << ", " << changeItem.anticipatedReleaseID << "\n";
+    std::cout << "(Product, Description, Change ID, State, Anticipated Release ID)\n\n";
+    std::cout << "The following customers will be informed that their Change Request for\n";
+    std::cout << "Change Item " << changeID << " of " << changeItem.productName << " was implemented. They will be able to see\n";
+    std::cout << "the changes made on Release " << newReleaseID << " of ITS on 2024-07-23.\n\n";
+
+    std::cout << "    Requestor        Email\n";
+    int count = 1;
+    for (const auto& req : relatedRequesters) {
+        std::cout << count << ")  " << req.reqName << "     " << req.email << "\n";
+        ++count;
     }
 }
