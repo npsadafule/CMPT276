@@ -373,7 +373,7 @@ void generateData() {
 
         // Generate the string
         snprintf(generated_string, sizeof(generated_string), "%s%d", base_string, 1);
-		snprintf(generated_string, sizeof(generated_string), "%s%d", base_string, i);
+		snprintf(generated_string1, sizeof(generated_string), "%s%d", base_string, i+21);
 
         // Product
         createProduct(generated_string);
