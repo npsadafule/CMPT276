@@ -158,21 +158,32 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	// Loop forward by the number of pages on the file so that the next read is the
 	// desired page
 	seekToBeginningOfChangeItemFile();
-	changeItemFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(ChangeItem),std::ios::cur);
+	// Skip 20 * "number of pages to flip" records that have the given product
+	if ((page-1) != 0) {
+		int pageRecordsCount0 = 0;
+		while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
+			(pageRecordsCount0 < (page-1)*(ITEMS_PER_PAGE))) {
+			if (strcmp(tmpModule.productName,productName) == 0) {
+				pageRecordsCount0++;
+				if (pageRecordsCount0 == (page-1)*ITEMS_PER_PAGE) break;
+			}
+		}
+		changeItemFile.clear();
+	}
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
-	int pageRecordsCount = 0;
+	int pageRecordsCount1 = 0;
 	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	std::cout << "                                                                     Anticipated" << std::endl;
 	std::cout << "  Product     Description                     Change ID  State       Release ID" << std::endl;
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
-		  (pageRecordsCount < ITEMS_PER_PAGE)) {
+		  (pageRecordsCount1 < ITEMS_PER_PAGE)) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
 			std::cout << "- ";
 			displayChangeItem(tmpModule);
-			pageRecordsCount++;
+			pageRecordsCount1++;
 		}
 	}
 	changeItemFile.clear();
@@ -180,7 +191,7 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	std::cout << "If previous/next pages exist, enter ‘<’ for the previous page and ‘>’ for the next page." << std::endl;
 
 	
-	return pageRecordsCount;
+	return pageRecordsCount1;
 }
 
 // ---------------------------------------------------------

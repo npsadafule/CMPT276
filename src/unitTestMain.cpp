@@ -369,17 +369,20 @@ void generateData() {
         // Create a buffer to hold the generated string (enough space for base + number + null terminator)
         char generated_string[10];  // Adjust size as needed
 
+		char generated_string1[10];  // Adjust size as needed
+
         // Generate the string
         snprintf(generated_string, sizeof(generated_string), "%s%d", base_string, 1);
+		snprintf(generated_string, sizeof(generated_string), "%s%d", base_string, i);
 
         // Product
         createProduct(generated_string);
 
 		// ProductRelease
-		createProductRelease(generated_string,generated_string,generated_string);
+		createProductRelease(generated_string,generated_string1,generated_string);
 
 		// ChangeItem
-		createChangeItem(i+21,generated_string,generated_string,generated_string,generated_string);
+		createChangeItem(i+63,generated_string,generated_string,generated_string,generated_string);
 		
 		// Requester
 		createRequester(generated_string,generated_string,generated_string,generated_string);
