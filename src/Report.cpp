@@ -5,6 +5,7 @@
 #include "ChangeItem.h"
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 // File handling functions
 std::fstream reportFile;
@@ -233,19 +234,20 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
     }
 
     // Generate the formatted report
-    std::cout << "Product " << productName << " Report #2 for Change Item " << changeID << "\n\n";
+	std::cout << std::endl;
+    std::cout << productName << " Report #2 for Change Item " << changeID << "\n\n";
     std::cout << "Details of the Current Change Item:\n";
     std::cout << changeItem.productName << ", " << changeItem.description << ", " << changeItem.changeID
               << ", " << changeItem.state << ", " << changeItem.anticipatedReleaseID << "\n";
     std::cout << "(Product, Description, Change ID, State, Anticipated Release ID)\n\n";
     std::cout << "The following customers will be informed that their Change Request for\n";
     std::cout << "Change Item " << changeID << " of " << changeItem.productName << " was implemented. They will be able to see\n";
-    std::cout << "the changes made on Release " << newReleaseID << " of ITS on 2024-07-23.\n\n";
+    std::cout << "the changes made on Release " << newReleaseID << " of ITS on " << productRelease.releaseDate << ".\n\n";
 
-    std::cout << "    Requestor        Email\n";
+    std::cout << "   Requestor                       Email\n";
     int count = 1;
     for (const auto& req : relatedRequesters) {
-        std::cout << count << ")  " << req.reqName << "     " << req.email << "\n";
+        std::cout << std::left << count << ") " << std::setw(30) << req.reqName << "  " << std::setw(24) << req.email << "\n";
         ++count;
     }
 }
