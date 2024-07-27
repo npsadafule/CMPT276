@@ -119,7 +119,18 @@ int generateReport1(int& page,const char* productName) {
 	// Loop forward by the number of pages on the file so that the next read is the
 	// desired page
 	seekToBeginningOfChangeItemFile();
-	changeItemFile.seekp((page-1)*ITEMS_PER_PAGE*sizeof(ChangeItem),std::ios::cur);
+	// Skip 20 * "number of pages to flip" records that have the given product
+	if ((page-1) != 0) {
+		int pageRecordsCount0 = 0;
+		while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
+			(pageRecordsCount0 < (page-1)*(ITEMS_PER_PAGE))) {
+			if (strcmp(tmpModule.productName,productName) == 0) {
+				pageRecordsCount0++;
+				if (pageRecordsCount0 == (page-1)*ITEMS_PER_PAGE) break;
+			}
+		}
+		changeItemFile.clear();
+	}
 	// std::cout << "end of getting to page" << std::endl;
 
 	// Print the page
