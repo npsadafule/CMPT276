@@ -118,7 +118,7 @@ void requesterOptions() {
 // Function: reqSearchChoice
 // Prompts the user to enter an existing requester or create a new one
 void reqSearchChoice() {
-	std::cout << "Enter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
+	std::cout << "\nEnter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
 }
 
 // ---------------------------------------------------------
@@ -389,8 +389,6 @@ void handleChangeRequestMaintenance(int choice) {
 
 	static const int ENTER_CI = 1;
 	static const int CREATE_CI = 2;
-
-	std::cout << std::endl;
 
     switch (choice) {
         case 1: {
