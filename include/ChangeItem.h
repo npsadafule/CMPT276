@@ -36,7 +36,7 @@ const char* intToCString(
     // Parameter: number (The integer to convert)
     // Returns: const char* (The resulting C-style string)
     // Essentially for displaying changeIDs
-    int number
+    int number	// in
 ); 
 
 // ---------------------------------------------------------
@@ -117,8 +117,8 @@ bool updateChangeItem(
     // Parameter: origChangeID (The original ID of the ChangeItem)
     // Parameter: changeItem (The ChangeItem with updated information)
     // Returns: bool (true if update was successful, false otherwise)
-    int origChangeID,
-    ChangeItem& changeItem
+    int origChangeID,	// in
+    ChangeItem& changeItem	// in
 );
 
 // ---------------------------------------------------------

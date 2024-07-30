@@ -19,9 +19,9 @@
 // freqeuntly to ensure proper user input.
 
 // Static constants
-static const int YES = 1;
-static const int NO = 0;
-static const int CI_STRING_BUF_LEN = 6 +1;
+static const int YES = 1;	// Used to confirm a decision prompt
+static const int NO = 0;	// Used to reject a decision prompt
+static const int CI_STRING_BUF_LEN = 6 +1;	// Used for requesting a change ID from the user
 
 // Files
 extern std::fstream productReleaseFile;
@@ -38,10 +38,11 @@ extern int globalHighestCID;
 // General functions
 // ---------------------------------------------------------
 // Function: getTodaysDate
-// Retrieves the current date in the format YYYYMMDD
-// Parameter: dateStr (Buffer to store the formatted date)
-// Parameter: size (Size of the buffer)
 void getTodaysDate(char* dateStr, size_t size) {
+	// Retrieves the current date in the format YYYYMMDD
+	// Parameter: dateStr (Buffer to store the formatted date)
+	// Parameter: size (Size of the buffer)
+
     // Get the current time
     std::time_t t = std::time(nullptr);
     std::tm* now = std::localtime(&t);
@@ -52,8 +53,8 @@ void getTodaysDate(char* dateStr, size_t size) {
 
 // ---------------------------------------------------------
 // Function: stringToInt
-// Not using "atoi" because failure output (i.e., 0) does not work with existing code
 bool stringToInt(const char* str, int& result) {
+	// Not using "atoi" because failure output (i.e., 0) does not work with existing code
     // Check for an empty string
     if (str == nullptr || std::strlen(str) == 0) {
         return false;
@@ -75,15 +76,15 @@ bool stringToInt(const char* str, int& result) {
 // ============================================
 // ---------------------------------------------------------
 // Function: confirmAddingProduct
-// Prompts the user to confirm adding a product
 void confirmAddingProduct() {
+	// Prompts the user to confirm adding a product
 	std::cout << "\nAre you sure you want to add the product (1 for Y, 0 for N)?\n";
 }
 
 // ---------------------------------------------------------
 // Function: doYouWantAnotherProduct
-// Prompts the user to confirm adding another product
 void doYouWantAnotherProduct() {
+	// Prompts the user to confirm adding another product
 	std::cout << "\nDo you wish to add another product (1 for Y, 0 for N)?\n";
 }
 
@@ -91,61 +92,52 @@ void doYouWantAnotherProduct() {
 // ============================================
 // ---------------------------------------------------------
 // Function: confirmAddingProdRel
-// Prompts the user to confirm adding a product release
 void confirmAddingProdRel() {
+	// Prompts the user to confirm adding a product release
 	std::cout << "\nAre you sure you want to add this product release (1 for Y, 0 for N)?\n";
 }
 
 // ---------------------------------------------------------
 // Function: doYouWantAnotherProdRel
-// Prompts the user to confirm adding another product release
 void doYouWantAnotherProdRel() {
+	// Prompts the user to confirm adding another product release
 	std::cout << "\nDo you wish to add another release (1 for Y, 0 for N)?\n";
 }
 
 // Display functions for Scenario 4.3
 // ============================================
 // ---------------------------------------------------------
-// Function: requesterOptions
-// Displays the options for navigating requesters
-void requesterOptions() {
-	std::cout << "=== Enter '" << std::to_string(entryCount+1) << "' for previous 20 items, '" <<
-				 std::to_string(entryCount+2) << "' for next 20 items ===" << std::endl <<
-				 "=== 0 (zero) for exiting the list ===" << std::endl;
-}
-
-// ---------------------------------------------------------
 // Function: reqSearchChoice
-// Prompts the user to enter an existing requester or create a new one
 void reqSearchChoice() {
+	// Prompts the user to enter an existing requester or create a new one
 	std::cout << "\nEnter '1' to enter an existing requester; enter '2' to create a new requester: " << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: CIChoiceDisplay
-// Prompts the user to enter an existing change ID or create a new one
 void CIChoiceDisplay() {
+	// Prompts the user to enter an existing change ID or create a new one
 	std::cout << "\nEnter '1' to enter an existing change ID; enter '2' to create a new change ID: " << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: CIPrompt
-// Prompts the user to enter a change ID
 void CIPrompt() {
+	// Prompts the user to enter a change ID
 	std::cout << "\nEnter a change ID (max 6 digits, i.e., 0 to 999999):\n";
 }
 
 // ---------------------------------------------------------
 // Function: confirmAddCR
-// Prompts the user to confirm adding a customer request
 void confirmAddCR() {
+	// Prompts the user to confirm adding a customer request
 	std::cout << "\nAre you sure you want to add a customer request?\n";
 }
 
 // ---------------------------------------------------------
 // Function: repeatChangeCR
-// Prompts the user to confirm creating another change request
 void repeatChangeCR() {
+	// Prompts the user to confirm creating another change request
 	std::cout << "\nDo you wish to create another Change Request? (1 for Y, 0 for N)?\n";
 }
 
@@ -153,8 +145,8 @@ void repeatChangeCR() {
 // ============================================
 // ---------------------------------------------------------
 // Function: repeatCIQuery
-// Prompts the user to confirm querying another change item
 void repeatCIQuery() {
+	// Prompts the user to confirm querying another change item
 	std::cout << "\nDo you wish to query for another Change Item (1 for Y, 0 for N)?\n";
 }
 
@@ -162,8 +154,8 @@ void repeatCIQuery() {
 // ============================================
 // ---------------------------------------------------------
 // Function: choiceUpdateDisp
-// Displays the update options for a change item
 void choiceUpdateDisp() {
+	// Displays the update options for a change item
 	std::cout << "\nSelect what update to make to this change item:\n"
 				 "1) Update Description\n"
 				 "2) Update State\n"
@@ -173,15 +165,15 @@ void choiceUpdateDisp() {
 
 // ---------------------------------------------------------
 // Function: choiceSaveUpdDisp
-// Prompts the user to confirm saving the updates made to a change item
 void choiceSaveUpdDisp() {
+	// Prompts the user to confirm saving the updates made to a change item
 	std::cout << "\nSave the changes made to the Change Item (1 for Y, 0 for N)?" << std::endl;
 }
 
 // ---------------------------------------------------------
 // Function: repeatUpdate
-// Prompts the user to confirm updating another change item
 void repeatUpdate() {
+	// Prompts the user to confirm updating another change item
 	std::cout << "\nDo you wish to update another Change Item? (1 for Y, 0 for N)?\n";
 }
 
@@ -205,9 +197,9 @@ void repeatGen2() {
 // ============================================
 // ---------------------------------------------------------
 // Function: handleProductMaintenance
-// Handles the product maintenance scenarios
-// Parameter: choice (The chosen scenario for product maintenance)
 void handleProductMaintenance(int choice) {
+	// Handles the product maintenance scenarios
+	// Parameter: choice (The chosen scenario for product maintenance)
     int choiceConfirmAdd;
 	int choiceRepeat;
     switch (choice) {
@@ -380,10 +372,9 @@ void handleProductMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleChangeRequestMaintenance
-// Handles the change request maintenance scenarios
-// Parameter: choice (The chosen scenario for change request maintenance)
 void handleChangeRequestMaintenance(int choice) {
-    // std::vector<User> users; // Declare the 'users' variable
+	// Handles the change request maintenance scenarios
+	// Parameter: choice (The chosen scenario for change request maintenance)
 	static const int ENTER_REQ = 1;
 	static const int CREATE_REQ = 2;
 
@@ -837,9 +828,9 @@ void handleChangeRequestMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleChangeItemMaintenance
-// Handles the change item maintenance scenarios
-// Parameter: choice (The chosen scenario for change item maintenance)
 void handleChangeItemMaintenance(int choice) {
+	// Handles the change item maintenance scenarios
+	// Parameter: choice (The chosen scenario for change item maintenance)
     switch (choice) {
         case 1: {
 			// Scenario 4.4: Querying Change Items
@@ -1234,9 +1225,9 @@ void handleChangeItemMaintenance(int choice) {
 
 // ---------------------------------------------------------
 // Function: handleReportGeneration
-// Handles the report generation scenarios
-// Parameter: choice (The chosen scenario for report generation)
 void handleReportGeneration(int choice) {
+	// Handles the report generation scenarios
+	// Parameter: choice (The chosen scenario for report generation)
     switch (choice) {
         case 1: {
 			// Scenario 4.6: Report #1: List of All Change Items for a 
@@ -1508,12 +1499,4 @@ void handleReportGeneration(int choice) {
         default: 
             std::cout << "Invalid choice. Please try again.\n";
     }
-}
-
-// ---------------------------------------------------------
-// Function: displayHelp
-// Displays help information for using the system
-void displayHelp() {
-    std::cout << "Help: This system is designed to manage and track issues, such as bugs and feature requests, within a software development environment.\n";
-    std::cout << "At any point, type 'Help' to receive guidance on the available options and how to use them.\n";
 }

@@ -6,7 +6,9 @@
 // ============================================
 
 // Overall internal design issues:
-// This module implements both Products and Product Releases. Hence it uses "Product" and "ProductRelease" structs, imported from Product.h (see it for detailed list of attributes). It uses linear search to find products within files based on a criteria of attributes (e.g., primary key (single or compound)).
+// This module implements both Products and Product Releases. Hence it uses "Product" and "ProductRelease" structs, 
+// imported from Product.h (see it for detailed list of attributes). It uses linear search to find products within
+// files based on a criteria of attributes (e.g., primary key (single or compound)).
 
 #include "Product.h"
 #include <iostream>

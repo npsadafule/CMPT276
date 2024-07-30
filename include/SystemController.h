@@ -16,7 +16,6 @@
 
 // Extern declarations for global variables
 extern std::vector<Product> products;
-// extern std::vector<User> users;
 extern std::map<std::string, ChangeRequest> changeRequests;
 
 // ============================================

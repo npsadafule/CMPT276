@@ -15,7 +15,7 @@
 
 // Global constant variables
 const int REP_DATE_LENGTH = 10 +1;
-const int PRIORITY_LENGTH = 1 +1; // TBD
+const int PRIORITY_LENGTH = 1 +1;
 
 // ============================================
 // Data structures

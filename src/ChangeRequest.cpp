@@ -7,7 +7,10 @@
 
 // ---------------------------------------------------------
 // Overall internal design issues:
-// This module implements ChangeRequests. So, it uses the "ChangeRequests" struct, imported from ChangeItem.h (see it for detailed list of attributes). It uses linear search to find products within files based on a criteria of attributes (e.g., primary key (single or compound)).
+// This module implements ChangeRequests. So, it uses the "ChangeRequests" struct, 
+// imported from ChangeItem.h (see it for detailed list of attributes). It uses 
+// linear search to find products within files based on a criteria of attributes 
+// (e.g., primary key (single or compound)).
 
 #include "ChangeRequest.h"
 #include <iostream>

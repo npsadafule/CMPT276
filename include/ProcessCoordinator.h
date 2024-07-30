@@ -29,12 +29,6 @@ void confirmAddingProdRel();
 void doYouWantAnotherProdRel();
 
 // ---------------------------------------------------------
-// Provides options for the requester
-void requesterOptions(
-    // For use for A5 release
-);
-
-// ---------------------------------------------------------
 // Allows the user to choose a search option
 void reqSearchChoice();
 
@@ -65,11 +59,5 @@ void handleReportGeneration(
     // Parameter: choice (The user's choice for report generation)
     int choice  //in
 );
-
-// ---------------------------------------------------------
-// Displays help information
-void displayHelp();
-
-
 
 #endif // PROCESSCOORDINATOR_H

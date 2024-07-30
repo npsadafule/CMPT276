@@ -23,8 +23,9 @@
 // ============================================
 // ---------------------------------------------------------
 // Function: start
-// Initializes the system and begins the user interface.
-void start();
+void start(
+	// Initializes the system and begins the user interface.
+);
 
 // ---------------------------------------------------------
 int readIntegerInput(MenuFuncPtr func, int min, int max) {

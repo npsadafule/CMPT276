@@ -14,7 +14,6 @@
 #include "Requester.h"
 
 // Global variables
-// ---------------------------------------------------------
 // External declaration for the report file stream
 extern std::fstream reportFile;
 
@@ -66,7 +65,7 @@ bool getNextReport(
 // Generates a report based on the product name
 int generateReport1(
     // Parameter: productName (The name of the product)
-    int& page,
+    int& page,	// in/out
 	const char* productName    // in
 );
 
@@ -74,9 +73,9 @@ int generateReport1(
 // Generates a report based on the change ID
 void generateReport2(
     // Parameter: changeID (The ID of the change)
-    const int changeID,		//in
-	const char* newReleaseID,
-	const char* productName
+    const int changeID,		// in
+	const char* newReleaseID,	// in
+	const char* productName		// in
 );
 
 #endif // REPORT_H

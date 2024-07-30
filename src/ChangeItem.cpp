@@ -36,18 +36,20 @@ extern std::fstream highestCIDFile;
 // Function Implementations
 // ============================================
 
-// Converts an integer to a C-style string
-// Parameter: number (The integer to convert)
-// Returns: const char* (C-style string representation of the number)
+// ---------------------------------------------------------
 const char* intToCString(int number) {
+	// Converts an integer to a C-style string
+	// Parameter: number (The integer to convert)
+	// Returns: const char* (C-style string representation of the number)
     static std::string str; // static to ensure memory is not deallocated after function exits
     str = std::to_string(number);
     return str.c_str();
 }
 
-// Opens the change item file
-// Exits the program if the file cannot be opened
+// ---------------------------------------------------------
 void openChangeItemFile() {
+	// Opens the change item file
+	// Exits the program if the file cannot be opened
     changeItemFile.open("data/changeItems.dat", std::ios::in | std::ios::out | std::ios::binary | std::ios::app);
     
 	// Check if file opening worked properly, exit if it didn't
@@ -57,8 +59,8 @@ void openChangeItemFile() {
 
 // ---------------------------------------------------------
 // Function: closeProductFile
-// Closes the change item file if it is open
 void closeChangeItemFile() {
+	// Closes the change item file if it is open
     if (changeItemFile.is_open()) {
         changeItemFile.close();
     }
@@ -66,9 +68,9 @@ void closeChangeItemFile() {
 
 // ---------------------------------------------------------
 // Function: writeProduct
-// Writes a change item to the change item file
-// Parameter: changeItem (The change item to write)
 void writeChangeItem(const ChangeItem& changeItem) {
+	// Writes a change item to the change item file
+	// Parameter: changeItem (The change item to write)
     if (!changeItemFile.is_open()) return;
 
 	// Get the character address of the product struct, write it a byte at a time (char),
@@ -84,8 +86,8 @@ void writeChangeItem(const ChangeItem& changeItem) {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
-// Sets the file position to the beginning of the change item file
 void seekToBeginningOfChangeItemFile() {
+	// Sets the file position to the beginning of the change item file
     if (!changeItemFile.is_open()) return;
 
 	// Reset internal flags
@@ -96,10 +98,11 @@ void seekToBeginningOfChangeItemFile() {
     changeItemFile.seekg(0, std::ios::beg);
 }
 
+// ---------------------------------------------------------
 // For bringing up lists of products for reports
-// Displays a change item
-// Parameter: changeItem (The change item to display)
 void displayChangeItem(const ChangeItem& changeItem) {
+	// Displays a change item
+	// Parameter: changeItem (The change item to display)
 	std::cout << std::left << std::setw(10) << changeItem.productName << 
 				  "  " << std::setw(30) << changeItem.description << 
 				  "  " << std::setw(9) << intToCString(changeItem.changeID) << 
@@ -109,12 +112,11 @@ void displayChangeItem(const ChangeItem& changeItem) {
 
 // ---------------------------------------------------------
 // Displays up to 20 change items from a file
-// Parameter: filename (The name of the file to read change items from)
 int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	// Displays up to 20 module objects from the specified page of the module file.
     // Returns the number of modules displayed or -1 if the file cannot be opened.
     // Parameter: page (The page number to display)
-    // Parameter: filename (The name of the module file)
+    // Parameter: productName (The name of the product)
 	
 	// Constants
 	static const int ITEMS_PER_PAGE = 20;	// static
@@ -196,12 +198,12 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 
 // ---------------------------------------------------------
 // For retrieving a particular product with a particular name
-// Retrieves a change item by its ID
-// Parameter: filename (The name of the file to read change items from)
-// Parameter: changeID (The ID of the change item to retrieve)
-// Parameter: changeItem (The change item object to store the retrieved data)
-// Returns: bool (true if retrieval was successful, false otherwise)
 bool retrieveChangeItemByKey(int changeID, ChangeItem& changeItem) {
+	// Retrieves a change item by its ID
+	// Parameter: filename (The name of the file to read change items from)
+	// Parameter: changeID (The ID of the change item to retrieve)
+	// Parameter: changeItem (The change item object to store the retrieved data)
+	// Returns: bool (true if retrieval was successful, false otherwise)
 	ChangeItem tmpChangeItem;
 
 	seekToBeginningOfChangeItemFile();
@@ -227,17 +229,18 @@ bool retrieveChangeItemByKey(int changeID, ChangeItem& changeItem) {
 
 // ---------------------------------------------------------
 // Function: createChangeItem
-// Creates a new change item
-// Parameter: changeID (The ID of the change item)
-// Parameter: productName (The name of the product associated with the change item)
-// Parameter: description (The description of the change item)
-// Parameter: anticipatedReleaseID (The anticipated release ID for the change item)
-// Parameter: state (The state of the change item)
 void createChangeItem(int changeID,
 					  const char* productName,
 					  const char* description,
 					  const char* anticipatedReleaseID,
 					  const char* state) { 
+	// Creates a new change item
+	// Parameter: changeID (The ID of the change item)
+	// Parameter: productName (The name of the product associated with the change item)
+	// Parameter: description (The description of the change item)
+	// Parameter: anticipatedReleaseID (The anticipated release ID for the change item)
+	// Parameter: state (The state of the change item)
+
 	// Create a temp change item to be written
     ChangeItem tmpCI = {};
 	
@@ -275,14 +278,14 @@ void createChangeItem(int changeID,
 
 // ---------------------------------------------------------
 // For retrieving a particular product with a particular name
-// Retrieves a change item by its ID and product name
-// Parameter: filename (The name of the file to read change items from)
-// Parameter: changeID (The ID of the change item to retrieve)
-// Parameter: changeItem (The change item object to store the retrieved data)
-// Parameter: product (The name of the product)
-// Returns: bool (true if retrieval was successful, false otherwise)
 bool retrieveChangeItemByKeyAndProduct(int changeID, ChangeItem& changeItem, char* product) {
 	seekToBeginningOfChangeItemFile();
+	// Retrieves a change item by its ID and product name
+	// Parameter: filename (The name of the file to read change items from)
+	// Parameter: changeID (The ID of the change item to retrieve)
+	// Parameter: changeItem (The change item object to store the retrieved data)
+	// Parameter: product (The name of the product)
+	// Returns: bool (true if retrieval was successful, false otherwise)
 
     // Read each product from the file and compare its name with the target name
     while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
@@ -299,10 +302,11 @@ bool retrieveChangeItemByKeyAndProduct(int changeID, ChangeItem& changeItem, cha
 
 // ---------------------------------------------------------
 // Updates an existing change item
-// Parameter: origChangeID (The original change ID of the change item to update)
-// Parameter: changeItem (The updated change item data)
-// Returns: bool (true if update was successful, false otherwise)
 bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
+	// Parameter: origChangeID (The original change ID of the change item to update)
+	// Parameter: changeItem (The updated change item data)
+	// Returns: bool (true if update was successful, false otherwise)
+
 	// For reading
 	ChangeItem readCI;
 
@@ -351,8 +355,8 @@ void closeHighestCID() {
 
 // ---------------------------------------------------------
 // Function: seekToBeginningOfProductFile
-// Sets the file position to the beginning of the highest change ID file
 void seekToBeginningOfHighestCIDFile() {
+	// Sets the file position to the beginning of the highest change ID file
     if (!highestCIDFile.is_open()) return;
 
 	// Reset internal flags
