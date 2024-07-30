@@ -193,6 +193,14 @@ void repeatGen1() {
 	std::cout << "\nDo you wish to generate another Report #1 (1 for Y, 0 for N)?\n";
 }
 
+// Display functions for Scenario 4.7
+// ============================================
+// ---------------------------------------------------------
+// Function: repeatGen2
+void repeatGen2() {
+	std::cout << "\nDo you wish to generate another Report #2 (1 for Y, 0 for N)?\n";
+}
+
 // Functions for Executing Scenarios
 // ============================================
 // ---------------------------------------------------------
@@ -1332,13 +1340,172 @@ void handleReportGeneration(int choice) {
         case 2: {
 		// Scenario 4.7: Report #2: List of Customers/Staff Who Need to Be Informed When
 		// a Particular Change Has Been Implemented, and in What ProductRelease ID
-            std::string changeID;
-            std::string newReleaseID;
-            std::cout << "Enter the Change ID to generate Report #2: ";
-            std::getline(std::cin, changeID);
-            std::cout << "Enter the new anticipated release ID: ";
-            std::getline(std::cin, newReleaseID);
-            generateReport2(changeID, newReleaseID);
+            // Variables
+			// General
+			bool repeat;
+			int choiceRepeat;
+			// Storage
+            char productName[PRODUCT_NAME_LENGTH];
+			int changeID;
+			// Get an existing product
+			Product tmpProd;
+			int productPage = 1;
+			int PnotProperLen;
+			int PnotExists;
+			// Get a change item based on product
+			ChangeItem tmpCI;
+			int CIPage = 1;
+			char CIStringBuf[CI_STRING_BUF_LEN];
+			bool isNumber;
+			int CInotExists;
+			int CInotProperLen;
+			int CIOfProductExists;
+			// Anticipated release ID update
+			ProductRelease tmpPR;
+			char anticipatedReleaseID[RELEASE_ID_LENGTH];
+			int releaseIDExists;
+			int RRPage = 1;
+			int RIDnotProperLen;
+			// Flags
+			bool exitFlag = false;
+			
+			// For repeating the scenario
+			do {
+				do {
+					productFileDisplay20OrLess(productPage);
+					std::cout << "Select the product your change item is for by entering its name (max 10 char, must " 
+								 "pre-exist):\n";
+					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
+
+					// Check if input length is valid
+					if (strcmp(productName,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(productName,"<") == 0) {
+						productPage--;
+					} else if (std::strcmp(productName,">") == 0) {
+						productPage++;
+					} else if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "Invalid input. Please enter 1 to 10 characters." << std::endl;
+						PnotProperLen = true; // Continue the loop
+						PnotExists = false; // Reset PnotExists flag
+					} else if (strlen(productName) == 0) {
+						std::cout << "Product name cannot be empty. Please enter 1 to 10 characters." << std::endl;
+						PnotProperLen = true; // Continue the loop
+						PnotExists = false; // Reset PnotExists flag
+					} else {
+						// Check if the product exists
+						PnotExists = !retrieveProductByName(productName, tmpProd);
+						if (PnotExists) {
+							std::cout << "The product must exist!" << std::endl;
+						}
+						PnotProperLen = false; // Exit the loop if both conditions are false
+					}
+				} while (PnotProperLen || PnotExists || (std::strcmp(productName,"<") == 0) || (std::strcmp(productName,">") == 0));
+				if (exitFlag) break;
+
+				// Get the change ID based on product choice
+				do {
+					changeItemFileDisplay20OrLess(CIPage,productName);
+					std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
+					std::cin.getline(CIStringBuf, CI_STRING_BUF_LEN);
+
+					// Check if input length is valid
+					if (strcmp(CIStringBuf,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(CIStringBuf,"<") == 0) {
+						CIPage--;
+					} else if (std::strcmp(CIStringBuf,">") == 0) {
+						CIPage++;
+					} else if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "Invalid input. Please enter 1 to 6 digits." << std::endl;
+						CInotProperLen = true; // Continue the loop
+						CInotExists = false; // Reset CInotExists flag
+					} else if (strlen(CIStringBuf) == 0) {
+						std::cout << "Change ID cannot be empty. Please enter 1 to 6 digits." << std::endl;
+						CInotProperLen = true; // Continue the loop
+						CInotExists = false; // Reset CInotExists flag
+					} else {
+						// Check if the change item exists
+
+						isNumber = stringToInt(CIStringBuf,changeID);
+						CInotExists = !retrieveChangeItemByKey(changeID,tmpCI);
+						if (!isNumber) {
+							// Check if the string is a number
+							std::cout << "The change ID must be a number!" << std::endl;
+						} else if (CInotExists) {
+							std::cout << "The change ID must exist!" << std::endl;
+						} else {
+							// Check if change items exists for the specified product
+							CInotExists = false;
+							CIOfProductExists = retrieveChangeItemByKeyAndProduct(changeID,tmpCI,productName);
+							if (!CIOfProductExists)
+							{
+								std::cout << "The change item must have your selected change ID 'and' product name.\n";
+							}
+						}
+						CInotProperLen = false; // Exit the loop if both conditions are false
+					}
+					// If the change item is for the chosen product and is a number between 0-999999
+				} while (CInotProperLen || CInotExists || (!CIOfProductExists) || 
+							(std::strcmp(CIStringBuf,"<") == 0) || (std::strcmp(CIStringBuf,">") == 0) || 
+							(!isNumber));
+				if (exitFlag) break;
+
+
+				// Ask for a release ID
+				do {
+					productReleaseFileDisplay20OrLess(RRPage,productName);
+					std::cout << "\nEnter the new anticipated release ID for the change item (max 8 char, from the list): \n";
+					std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
+
+					// Check if input length is valid
+					if (strcmp(anticipatedReleaseID,"Exit") == 0) {
+						exitFlag = true;
+						break;
+					} else if (std::strcmp(anticipatedReleaseID,"<") == 0) {
+						RRPage--;
+					} else if (std::strcmp(anticipatedReleaseID,">") == 0) {
+						RRPage++;
+					} else if (std::cin.fail()) {
+						std::cin.clear(); // Clear the fail state
+						std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+						std::cout << "Invalid input. Please enter 1 to 8 characters." << std::endl;
+						RIDnotProperLen = true; // Continue the loop
+					} else if (strlen(anticipatedReleaseID) == 0) {
+						std::cout << "Anticipated release ID cannot be empty. Please enter 1 to 8 characters." << std::endl;
+						RIDnotProperLen = true; // Continue the loop
+
+					} else {
+						RIDnotProperLen = false;
+						// After verifying the input length, check if this release ID exists
+						releaseIDExists = retrieveProductReleaseByKey(productName,anticipatedReleaseID,tmpPR);
+						if (!releaseIDExists)
+						{
+							std::cout << "You must enter a release ID, of the chosen product, that exists (i.e., is used in a product release)\n";
+						}
+					}
+				} while (RIDnotProperLen || (!releaseIDExists) || 
+							(std::strcmp(anticipatedReleaseID,"<") == 0) || (std::strcmp(anticipatedReleaseID,">") == 0));
+				if (exitFlag) break;
+
+				// Generate the report
+				generateReport2(changeID, anticipatedReleaseID, productName);
+
+				// Final choices
+				choiceRepeat = readIntegerInput(repeatGen2,NO,YES);
+				if (choiceRepeat == YES) {
+					repeat = true;
+				} else {
+					repeat = false;
+				}
+			} while (repeat);
+
             break;
         }
         default: 

@@ -74,8 +74,9 @@ int generateReport1(
 // Generates a report based on the change ID
 void generateReport2(
     // Parameter: changeID (The ID of the change)
-    const std::string& changeID,    // in
-    const std::string& newReleaseID
+    const int changeID,		//in
+	const char* newReleaseID,
+	const char* productName
 );
 
 #endif // REPORT_H

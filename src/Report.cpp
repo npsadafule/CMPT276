@@ -162,59 +162,29 @@ int generateReport1(int& page,const char* productName) {
 // Function: generateReport2
 // Generates a report listing customers/staff who need to be informed when a particular change has been implemented
 // Prints the report to standard output
-void generateReport2(const std::string& changeID, const std::string& newReleaseID) {
+void generateReport2(const int changeID, const char* newReleaseID, const char* productName) {
     ChangeItem changeItem;
     Requester requester;
     ChangeRequest changeRequest;
-    bool changeItemFound = false;
     bool changeRequestFound = false;
     bool requesterFound = false;
 
-    // Prompt for product name
-    std::string productName;
-    std::cout << "Enter the product name: ";
-    std::cin >> productName;
-
-    // Validate product name
-    Product product;
-    if (!retrieveProductByName(productName.c_str(), product)) {
-        std::cerr << "Product " << productName << " not found.\n";
-        return;
-    }
-
-    // Search for the ChangeItem with the specified changeID
-    seekToBeginningOfChangeItemFile();
-    while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
-        if (std::to_string(changeItem.changeID) == changeID && std::strcmp(changeItem.productName, productName.c_str()) == 0) {
-            changeItemFound = true;
-            break;
-        }
-    }
-    changeItemFile.clear();
-    if (!changeItemFound) {
-        std::cerr << "ChangeItem with ChangeID " << changeID << " not found for product " << productName << ".\n";
-        return;
-    }
-
-    // Validate release ID matches the product
+	// Retrieve the relevant product release
     ProductRelease productRelease;
-    if (!retrieveProductReleaseByKey(productName.c_str(), newReleaseID.c_str(), productRelease)) {
-        std::cerr << "ReleaseID " << newReleaseID << " not found for product " << productName << ".\n";
-        return;
-    }
+    retrieveProductReleaseByKey(productName, newReleaseID, productRelease);
 
     // Update the anticipated release ID of the change item
-    std::strcpy(changeItem.anticipatedReleaseID, newReleaseID.c_str());
-    if (!updateChangeItem(changeItem.changeID, changeItem)) {
-        std::cerr << "Failed to update ChangeItem with ChangeID " << changeID << ".\n";
-        return;
-    }
+	retrieveChangeItemByKey(changeID,changeItem);
+	// Update the anticipated release ID of the change item in its RAM object
+	std::strcpy(changeItem.anticipatedReleaseID,newReleaseID);
+	// Make the update
+	updateChangeItem(changeID, changeItem);
 
-    // Find the matching change request
+    // Find the matching change requests
     seekToBeginningOfChangeRequestFile();
     std::vector<std::string> requesterNames;
     while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
-        if (changeRequest.changeID == std::stoi(changeID)) {
+        if (changeRequest.changeID == changeID) {
             changeRequestFound = true;
             requesterNames.push_back(changeRequest.requesterName);
         }
@@ -225,6 +195,7 @@ void generateReport2(const std::string& changeID, const std::string& newReleaseI
         return;
     }
 
+	// Find the requesters attached to each change request
     seekToBeginningOfRequesterFile();
     std::vector<Requester> relatedRequesters;
     // For each requester stored
