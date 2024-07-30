@@ -131,6 +131,7 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	// Find the total number of items on file
 	seekToBeginningOfChangeItemFile();
 	int counter = 0;
+	// Loop by the size of ChangeItem to read each ChangeItem from file
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem))) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
 			counter++;
@@ -160,12 +161,10 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	} 
 
 	// Display the selected page
-	// Loop forward by the number of pages on the file so that the next read is the
-	// desired page
 	seekToBeginningOfChangeItemFile();
-	// Skip 20 * "number of pages to flip" records that have the given product
 	if ((page-1) != 0) {
 		int pageRecordsCount0 = 0;
+		// Loop by the size of ChangeItem to skip 20 records that have the given product
 		while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 			(pageRecordsCount0 < (page-1)*(ITEMS_PER_PAGE))) {
 			if (strcmp(tmpModule.productName,productName) == 0) {
@@ -183,6 +182,7 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	std::cout << "                                                                     Anticipated" << std::endl;
 	std::cout << "  Product     Description                     Change ID  State       Release ID" << std::endl;
+	// Loop by the size of ChangeItem to read each ChangeItem from file until ITEMS_PER_PAGE number of items are displayed
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 		  (pageRecordsCount1 < ITEMS_PER_PAGE)) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
@@ -211,7 +211,8 @@ bool retrieveChangeItemByKey(int changeID, ChangeItem& changeItem) {
 
 	seekToBeginningOfChangeItemFile();
 
-    // Read each product from the file and compare its name with the target name
+    // Loop by the size of ChangeItem to read each change item from the file and compare its
+	// change ID with the target change ID
     while (changeItemFile.read(reinterpret_cast<char*>(&tmpChangeItem), sizeof(ChangeItem))) {
         if (tmpChangeItem.changeID == changeID) {
 			
@@ -263,6 +264,7 @@ void createChangeItem(int changeID,
 
 	seekToBeginningOfChangeItemFile();
 
+	// Loop by the size of ChangeItem to read each ChangeItem from file
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpReadCI), sizeof(ChangeItem))) {
         if (tmpReadCI.changeID == tmpCI.changeID) {
 			changeItemExists = true;
@@ -290,7 +292,8 @@ bool retrieveChangeItemByKeyAndProduct(int changeID, ChangeItem& changeItem, cha
 	// Parameter: product (The name of the product)
 	// Returns: bool (true if retrieval was successful, false otherwise)
 
-    // Read each product from the file and compare its name with the target name
+  	// Loop by the size of ChangeItem to read each ChangeItem from file to find one with
+	// a product attribute of the product parameter
     while (changeItemFile.read(reinterpret_cast<char*>(&changeItem), sizeof(ChangeItem))) {
         // If in the changeItemFile, there exists an element that matches what we hope to retrieve
 		if ((std::strcmp(changeItem.productName, product) == 0) &&
@@ -315,7 +318,8 @@ bool updateChangeItem(int origChangeID, ChangeItem& changeItem) {
 
 	seekToBeginningOfChangeItemFile();
 
-    // Find the position of the change item in the file
+   	// Loop by the size of ChangeItem to read each ChangeItem from file and find the 
+	// position of changeItem (the parameter) in the file
     while (changeItemFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
         if (readCI.changeID == origChangeID) {
 			std::streampos position = changeItemFile.tellg(); // Get current position
@@ -381,7 +385,8 @@ void storeHighestCID() {
 	seekToBeginningOfChangeItemFile();
 	seekToBeginningOfHighestCIDFile();
 
-    // Find the position of the change item in the file
+  	// Loop by the size of ChangeItem to read each ChangeItem from file
+	// to determine the highest change ID and store it into highestCID
     while (changeItemFile.read(reinterpret_cast<char*>(&readCI), sizeof(ChangeItem))) {
         // Store the highest 
 		if (readCI.changeID > highestCID.changeID) {	

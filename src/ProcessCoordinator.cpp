@@ -69,7 +69,8 @@ bool stringToInt(const char* str, int& result) {
         return false;
     }
 
-    // Check for non-digit characters
+    // Loop by the number of characters there are in 'str' to determine
+	// whether a stored character is a digit
     for (size_t i = 0; i < std::strlen(str); ++i) {
         if (!std::isdigit(str[i])) {
             return false;
@@ -214,6 +215,7 @@ void handleProductMaintenance(int choice) {
     switch (choice) {
         case 1: {
 			bool repeat = false;
+			// Loop while repeat equals 'true.'
 			do
 			{
 				// Scenario 4.1: Creating a Product - duplication prevention logic not implemented
@@ -223,6 +225,8 @@ void handleProductMaintenance(int choice) {
 				int exists;
 
 				// Product name read
+				// Loop while the product name entered is not of the proper lenght or
+				// already exists
 				do {
 					std::cout << "\nCreate a product by entering its name (max 10 char, must pre-exist): \n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
@@ -269,6 +273,8 @@ void handleProductMaintenance(int choice) {
             char productName[PRODUCT_NAME_LENGTH], releaseID[RELEASE_ID_LENGTH], releaseDate[RELEASE_DATE_LENGTH];
             
 			bool repeat = false;
+			
+			// Loop while repeat equals 'true.'
 			do
 			{
 				Product tmpProd;
@@ -280,7 +286,10 @@ void handleProductMaintenance(int choice) {
 				// Flags
 				bool exitFlag = false;
 				
+				// Loop while the compound key of the product release being created is not unique
 				do {
+					// Loop while the entered product is not of the proper length or does not exist.
+					// Also, loop while the entered input is for navigating the display (i.e., '<' or '>')
 					do {
 						productFileDisplay20OrLess(productPage);
 						std::cout << "Enter the product for the product release (max 10 char, must pre-exist): \n";
@@ -316,6 +325,7 @@ void handleProductMaintenance(int choice) {
 					if (exitFlag) break;
 
 					// Get a product release ID
+					// Loop while the entered release ID is not the proper length
 					do {
 						std::cout << "\nEnter the Release ID (max 8 char following your organization's format): \n";
 						std::cin.getline(releaseID, RELEASE_ID_LENGTH);
@@ -346,6 +356,7 @@ void handleProductMaintenance(int choice) {
 				if (exitFlag) break;			
 
 				// Get a release date
+				// Loop while the entered release dat is not the proper length
 				do {
 					std::cout << "\nEnter the release date (YYYY-MM-DD): \n";
 					std::cin.getline(releaseDate, RELEASE_DATE_LENGTH);
@@ -456,13 +467,15 @@ void handleChangeRequestMaintenance(int choice) {
 
 		
 			// For repeat choice
+			// Loop while repeat equals 'true.'
 			do {
-				// Ensure that the change request is not a duplicate
+				// Loop while the entered compound primary key of the change request is a duplicate
 				do {
 					// Get a requester name
 					reqChoice = readIntegerInput(reqSearchChoice,1,2);
 					if (reqChoice == ENTER_REQ) {
-						// Define a variable for requesterPage entry
+						// Loop while the entered requester is not the proper length or does not exist
+						// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 						do {
 							requesterFileDisplay20OrLess(requesterPage);
 							std::cout << "Select a requester by entering their name (max 30 char, must pre-exist): \n"; // Change the input options
@@ -500,6 +513,7 @@ void handleChangeRequestMaintenance(int choice) {
 						if (exitFlag) break;
 					} else if (reqChoice == CREATE_REQ) {
 						// Get requester name
+						// Loop while the entered requester name is not the proper length or already exists
 						do {
 							std::cout << "\nEnter the requester name (max 30 char, must not exist): \n";
 							std::cin.getline(requester, REQ_NAME_LENGTH);
@@ -526,6 +540,7 @@ void handleChangeRequestMaintenance(int choice) {
 						} while (CRnotProperLen || CRexists);
 
 						// Get phone number
+						// Loop while the entered phone number is not of the proper length
 						do {
 							std::cout << "\nEnter your phone number (11 digits in the format DDDDDDDDDDD): \n";
 							std::cin.getline(phoneNum, PHONE_NUMBER_LENGTH);
@@ -545,6 +560,7 @@ void handleChangeRequestMaintenance(int choice) {
 						} while (CRnotProperLen);
 
 						// Get email
+						// Loop while the entered email is not of the proper length
 						do {
 							std::cout << "\nEnter the email of the customer (max 24 char in the format "
 										"username@email_provider.domain_type):\n";
@@ -565,6 +581,7 @@ void handleChangeRequestMaintenance(int choice) {
 						} while (CRnotProperLen);
 
 						// Get department
+						// Loop while the entered department is improper in length
 						do {
 							std::cout << "\nIf you are an employee, enter your department (max 12 char).\n"
 										 "If this is not applicable to you, enter 'N/A':\n";
@@ -590,6 +607,8 @@ void handleChangeRequestMaintenance(int choice) {
 					}
 
 					// Select a product
+					// Loop while the entered product is not of the proper length or does not exist.
+					// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 					do {
 						productFileDisplay20OrLess(productPage);
 						std::cout << "Select a product by entering its name (max 10 char, must pre-exist): \n";
@@ -629,6 +648,9 @@ void handleChangeRequestMaintenance(int choice) {
 
 					if (CIChoice == ENTER_CI) // Enter existing change ID
 					{
+						// Loop while the change ID is not of the proper length, does not exist, is not a number, 
+						// or an existing change ID is not for the previously-selected product
+						// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 						do {
 							changeItemFileDisplay20OrLess(CIPage,productName);
 							std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
@@ -683,6 +705,7 @@ void handleChangeRequestMaintenance(int choice) {
 						changeID = globalHighestCID + 1;
 
 						// Enter description for change item
+						// Loop while the description is not of the proper length
 						do {
 							std::cout << "\nEnter the description for the change item (max 30 char): \n";
 							std::cin.getline(description, CHANGE_DESC_LENGTH);
@@ -702,6 +725,8 @@ void handleChangeRequestMaintenance(int choice) {
 						} while (CInotProperLen);
 
 						// Enter an anticipated release ID
+						// Loop while the entered anticipated release ID is improper in length or does not exist in a product release
+						// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 						do {
 							productReleaseFileDisplay20OrLess(ARPage,productName);
 							std::cout << "Enter the anticipated release ID for your change item (max 8 char):\n";
@@ -757,6 +782,8 @@ void handleChangeRequestMaintenance(int choice) {
 				if (exitFlag) break;
 
 				// Ask for a release ID
+				// Loop while the release ID is improper in length or does not exist
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					productReleaseFileDisplay20OrLess(RRPage,productName);
 					std::cout << "Enter the reported release ID for the change request (max 8 char): \n";
@@ -793,6 +820,7 @@ void handleChangeRequestMaintenance(int choice) {
 				if (exitFlag) break;
 			
 				// Ask for a Priority
+				// Loop while the entered priority is not of the proper length
 				do {
 					std::cout << "\nEnter the change request's priority (1 to 5, with 5 being the highest; max 1 digit):\n";
 					std::cin.getline(priority, PRIORITY_LENGTH);
@@ -868,7 +896,10 @@ void handleChangeItemMaintenance(int choice) {
 			bool exitFlag = false;
 
 			// For repeating the scenario
+			// Loop while the user wants to repeat the scenario (i.e., 'repeat' evaluates to true)
 			do {
+				// Loop while the entered product name is improper in length or does not exist
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					productFileDisplay20OrLess(productPage);
 					std::cout << "Select the product your change item is for by entering its name (max 10 char, must " 
@@ -905,6 +936,9 @@ void handleChangeItemMaintenance(int choice) {
 				if (exitFlag) break;
 
 				// Get the change ID based on product choice
+				// Loop while the entered change ID is improper in length, does not exist, or has a change item that does not
+				// store the previously-selected product as an attribute
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					changeItemFileDisplay20OrLess(CIPage,productName);
 					std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
@@ -1015,8 +1049,10 @@ void handleChangeItemMaintenance(int choice) {
 			// Flags
 			bool exitFlag = false;
 
-			// For repeating the scenario
+			// Loop while the user wants to repeat the scenario (i.e., 'repeat' evaluates to true)
 			do {
+				// Loop while the entered product is improper in length or does not exist
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					productFileDisplay20OrLess(productPage);
 					std::cout << "Select the product your change item is for by entering its name (max 10 char, must " 
@@ -1053,6 +1089,9 @@ void handleChangeItemMaintenance(int choice) {
 				if (exitFlag) break;
 
 				// Get the change ID based on product choice
+				// Loop while the change ID is not of the proper length, does not exist, is not a number, 
+				// or an existing change ID is not for the previously-selected product
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					changeItemFileDisplay20OrLess(CIPage,productName);
 					std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
@@ -1107,11 +1146,14 @@ void handleChangeItemMaintenance(int choice) {
 				origChangeID = tmpCI.changeID;
 
 				// Select what update to make
+				// Loop while the user has not decided to exit from making updates to their selected change item
+				// (i.e., entered '0')
 				do {
 					choiceUpdate = readIntegerInput(choiceUpdateDisp,0,3);
 					switch (choiceUpdate) {
 						case 1: { // Description
 							// Enter description for change item
+							// Loop while the description is improper in length
 							do {
 								std::cout << "\nCurrent description: " << tmpCI.description;
 								std::cout << "\nEnter the new description for the change item (max 30 char): \n";
@@ -1136,6 +1178,7 @@ void handleChangeItemMaintenance(int choice) {
 							break;
 						}
 						case 2: { // State
+							// Loop while the entered state is improper in length
 							do {
 								std::cout << "\nCurrent state: " << tmpCI.state << std::endl;
 								std::cout << "Options for state include: 'Reported', 'Assessed', 'InProgress', 'Done', and 'Cancelled'." << std::endl;
@@ -1162,6 +1205,8 @@ void handleChangeItemMaintenance(int choice) {
 						}
 						case 3: { // Anticipated release ID
 							// Ask for a release ID
+							// Loop while the entered anticipated release ID is improper in length or the release ID does not exist
+							// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 							do {
 								productReleaseFileDisplay20OrLess(RRPage,productName);
 								std::cout << "Current anticipated release ID: " << tmpCI.anticipatedReleaseID;
@@ -1262,9 +1307,12 @@ void handleReportGeneration(int choice) {
 			bool exitFlag = false;
 
 			// For repeating the scenario
+			// Loop while the uesr wants to repeat the scenario (i.e., 'repeat' evaluates to 'true')
 			do {
 				exitFlag = false;
 				// Get the product
+				// Loop while the entered product is improper in length or does not exist
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					productFileDisplay20OrLess(productPage);
 					std::cout << "Select the product your change item is for by entering its name (max 10 char, must " 
@@ -1302,6 +1350,7 @@ void handleReportGeneration(int choice) {
 			
 				// Print the report
 				// Get the change ID based on product choice
+				// Loop until the user decides to stop viewing their generated report (i.e., enters 'Exit' as input)
 				do {
 					generateReport1(CIPage,productName);
 					std::cin.getline(inputBuf, INPUT_BUF_LEN);
@@ -1368,7 +1417,10 @@ void handleReportGeneration(int choice) {
 			bool exitFlag = false;
 			
 			// For repeating the scenario
+			// Loop while the uesr wants to repeat the scenario (i.e., 'repeat' evaluates to 'true')
 			do {
+				// Loop while the entered product name is improper in length or does not exist
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					productFileDisplay20OrLess(productPage);
 					std::cout << "Select a product by entering its name (max 10 char, must pre-exist):\n";
@@ -1404,6 +1456,9 @@ void handleReportGeneration(int choice) {
 				if (exitFlag) break;
 
 				// Get the change ID based on product choice
+				// Loop while the change ID is not of the proper length, does not exist, is not a number, 
+				// or an existing change ID is not for the previously-selected product
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					changeItemFileDisplay20OrLess(CIPage,productName);
 					std::cout << "Enter an existing change ID (change item) of the product you chose [0-999999]: \n";
@@ -1456,6 +1511,8 @@ void handleReportGeneration(int choice) {
 
 
 				// Ask for a release ID
+				// Loop while the entered anticipated release ID is improper in length or does not exist in a product release
+				// Also, loop if the entered input is for navigation (i.e., '<' or '>')
 				do {
 					productReleaseFileDisplay20OrLess(RRPage,productName);
 					std::cout << "Enter the new anticipated release ID for the change item (max 8 char, from the list): \n";

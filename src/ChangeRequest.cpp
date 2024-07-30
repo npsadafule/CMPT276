@@ -150,7 +150,9 @@ void createChangeRequest(const char* requesterName,
 
     seekToBeginningOfChangeRequestFile();
 
-    // Read each requester from the file and compare its name with the target name
+    // Loop by the size of a ChangeRequester to read each change request from the file and compare its
+	// compound primary key with the target key. This process will determine if creating the desired
+	// change request will create a duplicate
     while (changeRequestFile.read(reinterpret_cast<char*>(&tmpReadCR), sizeof(ChangeRequest))) {
         if ((std::strcmp(tmpReadCR.requesterName, requesterName) == 0) && (tmpReadCR.changeID == changeID)) {
             CRExists = true;
