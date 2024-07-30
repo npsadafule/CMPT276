@@ -180,7 +180,7 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
 	// Make the update
 	updateChangeItem(changeID, changeItem);
 
-    // Find the matching change requests
+    // Find the change requests for the chosen change item
     seekToBeginningOfChangeRequestFile();
     std::vector<std::string> requesterNames;
     while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
@@ -218,7 +218,7 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
     // Generate the formatted report
 	std::cout << std::endl;
     std::cout << productName << " Report #2 for Change Item " << changeID << "\n\n";
-    std::cout << "Details of the Current Change Item:\n";
+    std::cout << "Details of the selected Change Item post-update:\n";
     std::cout << changeItem.productName << ", " << changeItem.description << ", " << changeItem.changeID
               << ", " << changeItem.state << ", " << changeItem.anticipatedReleaseID << "\n";
     std::cout << "(Product, Description, Change ID, State, Anticipated Release ID)\n\n";
