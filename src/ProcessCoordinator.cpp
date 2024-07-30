@@ -1,3 +1,22 @@
+// ============================================
+// Module Name: ProcessCoordinator.cpp
+// ============================================
+// Version History:
+// Rev. 3 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements, implmeneted list displays for
+	// each scenario, edited change ID's to generate automatically, and removed unused parameters.
+// Rev. 2 - 2024/07/17 - Group 7
+// Rev. 1 - 2024/07/01 - Group 7
+// ============================================
+
+// Overall internal design issues:
+// This module implements ProcessCoordinator.h, following our central control design 
+// from our Architectural Design Document. Specifically, it houses the implementation of s
+// cenario execution as cases of a particular submenu. For example, handleProductMaintenance 
+// has a case for executing Product creation and Product Release creation. Hence, it uses structures 
+// exported by each of the lower-level modules (e.g., Product). Also, do-while loops are used 
+// freqeuntly to ensure proper user input.
+
 #include "ProcessCoordinator.h"
 #include "Product.h"
 #include "ChangeRequest.h"
@@ -10,13 +29,6 @@
 #include <cstdio>  // For sprintf
 #include <sstream>
 
-// Overall internal design issues:
-// This module implements ProcessCoordinator.h, following our central control design 
-// from our Architectural Design Document. Specifically, it houses the implementation of s
-// cenario execution as cases of a particular submenu. For example, handleProductMaintenance 
-// has a case for executing Product creation and Product Release creation. Hence, it uses structures 
-// exported by each of the lower-level modules (e.g., Product). Also, do-while loops are used 
-// freqeuntly to ensure proper user input.
 
 // Static constants
 static const int YES = 1;	// Used to confirm a decision prompt

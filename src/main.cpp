@@ -2,8 +2,15 @@
 // Module Name: main.cpp
 // ============================================
 // Version History:
+// Rev. 2 - 2024/07/17 - Group 7
+	//	Kenneth Tan: Edited comments to match Assignment 5 requirements.
 // Rev. 1 - 2024/07/01 - Group 7
 // ============================================
+
+// Overall internal design issues:
+// Initiates the ITS system by calling "start," which opens necesary files. Then, a call is made 
+// to "activateUI," which starts the user interface. The main function call terminates once
+// the user quits ITS (i.e., ends the call to "activateUI").
 
 #include <iostream>
 #include "UserInterface.h"

@@ -2,8 +2,16 @@
 // Module Name: unitTestMain.cpp
 // ============================================
 // Version History:
+// Rev. 2 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements and removed unused parameters.
+	// Also, added test data generation.
 // Rev. 1 - 2024/07/17 - Group 7
 // ============================================
+
+// Overall internal design issues: 
+// This module implements unit tests for the Product, Requester, Change Item, and Change Request modules.
+// Hence, it relies on these modules' structures, imported from their respective header files (see it for detailed list of attributes). 
+// For each module, aside from "Product," loops are used to create and retrieve structs from files.
 
 #include <iostream>
 #include <cassert>
@@ -403,7 +411,7 @@ void generateData() {
 // Function: runAllTests
 void runAllTests() {
     // Runs all defined test functions.
-    // testCreateProduct();
+    testCreateProduct();
 	// std::cout << "========================================" << std::endl;
 	// testCreateChangeItem();
 	// std::cout << "========================================" << std::endl;
@@ -411,5 +419,5 @@ void runAllTests() {
 	// std::cout << "========================================" << std::endl;
 	// testCreateChangeRequest();
 	// std::cout << "========================================" << std::endl;
-	generateData();
+	// generateData();
 }

@@ -6,7 +6,9 @@
 // ============================================
 
 // Overall internal design issues:
-// This module implements SystemController.h, following our central control design from our Architectural Design Document. Specifically, it houses the implementation of the start-up function, along with each module's file initialization function. Currently, shutdown functions are stored in their respective lower-level modules, but they will be stored here in our fifth release.
+// This module implements SystemController.h, following our central control design 
+// from our Architectural Design Document. Specifically, it houses the implementation 
+// of the start-up function, shutdown function, and each module's file initialization function. 
 
 #include "SystemController.h"
 #include "Product.h"

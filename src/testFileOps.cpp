@@ -2,8 +2,16 @@
 // Module Name: testFileOps.cpp
 // ============================================
 // Version History:
+// Rev. 2 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements and removed unused parameters.
 // Rev. 1 - 2024/07/17 - Group 7
 // ============================================
+
+// Overall internal design issues: 
+// This module implements a unit test for the ProductRelease module. Hence, it relies on the "ProductRelease" struct, 
+// imported from Product.h (see it for detailed list of attributes). Loops are used to create and retrieve 
+// product releases to and from to productReleases.dat.
+
 
 #include <iostream>
 #include <cassert>

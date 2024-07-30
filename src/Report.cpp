@@ -1,3 +1,19 @@
+// ============================================
+// Module Name: Report.cpp
+// ============================================
+// Version History:
+// Rev. 3 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements and removed unused parameters.
+	// Kenneth Tan and Neel Sadafule: Implemented Report Generation #1 and #2.
+// Rev. 2 - 2024/07/17 - Group 7
+// Rev. 1 - 2024/07/01 - Group 7
+// ============================================
+
+// Overall internal design issues:
+// This module implements report generation #1 and #2. Generation is done through the use of structs 
+// of lower-level modules. It uses linear search to find records within various
+// files based on a criteria of attributes (e.g., primary key (single or compound)).
+
 #include "Report.h"
 #include "Product.h"
 #include "Requester.h"
@@ -16,7 +32,6 @@ extern std::fstream changeRequestFile;
 // ============================================
 // Function Implementations
 // ============================================
-
 
 // ---------------------------------------------------------
 // Function: openReportFile

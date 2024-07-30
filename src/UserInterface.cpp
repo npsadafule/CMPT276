@@ -2,11 +2,18 @@
 // Module Name: UserInterface.cpp
 // ============================================
 // Version History:
+// Rev. 3 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements.
 // Rev. 2 - 2024/07/17 - Group 7
+// Rev. 1 - 2024/07/01 - Group 7
 // ============================================
 
 // Overall internal design issues:
-// This module implements UserInterface.h, following our central control design from our Architectural Design Document. Specifically, it handles all menu selection to start execution of a user command or to shutdown ITS. Switch cases are used to handle different layers of menus (i.e., menu, submenu) and do-while loops are used freqeuntly to ensure proper user input.
+// This module implements UserInterface.h, following our central control design from our 
+// Architectural Design Document. Specifically, it handles all menu selection to start 
+// execution of a user command or to shutdown ITS. Switch cases are used to handle different 
+// layers of menus (i.e., menu, submenu) and do-while loops are used freqeuntly to ensure 
+// proper user input.
 
 #include "UserInterface.h"
 #include "ProcessCoordinator.h"

@@ -1,12 +1,17 @@
 // ============================================
 // Module Name: Requester.cpp
 // ============================================
-// Version History:
+// Rev. 2 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements and removed unused parameters.
 // Rev. 1 - 2024/07/17 - Group 7
 // ============================================
-// ---------------------------------------------------------
+
 // Overall internal design issues:
-// This module implements Requesters. So, it uses the "Requester" struct, imported from ChangeItem.h (see it for detailed list of attributes). It uses linear search to find products within files based on a criteria of attributes (e.g., primary key (single or compound)).
+// This module implements Requesters. So, it uses the "Requester" 
+// struct, imported from ChangeItem.h (see it for detailed list of 
+// attributes). It uses linear search to find products within files 
+// based on a criteria of attributes (e.g., primary key (single or 
+// compound)).
 
 #include "Requester.h"
 #include <fstream>

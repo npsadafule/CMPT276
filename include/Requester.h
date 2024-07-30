@@ -2,6 +2,8 @@
 // Module Name: Requester.h
 // ============================================
 // Version History:
+// Rev. 2 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements and removed unused parameters.
 // Rev. 1 - 2024/07/17 - Group 7
 // ============================================
 
