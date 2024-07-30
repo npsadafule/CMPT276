@@ -38,9 +38,6 @@ static const int CI_STRING_BUF_LEN = 6 +1;	// Used for requesting a change ID fr
 // Files
 extern std::fstream productReleaseFile;
 
-// Variables for navigation options
-static int entryCount;
-
 // Global variables externed
 extern int globalHighestCID;
 
