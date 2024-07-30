@@ -1373,8 +1373,7 @@ void handleReportGeneration(int choice) {
 			do {
 				do {
 					productFileDisplay20OrLess(productPage);
-					std::cout << "Select the product your change item is for by entering its name (max 10 char, must " 
-								 "pre-exist):\n";
+					std::cout << "Select a product by entering its name (max 10 char, must pre-exist):\n";
 					std::cin.getline(productName, PRODUCT_NAME_LENGTH);
 
 					// Check if input length is valid
@@ -1461,7 +1460,7 @@ void handleReportGeneration(int choice) {
 				// Ask for a release ID
 				do {
 					productReleaseFileDisplay20OrLess(RRPage,productName);
-					std::cout << "\nEnter the new anticipated release ID for the change item (max 8 char, from the list): \n";
+					std::cout << "Enter the new anticipated release ID for the change item (max 8 char, from the list): \n";
 					std::cin.getline(anticipatedReleaseID, RELEASE_ID_LENGTH);
 
 					// Check if input length is valid
