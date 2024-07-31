@@ -247,11 +247,9 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
     std::cout << "Change Item " << changeID << " of " << changeItem.productName << " was implemented. They will be able to see\n";
     std::cout << "the changes made on Release " << newReleaseID << " of ITS on " << productRelease.releaseDate << ".\n\n";
 
-    std::cout << "   Requester                       Email\n";
-    int count = 1;
+    std::cout << "  Requester                       Email\n";
 	// Loop for each of the requesters related to change requests of the chosen change item
     for (const auto& req : relatedRequesters) {
-        std::cout << std::left << count << ") " << std::setw(30) << req.reqName << "  " << std::setw(24) << req.email << "\n";
-        ++count;
+        std::cout << std::left << "- " << std::setw(30) << req.reqName << "  " << std::setw(24) << req.email << "\n";
     }
 }
