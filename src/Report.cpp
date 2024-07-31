@@ -101,6 +101,7 @@ int generateReport1(int& page,const char* productName) {
 	// Find the total number of items on file
 	seekToBeginningOfChangeItemFile();
 	int counter = 0;
+	// Loop by the size of ChangeItem to retrieve all change items from file
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem))) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
 			counter++;
@@ -136,6 +137,8 @@ int generateReport1(int& page,const char* productName) {
 	// Skip 20 * "number of pages to flip" records that have the given product
 	if ((page-1) != 0) {
 		int pageRecordsCount0 = 0;
+		// Loop by the size of ChangeItem to move the changeItemFile get pointer past the first 
+		// (page-1)*(ITEMS_PER_PAGE) change items with a productName attribute of 'productName'
 		while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 			(pageRecordsCount0 < (page-1)*(ITEMS_PER_PAGE))) {
 			if (strcmp(tmpModule.productName,productName) == 0) {
@@ -154,6 +157,8 @@ int generateReport1(int& page,const char* productName) {
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	std::cout << "                                                                     Anticipated" << std::endl;
 	std::cout << "  Product     Description                     Change ID  State       Release ID" << std::endl;
+	// Loop by the size of ChangeItem to read each ChangeItem from file until ITEMS_PER_PAGE or less number of 
+	// change items are displayed with the productName 'productName' and have a state that is not 'Done' or 'Cancelled'
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
 		if ((strcmp(tmpModule.productName,productName) == 0) &&
@@ -197,6 +202,7 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
     // Find the change requests for the chosen change item
     seekToBeginningOfChangeRequestFile();
     std::vector<std::string> requesterNames;
+	// Loop by the size of a ChangeRequest to read all change requests from file
     while (changeRequestFile.read(reinterpret_cast<char*>(&changeRequest), sizeof(ChangeRequest))) {
         if (changeRequest.changeID == changeID) {
             changeRequestFound = true;
@@ -213,8 +219,9 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
     seekToBeginningOfRequesterFile();
     std::vector<Requester> relatedRequesters;
     // For each requester stored
+	// Loop by the size of Requesters to read all requesters from file
     while (requesterFile.read(reinterpret_cast<char*>(&requester), sizeof(Requester))) {
-        // For each 'requester name' attached to the selected change item
+        // Loop for each 'requester name' from a change request of the selected change item
         for (const auto& name : requesterNames) {
             // Store the 'requester'
             if (std::strcmp(requester.reqName, name.c_str()) == 0) {
@@ -242,6 +249,7 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
 
     std::cout << "   Requester                       Email\n";
     int count = 1;
+	// Loop for each of the requesters related to change requests of the chosen change item
     for (const auto& req : relatedRequesters) {
         std::cout << std::left << count << ") " << std::setw(30) << req.reqName << "  " << std::setw(24) << req.email << "\n";
         ++count;

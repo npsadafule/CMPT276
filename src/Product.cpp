@@ -103,6 +103,7 @@ int productFileDisplay20OrLess(int& page) {
 	// Find the total number of items on file
 	seekToBeginningOfProductFile();
 	int counter = 0;
+	// Loop by the size of Product to count the number of products are stored on file
 	while (productFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(Product))) {
 		counter++;
 	}	
@@ -140,6 +141,7 @@ int productFileDisplay20OrLess(int& page) {
 	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	int pageRecordsCount = 0;
+	// Loop by the size of Product to display ITEMS_PER_PAGE products
 	while (productFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(Product)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
 		std::cout << "- ";
@@ -168,6 +170,7 @@ bool retrieveProductByName(const char* productName, Product& product) {
 	seekToBeginningOfProductFile();
 
     // Read each product from the file and compare its name with the target name
+	// Loop by the size of Product to search for a product with the same primary key
     while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, productName) == 0) {
 			
@@ -206,6 +209,8 @@ void createProduct(const char* namePtr) {
 
 	seekToBeginningOfProductFile();
 	
+	// Loop by the size of Product to determine whether a product with the same primary key
+	// already exists
 	while (productFile.read(reinterpret_cast<char*>(&tmpProduct), sizeof(Product))) {
         if (std::strcmp(tmpProduct.name, namePtr) == 0) {
 			productExists = true;
@@ -301,6 +306,8 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 	// Find the total number of items on file
 	seekToBeginningOfProductReleaseFile();
 	int counter = 0;
+	// Loop by the size of ProductRelease to determine the number of product releases stored
+	// on file
 	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease))) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
 			counter++;
@@ -336,6 +343,8 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 	// Skip 20 * "number of pages to flip" records that have the given product
 	if ((page-1) != 0) {
 		int pageRecordsCount0 = 0;
+		// Loop by the size of ProductRelease to move the productReleaseFile get pointer past 
+		// (page-1)*(ITEMS_PER_PAGE) product release records with productName attributes 'productName'
 		while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease)) && 
 			(pageRecordsCount0 < (page-1)*(ITEMS_PER_PAGE))) {
 			if (strcmp(tmpModule.productName,productName) == 0) {
@@ -352,6 +361,8 @@ int productReleaseFileDisplay20OrLess(int& page, const char* productName) {
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	std::cout << "  Product     Release ID  Release Date" << std::endl;
 	int pageRecordsCount1 = 0;
+	// Loop by the size of ProductRelease to display ITEMS_PER_PAGE or less number of 
+	// product releases with the product name 'productName'
 	while (productReleaseFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ProductRelease)) && 
 		  (pageRecordsCount1 < ITEMS_PER_PAGE)) {
 		if (strcmp(tmpModule.productName,productName) == 0) {
@@ -375,6 +386,7 @@ bool retrieveProductReleaseByKey(const char* productReleaseName, const char* rel
 
 	seekToBeginningOfProductReleaseFile();
 
+	// Loop by the size of ProductRelease to read all product releases on file
     while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
 		// If in the productReleaseFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.productName, productReleaseName) == 0) &&
@@ -418,6 +430,7 @@ void createProductRelease(const char* productName, const char* releaseID, const 
 
     // Read each product from the file and compare its name with the target name
 	// std::cout << "before read loop" << std::endl;
+	// Loop by the size of ProductRelease to read all product releases on file
     while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
         if ((std::strcmp(tmpProductRelease.productName, productName) == 0) &&
 			(std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {
@@ -446,6 +459,7 @@ bool determineReleaseIDExistence(const char* releaseID) {
 	seekToBeginningOfProductReleaseFile();
 
 	// Determine if the release exists
+	// Loop by the size of ProductRelease to read all product releases on file
     while (productReleaseFile.read(reinterpret_cast<char*>(&tmpProductRelease), sizeof(ProductRelease))) {
 		// If in the productReleaseFile, there exists an element that matches what we hope to retrieve
         if ((std::strcmp(tmpProductRelease.releaseID, releaseID) == 0)) {

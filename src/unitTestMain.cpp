@@ -372,7 +372,7 @@ void generateData() {
     // Define the number of strings to generate
     const int num_strings = 21;
 
-    // Loop to generate and print C-style strings
+    // Loop to generate and print C-style strings 'num_strings' times
     for (int i = 1; i <= num_strings; ++i) {
         // Create a buffer to hold the generated string (enough space for base + number + null terminator)
         char generated_string[10];  // Adjust size as needed

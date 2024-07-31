@@ -164,7 +164,8 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	seekToBeginningOfChangeItemFile();
 	if ((page-1) != 0) {
 		int pageRecordsCount0 = 0;
-		// Loop by the size of ChangeItem to skip 20 records that have the given product
+		// Loop by the size of ChangeItem to move the changeItemFile get pointer past the first 
+		// (page-1)*(ITEMS_PER_PAGE) change items with a productName attribute of 'productName'
 		while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 			(pageRecordsCount0 < (page-1)*(ITEMS_PER_PAGE))) {
 			if (strcmp(tmpModule.productName,productName) == 0) {
@@ -182,7 +183,8 @@ int changeItemFileDisplay20OrLess(int& page,const char* productName) {
 	std::cout << "Page " << page << "/" << modulePages << std::endl;
 	std::cout << "                                                                     Anticipated" << std::endl;
 	std::cout << "  Product     Description                     Change ID  State       Release ID" << std::endl;
-	// Loop by the size of ChangeItem to read each ChangeItem from file until ITEMS_PER_PAGE number of items are displayed
+	// Loop by the size of ChangeItem to read each ChangeItem from file until ITEMS_PER_PAGE or less number of 
+	// change items are displayed with the productName 'productName'
 	while (changeItemFile.read(reinterpret_cast<char*>(&tmpModule), sizeof(ChangeItem)) && 
 		  (pageRecordsCount1 < ITEMS_PER_PAGE)) {
 		if (strcmp(tmpModule.productName,productName) == 0) {

@@ -101,6 +101,7 @@ int requesterFileDisplay20OrLess(int& page) {
 	// Find the total number of items on file
 	seekToBeginningOfRequesterFile();
 	int counter = 0;
+	// Loop by the size of Requesters to read all requesters from file
 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester))) {
 		counter++;
 	}	
@@ -138,6 +139,7 @@ int requesterFileDisplay20OrLess(int& page) {
 	std::cout << std::endl;
 	std::cout << "Page " << page << "/" << reqPages << std::endl;
 	int pageRecordsCount = 0;
+	// Loop by the size of Requester to read ITEMS_PER_PAGE number of requesters from file
 	while (requesterFile.read(reinterpret_cast<char*>(&tmpReq), sizeof(Requester)) && 
 		  (pageRecordsCount < ITEMS_PER_PAGE)) {
 		std::cout << "- ";
@@ -164,6 +166,7 @@ bool retrieveRequesterByKey(const char* reqName, Requester& requester) {
 
 	seekToBeginningOfRequesterFile();
 
+	// Loop by the size of Requester to read all requesters from file
     while (requesterFile.read(reinterpret_cast<char*>(&tmpRequester), sizeof(Requester))) {
 		// If in the requesterFile, there exists an element that matches what we hope to retrieve
         if (std::strcmp(tmpRequester.reqName, reqName) == 0) {
@@ -210,6 +213,7 @@ void createRequester(const char* reqName,
 	seekToBeginningOfRequesterFile();
 
     // Read each requester from the file and compare its name with the target name
+	// Loop by the size of Requester to read all requesters from file
     while (requesterFile.read(reinterpret_cast<char*>(&tmpReadReq), sizeof(Requester))) {
         if (std::strcmp(tmpReadReq.reqName, reqName) == 0) {
 			requesterExists = true;
