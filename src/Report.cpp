@@ -192,11 +192,11 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
     ProductRelease productRelease;
     retrieveProductReleaseByKey(productName, newReleaseID, productRelease);
 
-    // Update the anticipated release ID of the change item
+    // Retrieve the change item specified by 'change ID'
 	retrieveChangeItemByKey(changeID,changeItem);
 	// Update the anticipated release ID of the change item in its RAM object
 	std::strcpy(changeItem.anticipatedReleaseID,newReleaseID);
-	// Make the update
+	// Update the anticipated release ID of the change item
 	updateChangeItem(changeID, changeItem);
 
     // Find the change requests for the chosen change item
@@ -211,7 +211,8 @@ void generateReport2(const int changeID, const char* newReleaseID, const char* p
     }
     changeRequestFile.clear();
     if (!changeRequestFound) {
-        std::cerr << "No change request found for ChangeItem with ChangeID " << changeID << ".\n";
+        std::cerr << "No change request found for ChangeItem with ChangeID " << changeID << ".\n"
+					 "Report generation failed.\n";
         return;
     }
 
