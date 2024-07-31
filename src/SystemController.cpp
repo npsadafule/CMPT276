@@ -2,7 +2,10 @@
 // Module Name: SystemController.cpp
 // ============================================
 // Version History:
+// Rev. 3 - 2024/07/30 - Group 7
+	// Kenneth Tan: Edited comments to match Assignment 5 requirements.
 // Rev. 2 - 2024/07/17 - Group 7
+// Rev. 1 - 2024/07/01 - Group 7
 // ============================================
 
 // Overall internal design issues:
